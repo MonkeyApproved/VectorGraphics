@@ -1,0 +1,6 @@
+.canvas {
+  width: calc(100vw - 80px);
+  height: 80vh;
+  margin: 40px;
+  border: 2px solid black;
+}
