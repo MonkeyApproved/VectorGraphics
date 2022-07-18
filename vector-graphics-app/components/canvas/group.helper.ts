@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { Circle, drawCircle } from './circle.helper';
-import { drawLine, Line } from './line.helper.';
+import { drawLine, Line } from './line.helper';
 import { drawRect, Rect, RectStyle } from './rect.helper';
 
 export type Element = Line | Rect | Circle | Group;

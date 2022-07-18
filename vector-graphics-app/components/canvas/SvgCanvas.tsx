@@ -24,14 +24,10 @@ export default function SvgCanvas({elements}: SvgCanvasProps) {
         }
       }, [svgRef, elements]);
 
-    return (
-    <>
-      <div>SVG canvas</div>
-      <svg
+    return <svg
         className={styles.canvas}
         ref={(ref: SVGSVGElement) => setSvgRef(ref)}
         viewBox="0 0 100 100"
-      ></svg>
-      </>
-    )
+      />
+    
   }

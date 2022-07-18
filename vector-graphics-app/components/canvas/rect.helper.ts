@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { ContainerSelection } from './group.helper';
-import { LineStyle } from './line.helper.';
+import { LineStyle } from './line.helper';
 
 export const defaultRectStyle: RectStyle = {
     color: 'black',
