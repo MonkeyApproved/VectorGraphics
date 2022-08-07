@@ -1,79 +1,56 @@
-import { Card, CardContent, Input, Stack, TextField, Typography } from "@mui/material";
-import styles from '../../styles/SvgEditor.module.css';
-import { Circle } from "../canvas/circle.helper";
-import { Element } from '../canvas/group.helper';
+import { Card, CardContent, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import { Coordinate } from "../canvas/coordinate.helper";
+import { Element, ElementDict, mapElements } from "../canvas/element.helper";
 import { Rect } from "../canvas/rect.helper";
-
-
-export interface CircleItemProps {
-    index: number;
-    circle: Circle;
-}
-
-export const numberInputProps = { inputMode: 'numeric', pattern: '[0-9]*' }
-
-export function CircleItem({index, circle}: CircleItemProps) {
-    return <Card variant="outlined">
-        <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                CIRCLE ({index})
-            </Typography>
-      </CardContent>
-      <CardContent>
-            <Input type="number" defaultValue={circle.r}/>
-      </CardContent>
-      <CardContent>
-            <Input type="number" defaultValue={circle.x}/>
-            <Input type="number" defaultValue={circle.y}/>
-      </CardContent>
-    </Card>
-}
+import { StrokeStyle } from "../canvas/stroke.helper";
+import DoubleNumberInput from "./inputs/DoubleNumberInput";
+import StrokeInput from "./inputs/StrokeInput";
 
 export interface RectItemProps {
-    index: number;
     rect: Rect;
 }
 
-export function RectItem({index, rect}: RectItemProps) {
+export function RectMenu({rect}: RectItemProps) {
+    const [position, setPosition] = useState<Coordinate>(rect.position);
+    const [stroke, setStroke] = useState<StrokeStyle>(rect.stroke);
+
     return <Card variant="outlined">
         <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                RECTANGLE ({index})
+                RECTANGLE ({rect.id})
             </Typography>
       </CardContent>
       <CardContent>
-        <Input type="number" defaultValue={rect.x} />
-        <Input type="number" defaultValue={rect.y} />
+        <DoubleNumberInput labelX="x" labelY="y" value={position} setValue={setPosition}  />
       </CardContent>
       <CardContent>
-      <Input type="number" defaultValue={rect.width} />
-        <Input type="number" defaultValue={rect.height} />
+        <StrokeInput stroke={stroke} setStroke={setStroke} elementId={rect.id} />
       </CardContent>
     </Card>
 }
 
 export interface ItemProps {
-    index: number;
     element: Element;
 }
 
-export function Item({index, element}: ItemProps) {
+export function ElementMenu({element}: ItemProps) {
     if (element.type === 'circle') {
-        return <CircleItem index={index} circle={element} />
+        return <></>;
     } else if (element.type === "rect") {
-        return <RectItem index={index} rect={element} />
+        return <RectMenu rect={element} />
     }
     return <></>;
 }
 
 export interface LeftSideMenuProps {
-    elements: Element[];
+    elements: ElementDict;
 }
 
 export default function LeftSideMenu({elements}: LeftSideMenuProps) {
     return (
         <Stack spacing={2}>
-            {elements.map((element, index) => <Item index={index} element={element} key={`element_${index}`} />)}
+            {mapElements(elements, (element) => <ElementMenu element={element} key={`element_${element.id}`} />)}
         </Stack>
     );
 }

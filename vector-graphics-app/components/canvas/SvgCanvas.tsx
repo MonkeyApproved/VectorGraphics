@@ -1,11 +1,11 @@
 import * as d3 from 'd3';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../../styles/SvgCanvas.module.css';
-import { drawGroup, Element, Group } from './group.helper';
-import { defaultRectStyle } from './rect.helper';
+import { ElementDict } from './element.helper';
+import { createGroup, drawGroup, Group } from './group.helper';
 
 export interface SvgCanvasProps {
-    elements: Element[];
+    elements: ElementDict;
 }
 
 export default function SvgCanvas({elements}: SvgCanvasProps) {
@@ -14,12 +14,7 @@ export default function SvgCanvas({elements}: SvgCanvasProps) {
     useEffect(() => {
         if (svgRef) {
             const selection = d3.select(svgRef);
-            const mainGroup: Group = {
-                type: 'group',
-                transformations: [],
-                style: {...defaultRectStyle, fill: 'white'},
-                elements: elements,
-            }
+            const mainGroup: Group = createGroup(elements);
             drawGroup(selection, mainGroup);
         }
       }, [svgRef, elements]);
@@ -29,5 +24,5 @@ export default function SvgCanvas({elements}: SvgCanvasProps) {
         ref={(ref: SVGSVGElement) => setSvgRef(ref)}
         viewBox="0 0 100 100"
       />
-    
+
   }
