@@ -1,6 +1,6 @@
-import { applyPosition, Coordinate } from '../../svg/coordinate';
+import { applyPosition, applySize, Coordinate } from '../../svg/coordinate';
 import { BaseElementType, BaseAreaElementType } from '../../svg/element';
-import { CoordinateInput } from './DoubleNumberInput';
+import { CoordinateInput, SizeInput } from './DoubleNumberInput';
 
 export type InputType = 'number' | 'string';
 
@@ -11,14 +11,21 @@ export interface AreaElementInputProps {
 
 export default function AreaElementInput({ element, updateElement }: AreaElementInputProps) {
   const setPosition = (value: Coordinate) => {
-    const updatedElement = { ...element, position: value };
+    const updatedElement: BaseAreaElementType = { ...element, position: value };
     applyPosition({ element: updatedElement });
+    updateElement({ updatedElement: updatedElement });
+  };
+
+  const setSize = (value: Coordinate) => {
+    const updatedElement: BaseAreaElementType = { ...element, size: value };
+    applySize({ element: updatedElement });
     updateElement({ updatedElement: updatedElement });
   };
 
   return (
     <>
       <CoordinateInput coordinate={element.position} setCoordinate={setPosition} />
+      <SizeInput size={element.position} setSize={setSize} />
     </>
   );
 }
