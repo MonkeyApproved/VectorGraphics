@@ -1,48 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { defaultCircleStyle } from '../components/canvas/circle.helper';
-import { Element } from '../components/canvas/group.helper';
-import { defaultLineStyle } from '../components/canvas/line.helper.';
-import { defaultRectStyle } from '../components/canvas/rect.helper';
-import SvgCanvas from '../components/canvas/SvgCanvas';
+import SvgEditor from '../components/editor/SvgEditor';
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
-  const elements: Element[] = [
-    {
-      type: 'circle',
-      style: defaultCircleStyle,
-      x: 50,
-      y: 20,
-      r: 40,
-    },
-    {
-      type: 'line',
-      style: defaultLineStyle,
-      x1: 10,
-      y1: 10,
-      x2: 90,
-      y2: 90,
-      z: 1,
-    },
-    {
-      type: 'line',
-      style: defaultLineStyle,
-      x1: 0,
-      y1: 0,
-      x2: 5,
-      y2: 30,
-      z: 1,
-    },
-    {
-      type: 'rect',
-      style: defaultRectStyle,
-      x: 20,
-      y: 20,
-      width: 40,
-      height: 30,
-    }
-  ]
   return (
     <div className={styles.container}>
       <Head>
@@ -51,14 +12,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>This is a SVG canvas</h1>
-        <SvgCanvas elements={elements} />
-      </main>
+      <SvgEditor />
 
-      <footer className={styles.footer}>
-          <span className={styles.logo}>Monkey Approved Graphics</span>
-      </footer>
     </div>
   )
 }

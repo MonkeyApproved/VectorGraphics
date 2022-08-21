@@ -1,6 +1,6 @@
-import * as d3 from 'd3';
+import { BaseAreaElement } from './element.helper';
 import { ContainerSelection } from './group.helper';
-import { LineStyle } from './line.helper.';
+import { StrokeStyle } from "./stroke.helper";
 
 export const defaultCircleStyle: CircleStyle = {
     color: 'black',
@@ -9,26 +9,22 @@ export const defaultCircleStyle: CircleStyle = {
     fill: '#22ffff',
 }
 
-export interface CircleStyle extends LineStyle {
+export interface CircleStyle extends StrokeStyle {
     fill: string;
 }
 
-export interface Circle {
+export interface Circle extends BaseAreaElement<SVGCircleElement> {
     type: 'circle';
-    style: CircleStyle;
-    x: number;
-    y: number;
-    r: number;
-    ref?: d3.Selection<SVGCircleElement, unknown, null, undefined>;
+    radius: number;
 }
 
 export function drawCircle(container: ContainerSelection, circle: Circle) {
     const selection = circle.ref ? circle.ref : container.append('circle');
     circle.ref = selection
-        .style('stroke', circle.style.color)
-        .style('stroke-width', circle.style.width)
-        .style('fill', circle.style.fill)
-        .attr("r", circle.r)
-        .attr("cx", circle.x)
-        .attr("cy", circle.y);
+        .style('stroke', circle.stroke.color)
+        .style('stroke-width', circle.stroke.width)
+        .style('fill', circle.fill.color)
+        .attr("r", circle.radius)
+        .attr("cx", circle.position.x)
+        .attr("cy", circle.position.y);
 }

@@ -1,57 +1,42 @@
 import * as d3 from 'd3';
-import { Circle, drawCircle } from './circle.helper';
-import { drawLine, Line } from './line.helper.';
-import { drawRect, Rect, RectStyle } from './rect.helper';
+import { drawCircle } from './circle.helper';
+import { BaseAreaElement, ElementDict, generateId } from './element.helper';
+import { defaultFillStyle } from './fill.helper';
+import { drawLine } from './line.helper';
+import { drawRect } from './rect.helper';
+import { defaultStrokeStyle } from './stroke.helper';
+import { Transformation } from './transformation.helper';
 
-export type Element = Line | Rect | Circle | Group;
-
-export interface Rotation {
-    type: 'rotate';
-    angle: number;
-    x: number;
-    y: number;
-}
-
-export interface Translation {
-    type: 'translate';
-    x: number;
-    y: number;
-}
-
-export interface Scale {
-    type: 'scale';
-    x: number;
-    y: number;
-}
-
-export interface Skew {
-    type: 'skew';
-    direction: 'x' | 'y';
-    factor: number;
-}
-
-export type Transformation = Rotation | Translation | Scale | Skew;
-
-export interface Group {
+export interface Group extends BaseAreaElement<SVGGElement> {
     type: 'group';
     transformations: Transformation[];
-    style: RectStyle;
-    elements: Element[];
-    ref?: d3.Selection<SVGGElement, unknown, null, undefined>;
+    elements: ElementDict;
 }
 
 export type GroupSelection = d3.Selection<SVGGElement, unknown, null, undefined>;
 export type SvgSelection = d3.Selection<SVGSVGElement, unknown, null, undefined>;
 export type ContainerSelection = GroupSelection | SvgSelection;
 
+export function createGroup(elements: ElementDict): Group {
+    return {
+        id: generateId(),
+        type: 'group',
+        transformations: [],
+        position: {x: 0, y: 0},
+        stroke: defaultStrokeStyle,
+        fill: defaultFillStyle,
+        elements: elements,
+    }
+}
+
 export function drawGroup(container: ContainerSelection, group: Group) {
     const selection = group.ref ? group.ref : container.append('g');
     group.ref = selection
-        .style('stroke', group.style.color)
-        .style('stroke-width', group.style.width)
-        .style('fill', group.style.fill)
+        .style('stroke', group.stroke.color)
+        .style('stroke-width', group.stroke.width)
+        .style('fill', group.fill.color);
 
-    group.elements.forEach((element) => {
+    Object.values(group.elements).forEach((element) => {
         if (element.type === 'line') {
             drawLine(selection, element);
         } else if (element.type === 'rect') {
