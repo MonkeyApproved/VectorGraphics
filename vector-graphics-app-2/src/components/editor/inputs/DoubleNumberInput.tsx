@@ -22,7 +22,7 @@ export default function DoubleNumberInput({
   };
 
   const setY = (y: number) => {
-    setValue({ x: value.y, y: y });
+    setValue({ x: value.x, y: y });
   };
 
   return (

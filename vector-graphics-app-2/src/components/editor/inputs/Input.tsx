@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 
@@ -30,6 +30,10 @@ export default function Input({
 }: StringInputProps | NumberInputProps) {
   const [error, setError] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState<string>(`${value}`);
+
+  useEffect(() => {
+    setCurrentValue(`${value}`);
+  }, [value]);
 
   const onChange = (newValue: string) => {
     setCurrentValue(newValue);

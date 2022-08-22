@@ -14,11 +14,11 @@ export interface CoordinateMathProps {
 }
 
 export function addCoordinates({ leftArg, rightArg }: CoordinateMathProps): Coordinate {
-  return { x: leftArg.x + rightArg.x, y: leftArg.y + leftArg.y };
+  return { x: leftArg.x + rightArg.x, y: leftArg.y + rightArg.y };
 }
 
 export function subtractCoordinates({ leftArg, rightArg }: CoordinateMathProps): Coordinate {
-  return { x: leftArg.x - rightArg.x, y: leftArg.y - leftArg.y };
+  return { x: leftArg.x - rightArg.x, y: leftArg.y - rightArg.y };
 }
 
 export interface updatePositionProps {
@@ -47,6 +47,8 @@ export function applyPosition({ element }: { element: BaseAreaElementType }): Ba
     element.ref.attr('cx', element.position.x).attr('cy', element.position.y);
   }
   if (element.type === 'line') {
+    const endpoint = addCoordinates({ leftArg: element.position, rightArg: element.size });
+    element.ref.attr('x2', endpoint.x).attr('y2', endpoint.y);
     element.ref.attr('x1', element.position.x).attr('y1', element.position.y);
   }
   return element;
@@ -65,6 +67,7 @@ export function applySize({ element }: { element: BaseAreaElementType }): BaseAr
   if (element.type === 'line') {
     const endpoint = addCoordinates({ leftArg: element.position, rightArg: element.size });
     element.ref.attr('x2', endpoint.x).attr('y2', endpoint.y);
+    element.ref.attr('x1', element.position.x).attr('y1', element.position.y);
   }
   return element;
 }

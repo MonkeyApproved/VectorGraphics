@@ -17,11 +17,26 @@ import {
   updateElementInGroup,
 } from '../svg/group';
 import HeaderMenu from './HeaderMenu';
+import { updateHandlersInDict } from '../svg/handlers';
 
 export default function SvgEditor() {
-  const group = createGroup({ elements: sampleElements });
+  const onElementClick = ({ elementId }: { elementId: string }) => {
+    const element = baseGroup.elements[elementId];
+    if (!element) {
+      throw new Error('Unknown element for click event');
+    }
+    setSelectedElementId(elementId);
+  };
+
+  const group = createGroup({
+    elements: updateHandlersInDict({
+      elementDict: sampleElements,
+      handlers: { onClick: onElementClick },
+    }),
+  });
   const [baseGroup, setBaseGroup] = useState<Group>(group);
   const [svg, setSvg] = useState<SVGSVGElement>();
+  const [selectedElementId, setSelectedElementId] = useState<string>();
 
   useEffect(() => {
     // after the svg canvas is set up, we add all elements
@@ -56,6 +71,7 @@ export default function SvgEditor() {
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>
           <LeftSideMenu
             elements={baseGroup.elements}
+            selectedElementId={selectedElementId}
             updateElement={updateElement}
             addElement={addElement}
             removeElement={removeElement}

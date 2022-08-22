@@ -43,8 +43,9 @@ export const sampleLine: Line = {
   size: { x: 50, y: 100 },
 };
 
-export const sampleElements: ElementDict = {
-  circleId: sampleCircle,
-  lineId: sampleLine,
-  rectId: sampleRect,
-};
+const elementDict: ElementDict = {};
+elementDict[circleId] = sampleCircle;
+elementDict[rectId] = sampleRect;
+elementDict[lineId] = sampleLine;
+
+export const sampleElements = elementDict;
