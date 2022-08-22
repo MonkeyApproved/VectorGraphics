@@ -3,6 +3,7 @@ import { drawEllipse, Ellipse } from './circle';
 import { applyPosition, applySize, Coordinate, Size } from './coordinate';
 import { applyFill, FillStyle } from './fill';
 import { ContainerSelection, drawGroup, Group } from './group';
+import { addHandlers, ElementHandlers } from './handlers';
 import { drawLine, Line } from './line';
 import { drawRect, Rect } from './rect';
 import { applyStroke, Stroke } from './stroke';
@@ -19,6 +20,15 @@ export interface BaseElement<T extends d3.BaseType = SVGElement> {
   stroke?: Stroke;
   fill?: FillStyle;
   ref?: ElementRef<T>;
+  handlers?: ElementHandlers;
+}
+
+export function applyId({ element }: { element: BaseElementType }): BaseElementType {
+  if (!element.ref || !element.fill) {
+    return element;
+  }
+  element.ref.attr('id', element.id);
+  return element;
 }
 
 export function setBaseElementAttributes({
@@ -26,8 +36,10 @@ export function setBaseElementAttributes({
 }: {
   element: BaseElementType;
 }): BaseElementType {
+  applyId({ element: element });
   applyFill({ element: element });
   applyStroke({ element: element });
+  addHandlers({ element: element });
   return element;
 }
 

@@ -25,7 +25,7 @@ export default function AreaElementInput({ element, updateElement }: AreaElement
   return (
     <>
       <CoordinateInput coordinate={element.position} setCoordinate={setPosition} />
-      <SizeInput size={element.position} setSize={setSize} />
+      <SizeInput size={element.size} setSize={setSize} />
     </>
   );
 }
