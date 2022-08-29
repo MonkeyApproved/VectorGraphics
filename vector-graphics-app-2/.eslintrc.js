@@ -19,10 +19,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   rules: {
-    'prettier/prettier': [
-      'warn',
-      { singleQuote: true, printWidth: 100, trailingComma: 'all', tabWidth: 2 },
-    ],
+    'prettier/prettier': ['warn', { singleQuote: true, printWidth: 120, trailingComma: 'all', tabWidth: 2 }],
     'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
     '@typescript-eslint/no-unused-vars': ['warn', { vars: 'local' }],
     'no-unused-vars': 'off', // as it is enforced already with @typescript-eslint/no-unused-vars

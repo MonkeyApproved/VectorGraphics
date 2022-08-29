@@ -1,33 +1,27 @@
 import { BaseElementType, ElementDict } from './element';
 
-export type HandlerFunction = ({ elementId }: { elementId: string }) => void;
-
-export interface ElementHandlers {
-  onClick?: HandlerFunction;
-  onMouseenter?: HandlerFunction;
-  onMouseout?: HandlerFunction;
+export interface HandlerFunctionProps {
+  elementId: string;
+  event?: MouseEvent;
 }
 
-export function addHandlers({ element }: { element: BaseElementType }): BaseElementType {
+export type HandlerFunction = ({ elementId, event }: HandlerFunctionProps) => void;
+
+export interface ElementHandlers {
+  [eventName: string]: HandlerFunction;
+}
+
+export function applyHandlers({ element }: { element: BaseElementType }): BaseElementType {
   if (!element.ref || !element.handlers) {
     return element;
   }
-  element.ref.on('click', () => {
-    if (element.handlers?.onClick) {
-      element.handlers?.onClick({ elementId: element.id });
-    }
-  });
-  element.ref.on('mouseenter', () => {
-    if (element.handlers?.onMouseenter) {
-      element.handlers?.onMouseenter({ elementId: element.id });
-    }
-  });
-  element.ref.on('mouseout', () => {
-    if (element.handlers?.onMouseout) {
-      element.handlers?.onMouseout({ elementId: element.id });
-    }
-  });
-
+  for (const eventName in element.handlers) {
+    const handler = element.handlers[eventName];
+    const elementId = element.id;
+    element.ref.on(eventName, (event: MouseEvent) => {
+      handler({ elementId, event });
+    });
+  }
   return element;
 }
 

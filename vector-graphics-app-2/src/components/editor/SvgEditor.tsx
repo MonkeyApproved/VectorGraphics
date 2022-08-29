@@ -17,26 +17,20 @@ import {
   updateElementInGroup,
 } from '../svg/group';
 import HeaderMenu from './HeaderMenu';
-import { updateHandlersInDict } from '../svg/handlers';
+import { getInitialMouseEvent, getMouseHandlers, MouseEvent } from '../svg/mouseEvents';
 
 export default function SvgEditor() {
-  const onElementClick = ({ elementId }: { elementId: string }) => {
-    const element = baseGroup.elements[elementId];
-    if (!element) {
-      throw new Error('Unknown element for click event');
-    }
-    setSelectedElementId(elementId);
-  };
-
-  const group = createGroup({
-    elements: updateHandlersInDict({
-      elementDict: sampleElements,
-      handlers: { onClick: onElementClick },
-    }),
-  });
-  const [baseGroup, setBaseGroup] = useState<Group>(group);
   const [svg, setSvg] = useState<SVGSVGElement>();
-  const [selectedElementId, setSelectedElementId] = useState<string>();
+  const [baseGroup, setBaseGroup] = useState<Group>(createGroup({ elements: {} }));
+  const [mouseEvent, setMouseEvent] = useState<MouseEvent>(getInitialMouseEvent({ target: baseGroup }));
+  const handlers = getMouseHandlers({ baseGroup, mouseEvent, setMouseEvent });
+
+  useEffect(() => {
+    // add initial elements
+    for (const elementId in sampleElements) {
+      addElement({ newElement: sampleElements[elementId] });
+    }
+  }, []);
 
   useEffect(() => {
     // after the svg canvas is set up, we add all elements
@@ -48,7 +42,11 @@ export default function SvgEditor() {
   }, [svg]);
 
   const addElement = ({ newElement }: { newElement: BaseElementType }) => {
-    const newGroup = addElementToGroup({ element: newElement, group: baseGroup });
+    // add event handlers to element
+    const element = { ...newElement, handlers };
+
+    // add element to base-group
+    const newGroup = addElementToGroup({ element, group: baseGroup });
     setBaseGroup(newGroup);
   };
 
@@ -71,7 +69,7 @@ export default function SvgEditor() {
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>
           <LeftSideMenu
             elements={baseGroup.elements}
-            selectedElementId={selectedElementId}
+            selectedElementId={mouseEvent?.target.id}
             updateElement={updateElement}
             addElement={addElement}
             removeElement={removeElement}

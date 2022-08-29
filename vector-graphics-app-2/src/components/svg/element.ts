@@ -3,7 +3,7 @@ import { drawEllipse, Ellipse } from './circle';
 import { applyPosition, applySize, Coordinate, Size } from './coordinate';
 import { applyFill, FillStyle } from './fill';
 import { ContainerSelection, drawGroup, Group } from './group';
-import { addHandlers, ElementHandlers } from './handlers';
+import { applyHandlers, ElementHandlers } from './handlers';
 import { drawLine, Line } from './line';
 import { drawRect, Rect } from './rect';
 import { applyStroke, Stroke } from './stroke';
@@ -12,7 +12,7 @@ export function generateId(): string {
   return Math.random().toString(16).slice(2);
 }
 
-export type ElementRef<T extends d3.BaseType> = d3.Selection<T, unknown, null, undefined>;
+export type ElementRef<T extends d3.BaseType = d3.BaseType> = d3.Selection<T, unknown, null, undefined>;
 
 export interface BaseElement<T extends d3.BaseType = SVGElement> {
   id: string;
@@ -31,15 +31,11 @@ export function applyId({ element }: { element: BaseElementType }): BaseElementT
   return element;
 }
 
-export function setBaseElementAttributes({
-  element,
-}: {
-  element: BaseElementType;
-}): BaseElementType {
+export function setBaseElementAttributes({ element }: { element: BaseElementType }): BaseElementType {
   applyId({ element: element });
   applyFill({ element: element });
   applyStroke({ element: element });
-  addHandlers({ element: element });
+  applyHandlers({ element: element });
   return element;
 }
 
@@ -48,11 +44,7 @@ export interface BaseAreaElement<T extends d3.BaseType = SVGElement> extends Bas
   size: Size;
 }
 
-export function setBaseAreaElementAttributes({
-  element,
-}: {
-  element: BaseAreaElementType;
-}): BaseAreaElementType {
+export function setBaseAreaElementAttributes({ element }: { element: BaseAreaElementType }): BaseAreaElementType {
   setBaseElementAttributes({ element: element });
   applyPosition({ element: element });
   applySize({ element: element });
