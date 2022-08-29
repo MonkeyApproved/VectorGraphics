@@ -6,7 +6,5 @@ export interface SvgCanvasProps {
 }
 
 export default function SvgCanvas({ setSvg, viewBox }: SvgCanvasProps) {
-  return (
-    <svg className={styles.canvas} ref={(ref: SVGSVGElement) => setSvg(ref)} viewBox={viewBox} />
-  );
+  return <svg className={styles.canvas} ref={(ref: SVGSVGElement) => setSvg(ref)} viewBox={viewBox} />;
 }

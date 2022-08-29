@@ -21,13 +21,7 @@ export interface NumberInputProps {
   setValue: (value: number) => void;
 }
 
-export default function Input({
-  inputType,
-  valueType,
-  label,
-  value,
-  setValue,
-}: StringInputProps | NumberInputProps) {
+export default function Input({ inputType, valueType, label, value, setValue }: StringInputProps | NumberInputProps) {
   const [error, setError] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState<string>(`${value}`);
 
@@ -75,11 +69,7 @@ export interface ValidationNumberInputProps {
   setError: (error: boolean) => void;
 }
 
-export function validateNumberInput({
-  value,
-  setValue,
-  setError,
-}: ValidationNumberInputProps): void {
+export function validateNumberInput({ value, setValue, setError }: ValidationNumberInputProps): void {
   const parsedNumber = Number(value);
   if (isNaN(parsedNumber)) {
     setError(true);
@@ -96,12 +86,7 @@ export interface ValidationStringInputProps {
   setError: (error: boolean) => void;
 }
 
-export function validateStringInput({
-  value,
-  valueType,
-  setValue,
-  setError,
-}: ValidationStringInputProps): void {
+export function validateStringInput({ value, valueType, setValue, setError }: ValidationStringInputProps): void {
   if (valueType === 'color') {
     // to do: check that color input is valid
     setValue(value);

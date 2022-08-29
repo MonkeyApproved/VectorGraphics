@@ -11,11 +11,7 @@ export interface LeftSideMenuProps {
   removeElement: (args: { elementId: string }) => void;
 }
 
-export default function LeftSideMenu({
-  elements,
-  selectedElementId,
-  updateElement,
-}: LeftSideMenuProps) {
+export default function LeftSideMenu({ elements, selectedElementId, updateElement }: LeftSideMenuProps) {
   if (!selectedElementId || !elements[selectedElementId]) {
     return <></>;
   }

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import cn from 'classnames';
 
@@ -17,13 +17,15 @@ import {
   updateElementInGroup,
 } from '../svg/group';
 import HeaderMenu from './HeaderMenu';
-import { getInitialMouseEvent, getMouseHandlers, MouseEvent } from '../svg/mouseEvents';
+import { getMouseHandlers, MouseEvent } from '../svg/mouseEvents';
+import { subtractCoordinates } from '../svg/coordinate';
 
 export default function SvgEditor() {
   const [svg, setSvg] = useState<SVGSVGElement>();
   const [baseGroup, setBaseGroup] = useState<Group>(createGroup({ elements: {} }));
-  const [mouseEvent, setMouseEvent] = useState<MouseEvent>(getInitialMouseEvent({ target: baseGroup }));
-  const handlers = getMouseHandlers({ baseGroup, mouseEvent, setMouseEvent });
+  const [mouseEvent, setMouseEvent] = useState<MouseEvent>({ status: 'idle' });
+  const mouseEventRef = useRef(mouseEvent);
+  const handlers = getMouseHandlers({ mouseEventRef, setMouseEvent });
 
   useEffect(() => {
     // add initial elements
@@ -33,11 +35,20 @@ export default function SvgEditor() {
   }, []);
 
   useEffect(() => {
+    mouseEventRef.current = mouseEvent;
+    if (mouseEvent.status === 'mouseDrag' && mouseEvent.currentPosition && mouseEvent.initialPosition) {
+      const offset = subtractCoordinates({ leftArg: mouseEvent.currentPosition, rightArg: mouseEvent.initialPosition });
+      mouseEvent.target?.ref?.attr('transform', `translate(${offset.x}, ${offset.y})`);
+    }
+  }, [mouseEvent]);
+
+  useEffect(() => {
     // after the svg canvas is set up, we add all elements
     if (svg) {
       const svgRef = d3.select(svg);
       const groupWithRefs = drawGroup({ container: svgRef, group: baseGroup });
       setBaseGroup(groupWithRefs);
+      setMouseEvent({ status: 'idle', canvas: svgRef });
     }
   }, [svg]);
 
@@ -69,7 +80,7 @@ export default function SvgEditor() {
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>
           <LeftSideMenu
             elements={baseGroup.elements}
-            selectedElementId={mouseEvent?.target.id}
+            selectedElementId={mouseEvent.target?.id}
             updateElement={updateElement}
             addElement={addElement}
             removeElement={removeElement}

@@ -1,11 +1,11 @@
 import { BaseElementType, ElementDict } from './element';
 
 export interface HandlerFunctionProps {
-  elementId: string;
+  element: BaseElementType;
   event?: MouseEvent;
 }
 
-export type HandlerFunction = ({ elementId, event }: HandlerFunctionProps) => void;
+export type HandlerFunction = ({ element, event }: HandlerFunctionProps) => void;
 
 export interface ElementHandlers {
   [eventName: string]: HandlerFunction;
@@ -17,9 +17,8 @@ export function applyHandlers({ element }: { element: BaseElementType }): BaseEl
   }
   for (const eventName in element.handlers) {
     const handler = element.handlers[eventName];
-    const elementId = element.id;
     element.ref.on(eventName, (event: MouseEvent) => {
-      handler({ elementId, event });
+      handler({ element, event });
     });
   }
   return element;
