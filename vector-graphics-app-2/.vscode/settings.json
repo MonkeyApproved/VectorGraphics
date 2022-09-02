@@ -38,5 +38,9 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "cSpell.language": "en",
-  "cSpell.words": ["MonkeyApproved", "svg"]
+  "cSpell.words": [
+    "MonkeyApproved",
+    "reduxjs",
+    "svg"
+  ]
 }

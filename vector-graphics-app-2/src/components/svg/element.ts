@@ -20,6 +20,7 @@ export interface BaseElement<T extends d3.BaseType = SVGElement> {
   stroke?: Stroke;
   fill?: FillStyle;
   ref?: ElementRef<T>;
+  selected?: boolean;
   handlers?: ElementHandlers;
 }
 
