@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import cn from 'classnames';
 
@@ -17,26 +17,37 @@ import {
   updateElementInGroup,
 } from '../svg/group';
 import HeaderMenu from './HeaderMenu';
-import { updateHandlersInDict } from '../svg/handlers';
+import { getMouseHandlers, MouseEvent } from '../svg/mouseEvents';
 
 export default function SvgEditor() {
-  const onElementClick = ({ elementId }: { elementId: string }) => {
-    const element = baseGroup.elements[elementId];
-    if (!element) {
-      throw new Error('Unknown element for click event');
-    }
-    setSelectedElementId(elementId);
-  };
-
-  const group = createGroup({
-    elements: updateHandlersInDict({
-      elementDict: sampleElements,
-      handlers: { onClick: onElementClick },
-    }),
-  });
-  const [baseGroup, setBaseGroup] = useState<Group>(group);
   const [svg, setSvg] = useState<SVGSVGElement>();
-  const [selectedElementId, setSelectedElementId] = useState<string>();
+  const [baseGroup, setBaseGroup] = useState<Group>(createGroup({ elements: {} }));
+  const [mouseEvent, setMouseEvent] = useState<MouseEvent>({ status: 'idle' });
+  const mouseEventRef = useRef(mouseEvent);
+  const elementDictRef = useRef(baseGroup.elements);
+  const handlers = getMouseHandlers({ elementDictRef, mouseEventRef, setMouseEvent });
+
+  useEffect(() => {
+    // add initial elements
+    for (const elementId in sampleElements) {
+      addElement({ newElement: sampleElements[elementId] });
+    }
+  }, []);
+
+  useEffect(() => {
+    // update mouse event reference
+    mouseEventRef.current = mouseEvent;
+
+    if (mouseEvent.target) {
+      const newGroup = updateElementInGroup({ updatedElement: mouseEvent.target, group: baseGroup });
+      setBaseGroup(newGroup);
+    }
+  }, [mouseEvent]);
+
+  useEffect(() => {
+    // update element reference
+    elementDictRef.current = baseGroup.elements;
+  }, [baseGroup.elements]);
 
   useEffect(() => {
     // after the svg canvas is set up, we add all elements
@@ -44,11 +55,16 @@ export default function SvgEditor() {
       const svgRef = d3.select(svg);
       const groupWithRefs = drawGroup({ container: svgRef, group: baseGroup });
       setBaseGroup(groupWithRefs);
+      setMouseEvent({ status: 'idle', canvas: svgRef });
     }
   }, [svg]);
 
   const addElement = ({ newElement }: { newElement: BaseElementType }) => {
-    const newGroup = addElementToGroup({ element: newElement, group: baseGroup });
+    // add event handlers to element
+    const element = { ...newElement, handlers };
+
+    // add element to base-group
+    const newGroup = addElementToGroup({ element, group: baseGroup });
     setBaseGroup(newGroup);
   };
 
@@ -71,7 +87,7 @@ export default function SvgEditor() {
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>
           <LeftSideMenu
             elements={baseGroup.elements}
-            selectedElementId={selectedElementId}
+            selectedElementId={mouseEvent.target?.id}
             updateElement={updateElement}
             addElement={addElement}
             removeElement={removeElement}

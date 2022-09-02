@@ -11,12 +11,7 @@ export interface DoubleNumberInputProps {
   setValue: (value: Coordinate) => void;
 }
 
-export default function DoubleNumberInput({
-  labelX,
-  labelY,
-  value,
-  setValue,
-}: DoubleNumberInputProps) {
+export default function DoubleNumberInput({ labelX, labelY, value, setValue }: DoubleNumberInputProps) {
   const setX = (x: number) => {
     setValue({ x: x, y: value.y });
   };
@@ -27,20 +22,8 @@ export default function DoubleNumberInput({
 
   return (
     <>
-      <Input
-        inputType="number"
-        valueType="position"
-        label={labelX}
-        value={value.x}
-        setValue={setX}
-      />
-      <Input
-        inputType="number"
-        valueType="position"
-        label={labelY}
-        value={value.y}
-        setValue={setY}
-      />
+      <Input inputType="number" valueType="position" label={labelX} value={value.x} setValue={setX} />
+      <Input inputType="number" valueType="position" label={labelY} value={value.y} setValue={setY} />
     </>
   );
 }

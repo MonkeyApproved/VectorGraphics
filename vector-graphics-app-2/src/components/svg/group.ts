@@ -42,7 +42,17 @@ export interface AddElementToGroupProps {
 
 export function addElementToGroup({ element, group }: AddElementToGroupProps) {
   const elements = addElement({ dict: group.elements, newElement: element });
-  return { ...group, elements: elements };
+  return { ...group, elements };
+}
+
+export interface AddElementDictToGroupProps {
+  elementDict: ElementDict;
+  group: Group;
+}
+
+export function addElementDictToGroup({ elementDict, group }: AddElementDictToGroupProps) {
+  const elements = { ...group.elements, ...elementDict };
+  return { ...group, elements };
 }
 
 export interface RemoveElementFromGroupProps {
