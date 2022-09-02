@@ -1,51 +1,87 @@
 import * as d3 from 'd3';
 import { MutableRefObject } from 'react';
-import { Coordinate } from './coordinate';
-import { BaseElementType, ElementRef } from './element';
+import { applyPosition, Coordinate, subtractCoordinates, updatePosition } from './coordinate';
+import { BaseAreaElementType, ElementDict, ElementRef } from './element';
 import { ElementHandlers, HandlerFunction, HandlerFunctionProps } from './handlers';
 
-export type MouseStatus = 'idle' | 'mouseDown' | 'mouseDrag';
+export type MouseStatus = 'idle' | 'mouseDown' | 'mouseDrag' | 'mouseUp';
 
 export interface MouseEvent {
   status: MouseStatus;
   canvas?: ElementRef<SVGSVGElement>;
-  target?: BaseElementType;
-  initialPosition?: Coordinate;
-  currentPosition?: Coordinate;
+  target?: BaseAreaElementType;
+  initialElementPosition?: Coordinate;
+  initialMousePosition?: Coordinate;
+  currentMousePosition?: Coordinate;
+}
+
+export function getMouseOffset({ mouseEvent }: { mouseEvent: MouseEvent }) {
+  const initialMousePosition = mouseEvent.initialMousePosition;
+  const currentMousePosition = mouseEvent.currentMousePosition;
+  const initialElementPosition = mouseEvent.initialElementPosition;
+  if (initialMousePosition && currentMousePosition && initialElementPosition) {
+    return subtractCoordinates({ leftArg: currentMousePosition, rightArg: initialMousePosition });
+  }
+  return undefined;
 }
 
 export interface GetMouseHandlerProps {
+  elementDictRef: MutableRefObject<ElementDict>;
   mouseEventRef: MutableRefObject<MouseEvent>;
   setMouseEvent: (mouseEvent: MouseEvent) => void;
 }
 
-export function getMouseHandlers({ mouseEventRef, setMouseEvent }: GetMouseHandlerProps): ElementHandlers {
+export function getMouseHandlers({
+  elementDictRef,
+  mouseEventRef,
+  setMouseEvent,
+}: GetMouseHandlerProps): ElementHandlers {
   const onMouseMove = (event: MouseEvent) => {
+    // update mouse event
     const mousePosition = d3.pointer(event);
-    const currentPosition: Coordinate = { x: mousePosition[0], y: mousePosition[1] };
+    const initialMousePosition = mouseEventRef.current.initialMousePosition;
+    const currentMousePosition: Coordinate = { x: mousePosition[0], y: mousePosition[1] };
+    const position = mouseEventRef.current.initialElementPosition;
+    let element = mouseEventRef.current.target;
+
+    if (initialMousePosition && position && element) {
+      const offset = subtractCoordinates({ leftArg: currentMousePosition, rightArg: initialMousePosition });
+      element = updatePosition({ element, x: position.x + offset.x, y: position.y + offset.y });
+      applyPosition({ element });
+    }
+
     setMouseEvent({
       ...mouseEventRef.current,
+      target: element,
       status: 'mouseDrag',
-      currentPosition,
+      currentMousePosition,
     });
   };
 
-  const onMousedown: HandlerFunction = ({ element, event }: HandlerFunctionProps) => {
+  const onMousedown: HandlerFunction = ({ elementId, event }: HandlerFunctionProps) => {
     // update mouseEvent
+    const element = elementDictRef.current[elementId];
+    if (element.type === 'group') {
+      return;
+    }
     const mousePosition = d3.pointer(event);
-    const initialPosition: Coordinate = { x: mousePosition[0], y: mousePosition[1] };
+    const initialMousePosition: Coordinate = { x: mousePosition[0], y: mousePosition[1] };
     setMouseEvent({
       ...mouseEventRef.current,
       status: 'mouseDown',
       target: element,
-      initialPosition,
-      currentPosition: initialPosition,
+      initialElementPosition: { ...element.position },
+      initialMousePosition,
+      currentMousePosition: initialMousePosition,
     });
 
-    // add event listener for mouse movement which would indicate a drag action
+    // add subsequent event listeners to canvas
     const svgRef = mouseEventRef.current.canvas;
     if (svgRef) {
+      // detect mouse movement, indicating drag action
       svgRef.on('mousemove', onMouseMove);
+
+      // detect end of mouse action (leaving canvas ends mouse action)
       svgRef.on('mouseup', onMouseUp);
       svgRef.on('mouseleave', onMouseUp);
     }
@@ -56,11 +92,12 @@ export function getMouseHandlers({ mouseEventRef, setMouseEvent }: GetMouseHandl
     const svgRef = mouseEventRef.current.canvas;
     if (svgRef) {
       svgRef.on('mousemove', null);
+      svgRef.on('mouseup', null);
       svgRef.on('mouseleave', null);
     }
 
-    // mouse event ends, idle until next mouseDown
-    setMouseEvent({ ...mouseEventRef.current, status: 'idle' });
+    // update mouse event
+    setMouseEvent({ ...mouseEventRef.current, status: 'mouseUp' });
   };
 
   return { mousedown: onMousedown };

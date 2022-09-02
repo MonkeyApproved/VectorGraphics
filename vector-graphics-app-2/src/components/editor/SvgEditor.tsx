@@ -18,14 +18,14 @@ import {
 } from '../svg/group';
 import HeaderMenu from './HeaderMenu';
 import { getMouseHandlers, MouseEvent } from '../svg/mouseEvents';
-import { subtractCoordinates } from '../svg/coordinate';
 
 export default function SvgEditor() {
   const [svg, setSvg] = useState<SVGSVGElement>();
   const [baseGroup, setBaseGroup] = useState<Group>(createGroup({ elements: {} }));
   const [mouseEvent, setMouseEvent] = useState<MouseEvent>({ status: 'idle' });
   const mouseEventRef = useRef(mouseEvent);
-  const handlers = getMouseHandlers({ mouseEventRef, setMouseEvent });
+  const elementDictRef = useRef(baseGroup.elements);
+  const handlers = getMouseHandlers({ elementDictRef, mouseEventRef, setMouseEvent });
 
   useEffect(() => {
     // add initial elements
@@ -35,12 +35,19 @@ export default function SvgEditor() {
   }, []);
 
   useEffect(() => {
+    // update mouse event reference
     mouseEventRef.current = mouseEvent;
-    if (mouseEvent.status === 'mouseDrag' && mouseEvent.currentPosition && mouseEvent.initialPosition) {
-      const offset = subtractCoordinates({ leftArg: mouseEvent.currentPosition, rightArg: mouseEvent.initialPosition });
-      mouseEvent.target?.ref?.attr('transform', `translate(${offset.x}, ${offset.y})`);
+
+    if (mouseEvent.target) {
+      const newGroup = updateElementInGroup({ updatedElement: mouseEvent.target, group: baseGroup });
+      setBaseGroup(newGroup);
     }
   }, [mouseEvent]);
+
+  useEffect(() => {
+    // update element reference
+    elementDictRef.current = baseGroup.elements;
+  }, [baseGroup.elements]);
 
   useEffect(() => {
     // after the svg canvas is set up, we add all elements

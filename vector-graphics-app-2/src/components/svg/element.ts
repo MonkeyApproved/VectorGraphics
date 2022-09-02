@@ -35,7 +35,6 @@ export function setBaseElementAttributes({ element }: { element: BaseElementType
   applyId({ element: element });
   applyFill({ element: element });
   applyStroke({ element: element });
-  applyHandlers({ element: element });
   return element;
 }
 
@@ -48,6 +47,7 @@ export function setBaseAreaElementAttributes({ element }: { element: BaseAreaEle
   setBaseElementAttributes({ element: element });
   applyPosition({ element: element });
   applySize({ element: element });
+  applyHandlers({ element: element });
   return element;
 }
 

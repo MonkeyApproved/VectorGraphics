@@ -1,4 +1,4 @@
-import { BaseAreaElement, BaseAreaElementType } from './element';
+import { BaseAreaElementType } from './element';
 
 export interface Coordinate {
   x: number;
@@ -22,12 +22,12 @@ export function subtractCoordinates({ leftArg, rightArg }: CoordinateMathProps):
 }
 
 export interface updatePositionProps {
-  element: BaseAreaElement;
+  element: BaseAreaElementType;
   x?: number;
   y?: number;
 }
 
-export function updatePosition({ element, x, y }: updatePositionProps): BaseAreaElement {
+export function updatePosition({ element, x, y }: updatePositionProps): BaseAreaElementType {
   if (!element.position) {
     return element;
   }
