@@ -1,4 +1,4 @@
-import { BaseAreaElementType } from './element';
+import { BaseElement, BaseElementFunction } from './element';
 
 export interface Coordinate {
   x: number;
@@ -22,12 +22,12 @@ export function subtractCoordinates({ leftArg, rightArg }: CoordinateMathProps):
 }
 
 export interface updatePositionProps {
-  element: BaseAreaElementType;
+  element: BaseElement;
   x?: number;
   y?: number;
 }
 
-export function updatePosition({ element, x, y }: updatePositionProps): BaseAreaElementType {
+export function updatePosition({ element, x, y }: updatePositionProps): BaseElement {
   if (!element.position) {
     return element;
   }
@@ -36,38 +36,38 @@ export function updatePosition({ element, x, y }: updatePositionProps): BaseArea
   return { ...element, position: newCoordinate };
 }
 
-export function applyPosition({ element }: { element: BaseAreaElementType }): BaseAreaElementType {
-  if (!element.ref) {
+export function applyPosition({ element, elementSelection }: BaseElementFunction): BaseElement {
+  if (!elementSelection) {
     return element;
   }
   if (element.type === 'rect') {
-    element.ref.attr('x', element.position.x).attr('y', element.position.y);
+    elementSelection.attr('x', element.position.x).attr('y', element.position.y);
   }
   if (element.type === 'ellipse') {
-    element.ref.attr('cx', element.position.x).attr('cy', element.position.y);
+    elementSelection.attr('cx', element.position.x).attr('cy', element.position.y);
   }
   if (element.type === 'line') {
     const endpoint = addCoordinates({ leftArg: element.position, rightArg: element.size });
-    element.ref.attr('x2', endpoint.x).attr('y2', endpoint.y);
-    element.ref.attr('x1', element.position.x).attr('y1', element.position.y);
+    elementSelection.attr('x2', endpoint.x).attr('y2', endpoint.y);
+    elementSelection.attr('x1', element.position.x).attr('y1', element.position.y);
   }
   return element;
 }
 
-export function applySize({ element }: { element: BaseAreaElementType }): BaseAreaElementType {
-  if (!element.ref) {
+export function applySize({ element, elementSelection }: BaseElementFunction): BaseElement {
+  if (!elementSelection) {
     return element;
   }
   if (element.type === 'rect') {
-    element.ref.attr('width', element.size.x).attr('height', element.size.y);
+    elementSelection.attr('width', element.size.x).attr('height', element.size.y);
   }
   if (element.type === 'ellipse') {
-    element.ref.attr('rx', element.size.x).attr('ry', element.size.y);
+    elementSelection.attr('rx', element.size.x).attr('ry', element.size.y);
   }
   if (element.type === 'line') {
     const endpoint = addCoordinates({ leftArg: element.position, rightArg: element.size });
-    element.ref.attr('x2', endpoint.x).attr('y2', endpoint.y);
-    element.ref.attr('x1', element.position.x).attr('y1', element.position.y);
+    elementSelection.attr('x2', endpoint.x).attr('y2', endpoint.y);
+    elementSelection.attr('x1', element.position.x).attr('y1', element.position.y);
   }
   return element;
 }

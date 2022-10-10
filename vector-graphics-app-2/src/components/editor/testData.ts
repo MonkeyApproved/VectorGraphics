@@ -1,15 +1,13 @@
-import { Ellipse } from '../svg/circle';
-import { ElementDict, generateId } from '../svg/element';
+import { BaseElement, getId } from '../svg/element';
+import { ElementDict } from '../svg/elementDict';
 import { defaultFillStyle } from '../svg/fill';
-import { Line } from '../svg/line';
-import { Rect } from '../svg/rect';
 import { defaultStrokeStyle } from '../svg/stroke';
 
-export const rectId = generateId();
-export const circleId = generateId();
-export const lineId = generateId();
+export const rectId = getId();
+export const circleId = getId();
+export const lineId = getId();
 
-export const sampleRect: Rect = {
+export const sampleRect: BaseElement = {
   id: rectId,
   type: 'rect',
   stroke: defaultStrokeStyle,
@@ -22,9 +20,10 @@ export const sampleRect: Rect = {
     x: 40,
     y: 30,
   },
+  enableDrag: true,
 };
 
-export const sampleCircle: Ellipse = {
+export const sampleCircle: BaseElement = {
   id: circleId,
   type: 'ellipse',
   stroke: defaultStrokeStyle,
@@ -33,14 +32,16 @@ export const sampleCircle: Ellipse = {
   },
   position: { x: 50, y: 50 },
   size: { x: 40, y: 20 },
+  enableDrag: true,
 };
 
-export const sampleLine: Line = {
+export const sampleLine: BaseElement = {
   id: lineId,
   type: 'line',
   stroke: defaultStrokeStyle,
   position: { x: 0, y: 0 },
   size: { x: 50, y: 100 },
+  enableDrag: true,
 };
 
 const elementDict: ElementDict = {};

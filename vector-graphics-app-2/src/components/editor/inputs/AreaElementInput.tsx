@@ -1,24 +1,24 @@
 import { applyPosition, applySize, Coordinate } from '../../svg/coordinate';
-import { BaseElementType, BaseAreaElementType } from '../../svg/element';
+import { BaseElement, selectElementById } from '../../svg/element';
 import { CoordinateInput, SizeInput } from './DoubleNumberInput';
 
 export type InputType = 'number' | 'string';
 
 export interface AreaElementInputProps {
-  element: BaseAreaElementType;
-  updateElement: (args: { updatedElement: BaseElementType }) => void;
+  element: BaseElement;
+  updateElement: (args: { updatedElement: BaseElement }) => void;
 }
 
 export default function AreaElementInput({ element, updateElement }: AreaElementInputProps) {
   const setPosition = (value: Coordinate) => {
-    const updatedElement: BaseAreaElementType = { ...element, position: value };
-    applyPosition({ element: updatedElement });
+    const updatedElement: BaseElement = { ...element, position: value };
+    applyPosition({ element: updatedElement, elementSelection: selectElementById({ elementId: updatedElement.id }) });
     updateElement({ updatedElement: updatedElement });
   };
 
   const setSize = (value: Coordinate) => {
-    const updatedElement: BaseAreaElementType = { ...element, size: value };
-    applySize({ element: updatedElement });
+    const updatedElement: BaseElement = { ...element, size: value };
+    applySize({ element: updatedElement, elementSelection: selectElementById({ elementId: updatedElement.id }) });
     updateElement({ updatedElement: updatedElement });
   };
 

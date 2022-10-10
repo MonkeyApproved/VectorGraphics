@@ -1,42 +1,13 @@
-import * as d3 from 'd3';
-import {
-  addElement,
-  BaseElement,
-  BaseElementType,
-  drawElement,
-  ElementDict,
-  generateId,
-  removeElement,
-  setBaseElementAttributes,
-  updateElement,
-} from './element';
-import { defaultFillStyle } from './fill';
-import { defaultStrokeStyle } from './stroke';
-import { Transformation } from './transformation';
+import { appendElementToContainer, BaseElement, drawElement, setBaseElementAttributes } from './element';
+import { addElement, ElementDict, forEachElement, removeElement, updateElement } from './elementDict';
 
-export interface Group extends BaseElement<SVGGElement> {
+export interface Group extends BaseElement {
   type: 'group';
-  transformations: Transformation[];
   elements: ElementDict;
 }
 
-export type GroupSelection = d3.Selection<SVGGElement, unknown, null, undefined>;
-export type SvgSelection = d3.Selection<SVGSVGElement, unknown, null, undefined>;
-export type ContainerSelection = GroupSelection | SvgSelection;
-
-export function createGroup({ elements }: { elements: ElementDict }): Group {
-  return {
-    id: generateId(),
-    type: 'group',
-    transformations: [],
-    stroke: defaultStrokeStyle,
-    fill: defaultFillStyle,
-    elements: elements,
-  };
-}
-
 export interface AddElementToGroupProps {
-  element: BaseElementType;
+  element: BaseElement;
   group: Group;
 }
 
@@ -66,7 +37,7 @@ export function removeElementFromGroup({ elementId, group }: RemoveElementFromGr
 }
 
 export interface UpdateElementInGroupProps {
-  updatedElement: BaseElementType;
+  updatedElement: BaseElement;
   group: Group;
 }
 
@@ -76,24 +47,19 @@ export function updateElementInGroup({ updatedElement, group }: UpdateElementInG
 }
 
 export interface DrawGroupProps {
-  container: ContainerSelection;
   group: Group;
+  containerId: string;
 }
 
-export function drawGroup({ container, group }: DrawGroupProps): Group {
-  // add group to container and update reference
-  const selection = group.ref ? group.ref : container.append('g');
-  const groupWithRef: Group = { ...group, ref: selection };
+export function drawGroup({ group, containerId }: DrawGroupProps): Group {
+  // add group to container
+  const groupSelection = appendElementToContainer({ element: group, containerId });
 
   // set styles & other base attributes
-  setBaseElementAttributes({ element: groupWithRef });
+  setBaseElementAttributes({ element: group, elementSelection: groupSelection });
 
-  // draw all elements and update their references
-  const elementDict: ElementDict = {};
-  Object.values(group.elements).forEach((element: BaseElementType) => {
-    const elementWithRef = drawElement({ element, container: selection });
-    elementDict[element.id] = elementWithRef;
-  });
+  // draw all elements inside the group
+  forEachElement({ dict: group.elements, func: (element) => drawElement({ element, containerId: group.id }) });
 
-  return { ...groupWithRef, elements: elementDict };
+  return group;
 }

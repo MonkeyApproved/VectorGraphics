@@ -1,13 +1,14 @@
 import React from 'react';
 import { Stack } from '@mui/material';
-import { BaseElementType, ElementDict } from '../svg/element';
+import { BaseElement } from '../svg/element';
 import AreaElementInput from './inputs/AreaElementInput';
+import { ElementDict } from '../svg/elementDict';
 
 export interface LeftSideMenuProps {
   elements: ElementDict;
   selectedElementId?: string;
-  updateElement: (args: { updatedElement: BaseElementType }) => void;
-  addElement: (args: { newElement: BaseElementType }) => void;
+  updateElement: (args: { updatedElement: BaseElement }) => void;
+  addElement: (args: { newElement: BaseElement }) => void;
   removeElement: (args: { elementId: string }) => void;
 }
 

@@ -1,4 +1,4 @@
-import { BaseElement, BaseElementType } from './element';
+import { BaseElement, BaseElementFunction } from './element';
 
 export const defaultStrokeStyle: Stroke = {
   color: 'black',
@@ -27,33 +27,33 @@ export function updateStroke({ element, updates }: UpdateStrokeProps): BaseEleme
   return { ...element, stroke: newStroke };
 }
 
-export function applyStroke({ element }: { element: BaseElementType }): BaseElementType {
-  if (!element.ref || !element.stroke) {
+export function applyStroke({ element, elementSelection }: BaseElementFunction): BaseElement {
+  if (!elementSelection || !element.stroke) {
     return element;
   }
   if (element.stroke.color) {
-    element.ref.style('stroke', element.stroke.color);
+    elementSelection.style('stroke', element.stroke.color);
   }
   if (element.stroke.opacity) {
-    element.ref.style('stroke-opacity', element.stroke.opacity);
+    elementSelection.style('stroke-opacity', element.stroke.opacity);
   }
   if (element.stroke.width) {
-    element.ref.style('stroke-width', element.stroke.width);
+    elementSelection.style('stroke-width', element.stroke.width);
   }
   if (element.stroke.lineJoin) {
-    element.ref.style('stroke-linejoin', element.stroke.lineJoin);
+    elementSelection.style('stroke-linejoin', element.stroke.lineJoin);
   }
   if (element.stroke.lineJoin === 'miter' && element.stroke.miterLimit) {
-    element.ref.style('stroke-miterlimit', element.stroke.miterLimit);
+    elementSelection.style('stroke-miterlimit', element.stroke.miterLimit);
   }
   if (element.stroke.lineCap) {
-    element.ref.style('stroke-linecap', element.stroke.lineCap);
+    elementSelection.style('stroke-linecap', element.stroke.lineCap);
   }
   if (element.stroke.dashArray) {
-    element.ref.style('stroke-dasharray', element.stroke.dashArray.join(' '));
+    elementSelection.style('stroke-dasharray', element.stroke.dashArray.join(' '));
   }
   if (element.stroke.dashArray && element.stroke.dashOffset) {
-    element.ref.style('stroke-dashoffset', element.stroke.dashOffset);
+    elementSelection.style('stroke-dashoffset', element.stroke.dashOffset);
   }
   return element;
 }

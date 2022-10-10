@@ -1,5 +1,4 @@
-import React from 'react';
-import { ElementDict } from '../svg/element';
+import { ElementDict } from '../svg/elementDict';
 
 export interface HeaderMenuProps {
   elements: ElementDict;

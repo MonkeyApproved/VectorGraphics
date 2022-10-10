@@ -1,4 +1,4 @@
-import { BaseElementType } from './element';
+import { BaseElement, BaseElementFunction } from './element';
 
 export const defaultFillStyle: FillStyle = {
   color: 'black',
@@ -11,18 +11,18 @@ export interface FillStyle {
   rule?: 'nonzero' | 'evenodd';
 }
 
-export function applyFill({ element }: { element: BaseElementType }): BaseElementType {
-  if (!element.ref || !element.fill) {
+export function applyFill({ element, elementSelection }: BaseElementFunction): BaseElement {
+  if (!elementSelection || !element.fill) {
     return element;
   }
   if (element.fill.color) {
-    element.ref.style('fill', element.fill.color);
+    elementSelection.style('fill', element.fill.color);
   }
   if (element.fill.opacity) {
-    element.ref.style('fill-opacity', element.fill.opacity);
+    elementSelection.style('fill-opacity', element.fill.opacity);
   }
   if (element.fill.rule) {
-    element.ref.style('fill-rule', element.fill.rule);
+    elementSelection.style('fill-rule', element.fill.rule);
   }
   return element;
 }

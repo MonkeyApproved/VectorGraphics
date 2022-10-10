@@ -1,10 +1,10 @@
 import styles from '../../styles/SvgCanvas.module.css';
 
 export interface SvgCanvasProps {
-  setSvg: (svgRef: SVGSVGElement) => void;
+  svgId: string;
   viewBox: string;
 }
 
-export default function SvgCanvas({ setSvg, viewBox }: SvgCanvasProps) {
-  return <svg className={styles.canvas} ref={(ref: SVGSVGElement) => setSvg(ref)} viewBox={viewBox} />;
+export default function SvgCanvas({ svgId, viewBox }: SvgCanvasProps) {
+  return <svg className={styles.canvas} id={svgId} viewBox={viewBox} />;
 }
