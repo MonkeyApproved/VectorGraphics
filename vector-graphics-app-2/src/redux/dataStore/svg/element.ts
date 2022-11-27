@@ -5,6 +5,7 @@ import { drawGroup, Group } from './group';
 import { applyStroke, Stroke } from './stroke';
 import { Transformation } from './transformation';
 
+export const ELEMENT_ID_PREFIX = 'element_';
 export function generateId(): string {
   return Math.random().toString(16).slice(2);
 }
@@ -20,6 +21,7 @@ export function getId(): string {
 
 export interface BaseElement {
   id: string;
+  containerId: string;
   type: ElementTypes;
   position: Coordinate;
   size: Size;
@@ -50,7 +52,7 @@ export function drawElement({ element, containerId }: ElementAndContainerProps):
 }
 
 export function selectElementById({ elementId }: { elementId: string }): ElementSelection {
-  return d3.select(`#${elementId}`);
+  return d3.select(`#${ELEMENT_ID_PREFIX}${elementId}`);
 }
 
 export function appendElementToContainer({ element, containerId }: ElementAndContainerProps): ElementSelection {
@@ -71,7 +73,7 @@ export function setBaseElementAttributes({ element, elementSelection }: BaseElem
 }
 
 export function applyId({ element, elementSelection }: BaseElementFunction): BaseElement {
-  elementSelection.attr('id', element.id);
+  elementSelection.attr('id', `${ELEMENT_ID_PREFIX}${element.id}`);
   return element;
 }
 

@@ -1,14 +1,9 @@
-import { BaseElement, getId } from '../svg/element';
-import { ElementDict } from '../svg/elementDict';
-import { defaultFillStyle } from '../svg/fill';
-import { defaultStrokeStyle } from '../svg/stroke';
+import { BaseElement } from '../../redux/dataStore/svg/element';
+import { defaultFillStyle } from '../../redux/dataStore/svg/fill';
+import { defaultStrokeStyle } from '../../redux/dataStore/svg/stroke';
 
-export const rectId = getId();
-export const circleId = getId();
-export const lineId = getId();
-
-export const sampleRect: BaseElement = {
-  id: rectId,
+export const sampleRect: Omit<BaseElement, 'id'> = {
+  containerId: 'svgCanvas',
   type: 'rect',
   stroke: defaultStrokeStyle,
   fill: defaultFillStyle,
@@ -23,8 +18,8 @@ export const sampleRect: BaseElement = {
   enableDrag: true,
 };
 
-export const sampleCircle: BaseElement = {
-  id: circleId,
+export const sampleCircle: Omit<BaseElement, 'id'> = {
+  containerId: 'svgCanvas',
   type: 'ellipse',
   stroke: defaultStrokeStyle,
   fill: {
@@ -35,18 +30,11 @@ export const sampleCircle: BaseElement = {
   enableDrag: true,
 };
 
-export const sampleLine: BaseElement = {
-  id: lineId,
+export const sampleLine: Omit<BaseElement, 'id'> = {
+  containerId: 'svgCanvas',
   type: 'line',
   stroke: defaultStrokeStyle,
   position: { x: 0, y: 0 },
   size: { x: 50, y: 100 },
   enableDrag: true,
 };
-
-const elementDict: ElementDict = {};
-elementDict[circleId] = sampleCircle;
-elementDict[rectId] = sampleRect;
-elementDict[lineId] = sampleLine;
-
-export const sampleElements = elementDict;

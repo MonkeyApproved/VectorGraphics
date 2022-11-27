@@ -6,13 +6,13 @@ export interface ElementDict {
 
 export interface AddElementProps {
   dict: ElementDict;
-  newElement: BaseElement;
+  newElement: Omit<BaseElement, 'id'>;
 }
 
-export function addElement({ dict, newElement }: AddElementProps): ElementDict {
-  newElement.id = getId();
-  dict[newElement.id] = newElement;
-  return dict;
+export function addElementToDict({ dict, newElement }: AddElementProps): BaseElement {
+  const element: BaseElement = { ...newElement, id: getId() };
+  dict[element.id] = element;
+  return element;
 }
 
 export interface UpdateElementProps {
@@ -20,7 +20,7 @@ export interface UpdateElementProps {
   updatedElement: BaseElement;
 }
 
-export function updateElement({ dict, updatedElement }: UpdateElementProps): ElementDict {
+export function updateElementInDict({ dict, updatedElement }: UpdateElementProps): ElementDict {
   dict[updatedElement.id] = updatedElement;
   return dict;
 }
@@ -30,7 +30,7 @@ export interface RemoveElementProps {
   elementId: string;
 }
 
-export function removeElement({ dict, elementId }: RemoveElementProps): ElementDict {
+export function removeElementFromDict({ dict, elementId }: RemoveElementProps): ElementDict {
   delete dict[elementId];
   return dict;
 }
@@ -40,7 +40,7 @@ export interface GetElementProps {
   elementId: string;
 }
 
-export function getElement({ dict, elementId }: GetElementProps): BaseElement {
+export function getElementFromDict({ dict, elementId }: GetElementProps): BaseElement {
   return dict[elementId];
 }
 

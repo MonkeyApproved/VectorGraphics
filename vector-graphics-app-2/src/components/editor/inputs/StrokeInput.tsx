@@ -1,6 +1,6 @@
 import React from 'react';
-import { BaseElement } from '../../svg/element';
-import { Stroke, updateStroke } from '../../svg/stroke';
+import { BaseElement } from '../../../redux/dataStore/svg/element';
+import { Stroke, updateStroke } from '../../../redux/dataStore/svg/stroke';
 import Input from './Input';
 
 export interface StrokeInputProps {
