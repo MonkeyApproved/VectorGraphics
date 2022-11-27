@@ -3,6 +3,7 @@ import { applyPosition, applySize, Coordinate } from './svg/coordinate';
 
 import { BaseElement, drawElement, selectElementById } from './svg/element';
 import { addElementToDict, ElementDict, forEachElement, removeElementFromDict } from './svg/elementDict';
+import { applyStroke, Stroke, updateStroke } from './svg/stroke';
 
 export interface SvgState {
   elementDict: ElementDict;
@@ -55,9 +56,10 @@ const dataSlice = createSlice({
       { payload: { elementId, position } }: PayloadAction<{ elementId: string; position: Coordinate }>,
     ) => {
       if (state.svg.elementDict[elementId]) {
+        // update state
         state.svg.elementDict[elementId].position = position;
 
-        // update element position in canvas
+        // update element position on canvas
         const elementSelection = selectElementById({ elementId });
         applyPosition({ element: state.svg.elementDict[elementId], elementSelection });
       }
@@ -67,11 +69,25 @@ const dataSlice = createSlice({
       { payload: { elementId, size } }: PayloadAction<{ elementId: string; size: Coordinate }>,
     ) => {
       if (state.svg.elementDict[elementId]) {
+        // update state
         state.svg.elementDict[elementId].size = size;
 
-        // update element size in canvas
+        // update element size on canvas
         const elementSelection = selectElementById({ elementId });
         applySize({ element: state.svg.elementDict[elementId], elementSelection });
+      }
+    },
+    updateElementStroke: (
+      state,
+      { payload: { elementId, updates } }: PayloadAction<{ elementId: string; updates: Partial<Stroke> }>,
+    ) => {
+      if (state.svg.elementDict[elementId]) {
+        // update state
+        state.svg.elementDict[elementId] = updateStroke({ element: state.svg.elementDict[elementId], updates });
+
+        // update element stroke on canvas
+        const elementSelection = selectElementById({ elementId });
+        applyStroke({ element: state.svg.elementDict[elementId], elementSelection });
       }
     },
     deleteElement: (state, { payload: { elementId } }: PayloadAction<{ elementId: string }>) => {
@@ -86,5 +102,12 @@ const dataSlice = createSlice({
 });
 
 export default dataSlice;
-export const { setCanvasId, addElement, updateElementPosition, updateElementSize, deleteElement, selectSingleElement } =
-  dataSlice.actions;
+export const {
+  setCanvasId,
+  addElement,
+  updateElementPosition,
+  updateElementSize,
+  updateElementStroke,
+  deleteElement,
+  selectSingleElement,
+} = dataSlice.actions;
