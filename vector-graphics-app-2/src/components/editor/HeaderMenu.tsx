@@ -1,5 +1,4 @@
-import React from 'react';
-import { ElementDict } from '../svg/element';
+import { ElementDict } from '../../redux/dataStore/svg/elementDict';
 
 export interface HeaderMenuProps {
   elements: ElementDict;
