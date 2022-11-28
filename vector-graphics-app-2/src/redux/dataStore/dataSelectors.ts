@@ -1,4 +1,5 @@
 import type { RootState } from '../store';
+import { MouseStatus } from './handlers/mouseHandlers';
 import { BaseElement } from './svg/element';
 import { ElementDict } from './svg/elementDict';
 
@@ -18,3 +19,6 @@ export const selectSelectedElement = (state: RootState): BaseElement | undefined
   if (elementId) return state.data.svg.elementDict[elementId];
   return undefined;
 };
+
+// Mouse Handlers
+export const selectMouseEventStatus = (state: RootState): MouseStatus => state.data.mouseEvent.status;

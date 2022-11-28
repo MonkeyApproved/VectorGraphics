@@ -22,7 +22,7 @@ export default function SvgEditor() {
           <Button variant="outlined" onClick={() => dispatch(addElement({ element: sampleLine }))}>
             Add Line
           </Button>
-          <Button variant="outlined" onClick={() => dispatch(selectSingleElement({ elementId: '1' }))}>
+          <Button variant="outlined" onClick={() => dispatch(selectSingleElement({ elementId: 'rect_1' }))}>
             Set ID to 1
           </Button>
         </Grid>

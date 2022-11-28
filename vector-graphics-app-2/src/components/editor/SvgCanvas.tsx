@@ -1,7 +1,9 @@
-import { useAppDispatch } from '../../redux/hooks';
-import { setCanvasId } from '../../redux/dataStore/dataSlice';
+import { BaseSyntheticEvent, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { mouseDown, mouseDrag, mouseUp, setCanvasId } from '../../redux/dataStore/dataSlice';
 import styles from '../../styles/SvgCanvas.module.css';
-import { ELEMENT_ID_PREFIX } from '../../redux/dataStore/svg/element';
+import { selectMouseEventStatus } from '../../redux/dataStore/dataSelectors';
+import { getMousePosition } from '../../redux/dataStore/svg/coordinate';
 
 export interface SvgCanvasProps {
   svgId: string;
@@ -9,14 +11,45 @@ export interface SvgCanvasProps {
 }
 
 export default function SvgCanvas({ svgId, viewBox }: SvgCanvasProps) {
+  const mouseState = useAppSelector(selectMouseEventStatus);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // set the canvas id after this component is mounted
+    dispatch(setCanvasId({ canvasId: svgId }));
+  }, []);
+
+  const handleMouseDown = (event: BaseSyntheticEvent) => {
+    const targetId = event.target.id;
+    const canvasPosition = getMousePosition({ event });
+    if (targetId && canvasPosition) {
+      dispatch(mouseDown({ targetId, canvasPosition }));
+    }
+  };
+
+  const handleMouseUp = (event: BaseSyntheticEvent) => {
+    if (mouseState !== 'idle') {
+      const canvasPosition = getMousePosition({ event });
+      dispatch(mouseUp({ canvasPosition }));
+    }
+  };
+
+  const handleMouseMove = (event: BaseSyntheticEvent) => {
+    if (mouseState !== 'idle') {
+      const canvasPosition = getMousePosition({ event });
+      dispatch(mouseDrag({ canvasPosition }));
+    }
+  };
 
   return (
     <svg
       className={styles.canvas}
-      id={`${ELEMENT_ID_PREFIX}${svgId}`}
+      id={svgId}
       viewBox={viewBox}
-      ref={() => dispatch(setCanvasId({ canvasId: svgId }))}
+      onMouseDown={(event) => handleMouseDown(event as BaseSyntheticEvent)}
+      onMouseMove={(event) => handleMouseMove(event as BaseSyntheticEvent)}
+      onMouseUp={(event) => handleMouseUp(event as BaseSyntheticEvent)}
+      onMouseLeave={(event) => handleMouseUp(event as BaseSyntheticEvent)}
     />
   );
 }

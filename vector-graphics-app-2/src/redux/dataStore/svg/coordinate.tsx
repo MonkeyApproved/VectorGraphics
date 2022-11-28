@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+import { BaseSyntheticEvent } from 'react';
 import { BaseElement, BaseElementFunction } from './element';
 
 export interface Coordinate {
@@ -70,4 +72,24 @@ export function applySize({ element, elementSelection }: BaseElementFunction): B
     elementSelection.attr('x1', element.position.x).attr('y1', element.position.y);
   }
   return element;
+}
+
+export function getMousePosition({ event }: { event: BaseSyntheticEvent }): Coordinate {
+  const position = d3.pointer(event);
+  return { x: position[0], y: position[1] };
+}
+
+export interface GetPositionAfterDragProps {
+  initialElementPosition: Coordinate;
+  initialMousePosition: Coordinate;
+  currentMousePosition: Coordinate;
+}
+
+export function getPositionAfterDrag({
+  initialElementPosition,
+  initialMousePosition,
+  currentMousePosition,
+}: GetPositionAfterDragProps): Coordinate {
+  const delta = subtractCoordinates({ leftArg: currentMousePosition, rightArg: initialMousePosition });
+  return addCoordinates({ leftArg: initialElementPosition, rightArg: delta });
 }
