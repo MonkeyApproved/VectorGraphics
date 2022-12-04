@@ -1,9 +1,10 @@
+import { Equation } from './equation';
 import { Arg, computeMathFunctionResult } from './mathFunctions';
 import { TokenType } from './tokenEnums';
 import { RpnToken } from './tokenTypes';
 import { isValue } from './tokenUtils';
 
-export default function computeResult({ rpn }: { rpn: RpnToken[] }): number | number[] | undefined {
+export default function computeResult({ equation }: { equation: Equation }): Equation {
   /** Takes a reversed polish notation (RPN) as input and calculates the resulting value.
    *
    *  In RPN the equation '1+2/3' is stored as RPN: [1,3,2,'div','add']. Additionally we have a stack: []
@@ -26,37 +27,49 @@ export default function computeResult({ rpn }: { rpn: RpnToken[] }): number | nu
    *  If there are multiple items left, the equation is not mathematically correct!
    **/
 
+  if (equation.errorMessage) return equation;
+  if (!equation.rpn) return equation;
+
   const stack: RpnToken[] = [];
-  rpn.reverse().forEach((token) => {
+  while (equation.rpn.length > 0) {
+    const token = equation.rpn.pop() as RpnToken;
     if (isValue(token)) {
       stack.push(token);
     } else if (token.type === TokenType.Operator || token.type === TokenType.Function) {
       if (token.nArgs > token.maxArgs || token.nArgs < token.minArgs) {
         // invalid number of arguments
-        return null;
+        const error_details = `Got ${token.nArgs}, expected ${token.minArgs}`;
+        equation.errorMessage = `Invalid number of arguments for "${token.name}". ${error_details}.`;
+        return equation;
       }
       if (token.nArgs > stack.length) {
         // error in calculation -> insufficient number of tokens on stack
-        return null;
+        equation.errorMessage = `Unknown error occurred at "${token.name}" calculating result.`;
+        return equation;
       }
       const args: Arg[] = [];
       while (args.length < token.nArgs) {
         const arg = stack.pop();
         if (!arg || !arg.value) {
-          return null;
+          equation.errorMessage = `Unknown error occurred at "${token.name}" calculating result.`;
+          return equation;
         }
         args.unshift(arg.value);
       }
       const result = computeMathFunctionResult({ funcName: token.name, args });
       if (!result || typeof result === 'string') {
-        return null;
+        equation.errorMessage = `Invalid equation.`;
+        return equation;
       }
       token.value = result;
       stack.push(token);
     }
-  });
-  if (stack.length === 1) {
-    return stack[0].value;
   }
-  return undefined;
+
+  if (stack.length === 1) {
+    equation.result = stack[0].value;
+  } else {
+    equation.errorMessage = 'Invalid equation';
+  }
+  return equation;
 }

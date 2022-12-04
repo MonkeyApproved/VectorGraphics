@@ -1,14 +1,18 @@
+import { Equation } from './equation';
 import { CompositionType, TokenType } from './tokenEnums';
 import { CompositionToken, OperatorToken, RpnToken, SyntaxToken, Token } from './tokenTypes';
 import { isValue } from './tokenUtils';
 
-export default function getRPN({ tokens }: { tokens: Token[] }): RpnToken[] {
+export default function getRPN({ equation }: { equation: Equation }): Equation {
   // calculate reverse polish notation based on Shunting-yard algorithm
+  if (equation.errorMessage) return equation;
+  if (!equation.tokens) return equation;
+
   try {
     const outputQueue: Token[] = [];
     const syntaxStack: SyntaxToken[] = [];
 
-    tokens.forEach((token) => {
+    equation.tokens.forEach((token) => {
       if (isValue(token)) {
         outputQueue.push(token);
       } else if (token.type === TokenType.Function) {
@@ -24,10 +28,11 @@ export default function getRPN({ tokens }: { tokens: Token[] }): RpnToken[] {
       }
     });
 
-    return filterTokens([...syntaxStack, ...outputQueue.reverse()]);
+    equation.rpn = filterTokens([...syntaxStack, ...outputQueue.reverse()]);
   } catch (error) {
-    return [];
+    equation.errorMessage = 'Unknown error calculating RPN';
   }
+  return equation;
 }
 
 function queueOperator(token: OperatorToken, syntaxStack: SyntaxToken[], outputQueue: Token[]): void {

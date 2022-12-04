@@ -1,3 +1,4 @@
+import { Equation } from './equation';
 import {
   getNumberToken,
   getOperatorToken,
@@ -13,22 +14,22 @@ import { CompositionType, TokenError, TokenType, TokenWarning } from './tokenEnu
 import { Token, StartToken, EndToken, CompositionToken, ValueToken, FunctionToken, OperatorToken } from './tokenTypes';
 import { computesToValue, isValue, valueNext } from './tokenUtils';
 
-export default function getTokens({ equation }: { equation: string }): Token[] {
-  const tokens: Token[] = parseEquation(equation);
-  return fixTokens(tokens);
+export default function getTokens({ equation }: { equation: Equation }): Equation {
+  parseEquation(equation);
+  return fixTokens({ equation });
 }
 
-function parseEquation(equation: string): Token[] {
+function parseEquation(equation: Equation): Equation {
   // split up the expression into it's basic elements (numbers, operators, variables, parenthesis)
   // all strings that are defined in mathFunctions() are treated as functions, all others are
   // treated as variable names.
 
   const startToken: StartToken = getStartToken();
-  const endToken: EndToken = getEndToken(equation.length);
+  const endToken: EndToken = getEndToken(equation.input.length);
   const tokens: Token[] = [startToken, endToken];
 
   // look for variables and functions
-  let leftOver = equation.replace(/[a-z]+[a-z0-9]*/gi, (match, offset) => {
+  let leftOver = equation.input.replace(/[a-z]+[a-z0-9]*/gi, (match, offset) => {
     tokens.push(getStringToken(match, offset));
     return ' '.repeat(match.length);
   });
@@ -58,7 +59,9 @@ function parseEquation(equation: string): Token[] {
   });
 
   tokens.sort((a, b) => a.position.offset - b.position.offset);
-  return tokens;
+
+  equation.tokens = tokens;
+  return equation;
 }
 
 interface EquationStats {
@@ -69,30 +72,34 @@ interface EquationStats {
   length: number;
 }
 
-function fixTokens(tokens: Token[]): Token[] {
+function fixTokens({ equation }: { equation: Equation }): Equation {
+  if (!equation.tokens) return equation;
+
   const tracker: EquationStats = {
     groundLevelCommas: 0,
     currentLevel: -1,
     hierarchy: [],
     index: 1,
-    length: tokens.length,
+    length: equation.tokens.length,
   };
 
   // fix a range of custom syntax
   for (tracker.index = 1; tracker.index < tracker.length - 1; tracker.index++) {
-    checkForMissingMul(tokens, tracker);
-    checkForSign(tokens, tracker);
-    handleCellRange(tokens, tracker);
-    handleArrays(tokens, tracker);
-    handleParenthesis(tokens, tracker);
-    handleComma(tokens, tracker);
+    checkForMissingMul(equation.tokens, tracker);
+    checkForSign(equation.tokens, tracker);
+    handleCellRange(equation.tokens, tracker);
+    handleArrays(equation.tokens, tracker);
+    handleParenthesis(equation.tokens, tracker);
+    handleComma(equation.tokens, tracker);
   }
 
   // check the validity of the equation
-  tokens.forEach((_, index) => checkValidity(tokens, index));
-  checkParenthesis(tokens, tracker);
+  for (let index = 0; index < equation.tokens.length; index++) {
+    checkValidity(equation.tokens, index);
+  }
+  checkParenthesis(equation.tokens, tracker);
 
-  return tokens;
+  return equation;
 }
 
 function checkForMissingMul(tokens: Token[], tracker: EquationStats): void {
