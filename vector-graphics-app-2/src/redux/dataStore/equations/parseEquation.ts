@@ -24,6 +24,8 @@ function parseEquation(equation: Equation): Equation {
   // all strings that are defined in mathFunctions() are treated as functions, all others are
   // treated as variable names.
 
+  if (!equation.input) return equation;
+
   const startToken: StartToken = getStartToken();
   const endToken: EndToken = getEndToken(equation.input.length);
   const tokens: Token[] = [startToken, endToken];
@@ -287,7 +289,7 @@ function checkValueToken(token: ValueToken, previous: Token, next: Token) {
     previous.error = TokenError.sequence;
     return;
   }
-  if (previous.type === TokenType.Composition && [')', ']'].indexOf(previous.symbol) !== -1) {
+  if (previous.type === TokenType.Composition && [')', ']'].includes(previous.symbol)) {
     token.error = TokenError.sequence;
     previous.error = TokenError.sequence;
     return;
@@ -297,7 +299,7 @@ function checkValueToken(token: ValueToken, previous: Token, next: Token) {
     next.error = TokenError.sequence;
     return;
   }
-  if (next.type === TokenType.Composition && ['[', '('].indexOf(next.symbol) !== -1) {
+  if (next.type === TokenType.Composition && ['[', '('].includes(next.symbol)) {
     token.error = TokenError.sequence;
     next.error = TokenError.sequence;
     return;

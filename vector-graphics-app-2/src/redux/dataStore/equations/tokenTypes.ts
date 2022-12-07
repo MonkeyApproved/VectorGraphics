@@ -54,7 +54,7 @@ export interface CompositionToken extends BaseToken {
 export interface VariableToken extends BaseToken {
   type: TokenType.Variable;
   name: string;
-  value: number | undefined;
+  value: number[] | number | undefined;
   valid: boolean;
 }
 
@@ -63,7 +63,7 @@ export interface CellToken extends BaseToken {
   name: string;
   row: number;
   column: number;
-  value: number | undefined;
+  value: number[] | number | undefined;
 }
 
 export interface CellRangeToken extends BaseToken {

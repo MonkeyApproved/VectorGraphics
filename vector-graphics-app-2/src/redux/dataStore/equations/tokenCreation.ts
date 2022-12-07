@@ -1,4 +1,4 @@
-import { functionNames, getMathFunctionDetails } from './mathFunctions';
+import { getMathFunctionDetails, isValidFunctionName } from './mathFunctions';
 import { associativity, operators, precedence, CompositionString, TokenType } from './tokenEnums';
 
 import {
@@ -71,7 +71,7 @@ export function getVariableToken(name: string, offset: number) {
     type: TokenType.Variable,
     position: { offset, length: name.length },
     name,
-    value: 42,
+    value: undefined,
     valid: false,
     symbol: name,
   };
@@ -106,13 +106,18 @@ export function getCellRangeToken(from: CellToken, to: CellToken) {
 }
 
 export function getStringToken(name: string, offset: number) {
-  const func = functionNames.includes(name);
-  const cell = name.match(/^([A-Z]+)([0-9]+)$/);
-  if (func) {
+  // check if string is a valid function name
+  if (isValidFunctionName({ name })) {
     return getFunctionToken(name, offset);
-  } else if (cell !== null) {
+  }
+
+  // check the variable name is a spreadsheet cell (e.g. A1)
+  const cell = name.match(/^([A-Z]+)([0-9]+)$/);
+  if (cell !== null) {
     return getCellToken(name, Number(cell[1]), Number(cell[2]), offset);
   }
+
+  // if string is neither a function nor a cell, it will be interpreted as a variable
   return getVariableToken(name, offset);
 }
 

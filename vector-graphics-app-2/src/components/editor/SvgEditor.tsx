@@ -4,7 +4,7 @@ import cn from 'classnames';
 import styles from '../../styles/SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
 import { useAppDispatch } from '../../redux/hooks';
-import { addElement, addEquation, selectSingleElement } from '../../redux/dataStore/dataSlice';
+import { addElement, submitEquation } from '../../redux/dataStore/dataSlice';
 import { sampleLine, sampleRect } from './testData';
 import LeftSideMenu from './LeftSideMenu';
 import Input from './inputs/Input';
@@ -28,7 +28,7 @@ export default function SvgEditor() {
           </Button>
           <Input inputType="string" valueType="label" label="equation" value={equation} setValue={setEquation} />
           <Input inputType="string" valueType="label" label="id" value={id} setValue={setId} />
-          <Button variant="outlined" onClick={() => dispatch(addEquation({ id, equation }))}>
+          <Button variant="outlined" onClick={() => dispatch(submitEquation({ id, input: equation }))}>
             Submit
           </Button>
         </Grid>

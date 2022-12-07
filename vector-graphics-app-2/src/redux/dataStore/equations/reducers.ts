@@ -1,18 +1,27 @@
 import { DataSliceReducer } from '../dataSlice';
-import computeResult from './computeResult';
-import { Equation } from './equation';
+import { computeAllResults } from './computeResult';
+import { updateDependencies } from './dependencies';
+import { Equation, getNewEquation } from './equation';
 import getTokens from './parseEquation';
 import getRPN from './reversePolishNotation';
 
-const addEquation: DataSliceReducer<{ id: string; equation: string }> = (state, { payload }) => {
-  // evaluate equation
-  const equation: Equation = { input: payload.equation };
+const submitEquation: DataSliceReducer<{ id: string; input: string }> = (state, { payload }) => {
+  let equation: Equation = state.equations[payload.id];
+  if (equation) {
+    equation.input = payload.input;
+  } else {
+    // equation with this id does not exist yet -> add new equation
+    state.equations[payload.id] = getNewEquation({ id: payload.id, input: payload.input });
+    equation = state.equations[payload.id];
+  }
+
+  // parse equation
   getTokens({ equation });
   getRPN({ equation });
-  computeResult({ equation });
+  updateDependencies({ equation, state });
 
-  // add equation to store
-  state.equations[payload.id] = equation;
+  // compute result of equation and all modified children
+  computeAllResults({ equationId: payload.id, state });
 };
 
-export const equationReducers = { addEquation };
+export const equationReducers = { submitEquation };

@@ -8,30 +8,26 @@ export default function getRPN({ equation }: { equation: Equation }): Equation {
   if (equation.errorMessage) return equation;
   if (!equation.tokens) return equation;
 
-  try {
-    const outputQueue: Token[] = [];
-    const syntaxStack: SyntaxToken[] = [];
+  const outputQueue: Token[] = [];
+  const syntaxStack: SyntaxToken[] = [];
 
-    equation.tokens.forEach((token) => {
-      if (isValue(token)) {
-        outputQueue.push(token);
-      } else if (token.type === TokenType.Function) {
+  equation.tokens.forEach((token) => {
+    if (isValue(token)) {
+      outputQueue.push(token);
+    } else if (token.type === TokenType.Function) {
+      syntaxStack.push(token);
+    } else if (token.type === TokenType.Operator) {
+      queueOperator(token, syntaxStack, outputQueue);
+    } else if (token.type === TokenType.Composition) {
+      if (token.name === CompositionType.LeftParenthesis) {
         syntaxStack.push(token);
-      } else if (token.type === TokenType.Operator) {
-        queueOperator(token, syntaxStack, outputQueue);
-      } else if (token.type === TokenType.Composition) {
-        if (token.name === CompositionType.LeftParenthesis) {
-          syntaxStack.push(token);
-        } else if (token.name === CompositionType.RightParenthesis || token.name === CompositionType.Comma) {
-          queueComposition(token, syntaxStack, outputQueue);
-        }
+      } else if (token.name === CompositionType.RightParenthesis || token.name === CompositionType.Comma) {
+        queueComposition(token, syntaxStack, outputQueue);
       }
-    });
+    }
+  });
 
-    equation.rpn = filterTokens([...syntaxStack, ...outputQueue.reverse()]);
-  } catch (error) {
-    equation.errorMessage = 'Unknown error calculating RPN';
-  }
+  equation.rpn = filterTokens([...syntaxStack, ...outputQueue.reverse()]);
   return equation;
 }
 

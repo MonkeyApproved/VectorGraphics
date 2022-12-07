@@ -55,5 +55,5 @@ export const {
   mouseDown,
   mouseDrag,
   mouseUp,
-  addEquation,
+  submitEquation,
 } = dataSlice.actions;
