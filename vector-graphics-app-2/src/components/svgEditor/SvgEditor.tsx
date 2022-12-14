@@ -4,15 +4,11 @@ import cn from 'classnames';
 import styles from '../../styles/SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
 import { useAppDispatch } from '../../redux/hooks';
-import { addElement, submitEquation } from '../../redux/dataStore/dataSlice';
+import { addElement } from '../../redux/dataStore/dataSlice';
 import { sampleLine, sampleRect } from './testData';
 import LeftSideMenu from './LeftSideMenu';
-import Input from './inputs/Input';
-import { useState } from 'react';
 
 export default function SvgEditor() {
-  const [equation, setEquation] = useState<string>('');
-  const [id, setId] = useState<string>('');
   const svgId = 'svgCanvas';
   const dispatch = useAppDispatch();
 
@@ -25,11 +21,6 @@ export default function SvgEditor() {
           </Button>
           <Button variant="outlined" onClick={() => dispatch(addElement({ element: sampleLine }))}>
             Add Line
-          </Button>
-          <Input inputType="string" valueType="label" label="equation" value={equation} setValue={setEquation} />
-          <Input inputType="string" valueType="label" label="id" value={id} setValue={setId} />
-          <Button variant="outlined" onClick={() => dispatch(submitEquation({ id, input: equation }))}>
-            Submit
           </Button>
         </Grid>
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>

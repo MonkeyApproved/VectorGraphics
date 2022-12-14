@@ -11,6 +11,12 @@ export interface Equation {
   result?: number | number[] | undefined;
 }
 
+export function getRandomId() {
+  return Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, '');
+}
+
 export function getNewEquation({ id, input }: { id: string; input?: string }): Equation {
   return { id, input, dependencies: { children: [], parents: [] } };
 }
