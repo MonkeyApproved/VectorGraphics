@@ -1,4 +1,4 @@
-import { ElementDict } from '../../redux/dataStore/svg/elementDict';
+import { ElementDict } from 'redux/dataStore/svg/elementDict';
 
 export interface HeaderMenuProps {
   elements: ElementDict;

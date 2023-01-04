@@ -1,8 +1,8 @@
-import { BaseElement } from '../../../redux/dataStore/svg/element';
-import { useAppDispatch } from '../../../redux/hooks';
-import { Stroke } from '../../../redux/dataStore/svg/stroke';
+import { BaseElement } from 'redux/dataStore/svg/element';
+import { useAppDispatch } from 'redux/hooks';
+import { Stroke } from 'redux/dataStore/svg/stroke';
 import Input from './Input';
-import { updateElementStroke } from '../../../redux/dataStore/dataSlice';
+import { updateElementStroke } from 'redux/dataStore/dataSlice';
 
 export default function ElementStrokeInput({ element }: { element: BaseElement }) {
   const dispatch = useAppDispatch();

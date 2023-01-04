@@ -23,16 +23,13 @@ export function subtractCoordinates({ leftArg, rightArg }: CoordinateMathProps):
   return { x: leftArg.x - rightArg.x, y: leftArg.y - rightArg.y };
 }
 
-export interface updatePositionProps {
+export interface UpdatePositionProps {
   element: BaseElement;
   x?: number;
   y?: number;
 }
 
-export function updatePosition({ element, x, y }: updatePositionProps): BaseElement {
-  if (!element.position) {
-    return element;
-  }
+export function updatePosition({ element, x, y }: UpdatePositionProps): BaseElement {
   const oldCoordinate: Coordinate = element.position;
   const newCoordinate: Coordinate = { x: x || oldCoordinate.x, y: y || oldCoordinate.y };
   return { ...element, position: newCoordinate };

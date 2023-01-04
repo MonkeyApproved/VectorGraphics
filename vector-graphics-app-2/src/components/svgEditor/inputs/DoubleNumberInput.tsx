@@ -1,4 +1,4 @@
-import { Coordinate } from '../../../redux/dataStore/svg/coordinate';
+import { Coordinate } from 'redux/dataStore/svg/coordinate';
 import Input from './Input';
 
 export type InputType = 'number' | 'string';

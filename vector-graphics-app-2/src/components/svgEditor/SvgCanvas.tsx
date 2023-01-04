@@ -1,9 +1,9 @@
 import { BaseSyntheticEvent, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { mouseDown, mouseDrag, mouseUp, setCanvasId } from '../../redux/dataStore/dataSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { mouseDown, mouseDrag, mouseUp, setCanvasId } from 'redux/dataStore/dataSlice';
 import styles from '../../styles/SvgCanvas.module.css';
-import { selectMouseEventStatus } from '../../redux/dataStore/dataSelectors';
-import { getMousePosition } from '../../redux/dataStore/svg/coordinate';
+import { getMouseEventStatus } from 'redux/dataStore/dataSelectors';
+import { getMousePosition } from 'redux/dataStore/svg/coordinate';
 
 export interface SvgCanvasProps {
   svgId: string;
@@ -11,7 +11,7 @@ export interface SvgCanvasProps {
 }
 
 export default function SvgCanvas({ svgId, viewBox }: SvgCanvasProps) {
-  const mouseState = useAppSelector(selectMouseEventStatus);
+  const mouseState = useAppSelector(getMouseEventStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
