@@ -1,6 +1,6 @@
-import { BaseElement } from '../../redux/dataStore/svg/element';
-import { defaultFillStyle } from '../../redux/dataStore/svg/fill';
-import { defaultStrokeStyle } from '../../redux/dataStore/svg/stroke';
+import { BaseElement } from 'redux/dataStore/svg/element';
+import { defaultFillStyle } from 'redux/dataStore/svg/fill';
+import { defaultStrokeStyle } from 'redux/dataStore/svg/stroke';
 
 export const sampleRect: Omit<BaseElement, 'id'> = {
   containerId: 'svgCanvas',

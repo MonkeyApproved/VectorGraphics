@@ -1,13 +1,13 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { selectElementDict, selectSelectedElementId } from '../../../redux/dataStore/dataSelectors';
-import { ElementDict, mapElements } from '../../../redux/dataStore/svg/elementDict';
-import { selectSingleElement } from '../../../redux/dataStore/dataSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { getElementDict, getSelectedElementId } from 'redux/dataStore/dataSelectors';
+import { ElementDict, mapElements } from 'redux/dataStore/svg/elementDict';
+import { selectSingleElement } from 'redux/dataStore/dataSlice';
 
-export default function SingleElementSelector() {
-  const elementDict: ElementDict = useAppSelector(selectElementDict);
+export default function SelectSingleElementDropdown() {
+  const elementDict: ElementDict = useAppSelector(getElementDict);
   const dispatch = useAppDispatch();
-  const selectedElementId: string | undefined = useAppSelector(selectSelectedElementId);
+  const selectedElementId: string | undefined = useAppSelector(getSelectedElementId);
 
   const handleElementSelectionChange = (event: SelectChangeEvent) => {
     if (event.target.value !== '') {

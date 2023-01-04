@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
-import { useAppSelector } from '../../redux/hooks';
-import { checkIfEquationIdExists } from '../../redux/dataStore/dataSelectors';
+import { useAppSelector } from 'redux/hooks';
+import { checkIfEquationIdExists } from 'redux/dataStore/dataSelectors';
 import styles from './styles.module.css';
 
 export interface EquationIdModalProps {

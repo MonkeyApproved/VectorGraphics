@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
-import { applyPosition, applySize, Coordinate, Size } from './coordinate';
+import { applyPosition, applySize, Position, Size } from './coordinate';
+import { CoordinateInput } from './coordinateInput';
 import { applyFill, FillStyle } from './fill';
 import { drawGroup, Group } from './group';
 import { applyStroke, Stroke } from './stroke';
@@ -22,8 +23,10 @@ export interface BaseElement {
   id: string;
   containerId: string;
   type: ElementTypes;
-  position: Coordinate;
+  position: Position;
+  positionInput?: CoordinateInput;
   size: Size;
+  sizeInput?: CoordinateInput;
   stroke?: Stroke;
   fill?: FillStyle;
   transformations?: Transformation[];

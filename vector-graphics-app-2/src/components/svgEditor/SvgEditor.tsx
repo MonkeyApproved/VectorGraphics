@@ -3,8 +3,8 @@ import cn from 'classnames';
 
 import styles from '../../styles/SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
-import { useAppDispatch } from '../../redux/hooks';
-import { addElement } from '../../redux/dataStore/dataSlice';
+import { useAppDispatch } from 'redux/hooks';
+import { addElement } from 'redux/dataStore/dataSlice';
 import { sampleLine, sampleRect } from './testData';
 import LeftSideMenu from './LeftSideMenu';
 

@@ -1,9 +1,9 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { submitEquation } from '../../redux/dataStore/dataSlice';
-import { selectEquationById } from '../../redux/dataStore/dataSelectors';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { submitEquation } from 'redux/dataStore/dataSlice';
+import { getEquationById } from 'redux/dataStore/dataSelectors';
 
 export interface EquationInputProps {
   equationId: string;
@@ -19,7 +19,7 @@ export default function EquationInput(props: EquationInputProps) {
 
   // equation id state (can be modified by click on text which opens a modal)
   const defaultValue = '';
-  const equation = useAppSelector(selectEquationById(props.equationId));
+  const equation = useAppSelector(getEquationById(props.equationId));
 
   useEffect(() => {
     dispatch(submitEquation({ id: props.equationId, input: defaultValue }));

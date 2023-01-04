@@ -3,8 +3,8 @@ import { InputLabel } from '@mui/material';
 import EquationInput from './EquationInput';
 import EquationIdModal from './EquationIdModal';
 import styles from './styles.module.css';
-import { useAppDispatch } from '../../redux/hooks';
-import { renameEquation } from '../../redux/dataStore/dataSlice';
+import { useAppDispatch } from 'redux/hooks';
+import { renameEquation } from 'redux/dataStore/dataSlice';
 
 export interface VariableInputProps {
   defaultEquationId: string;
