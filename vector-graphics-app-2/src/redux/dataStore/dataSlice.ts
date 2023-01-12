@@ -47,6 +47,7 @@ export default dataSlice;
 export const {
   setCanvasId,
   addElement,
+  addBaseElementPixels,
   updateElementPosition,
   updateElementSize,
   updateElementStroke,

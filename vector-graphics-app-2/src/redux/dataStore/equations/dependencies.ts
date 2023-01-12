@@ -1,10 +1,12 @@
 import { DataState } from '../dataSlice';
+import { NumberProperty } from '../svg/element';
 import { Equation, setEquationError } from './equation';
 import { TokenType } from './tokenEnums';
 
 export interface Dependencies {
   children: string[];
   parents: string[];
+  svgUsage?: NumberProperty[];
 }
 
 export function updateDependencies({ equation, state }: { equation: Equation; state: DataState }): Equation {
@@ -157,5 +159,24 @@ export function markCyclicDependency({ dependencyMap, state }: { dependencyMap: 
     if (equation) {
       setEquationError({ equation, errorMessage: 'cyclic dependency' });
     }
+  }
+}
+
+export function addSvgDependency({
+  equationId,
+  property,
+  state,
+}: {
+  equationId: string;
+  property: NumberProperty;
+  state: DataState;
+}) {
+  const equation = state.equations[equationId];
+  if (!equation) throw new Error(`Equation with id "${equationId}" does not exist`);
+
+  if (equation.dependencies.svgUsage) {
+    equation.dependencies.svgUsage.push(property);
+  } else {
+    equation.dependencies.svgUsage = [property];
   }
 }

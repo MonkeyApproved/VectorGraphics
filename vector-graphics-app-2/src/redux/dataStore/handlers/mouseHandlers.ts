@@ -1,5 +1,6 @@
 import { DataSliceReducer, DataState } from '../dataSlice';
-import { applyPosition, Coordinate, getPositionAfterDrag } from '../svg/coordinate';
+import { getCoordinate } from '../equations/equation';
+import { applyPosition, Coordinate, getPositionAfterDrag, setPosition } from '../svg/coordinate';
 import { selectElementById } from '../svg/element';
 
 /*
@@ -30,17 +31,21 @@ function updateElementPositionDuringDrag({
   if (!state.mouseEvent.initialElementPosition || !state.mouseEvent.initialMousePosition) {
     return;
   }
+  // get element from dict
+  const elementId = state.mouseEvent.targetId;
+  const element = state.svg.elementDict[elementId];
+
   // update state
-  state.svg.elementDict[state.mouseEvent.targetId].position = getPositionAfterDrag({
+  const finalPosition = getPositionAfterDrag({
     initialElementPosition: state.mouseEvent.initialElementPosition,
     initialMousePosition: state.mouseEvent.initialMousePosition,
     currentMousePosition,
   });
+  setPosition({ element, ...finalPosition, state });
 
   // update element position on canvas
-  const elementId = state.mouseEvent.targetId;
   const elementSelection = selectElementById({ elementId });
-  applyPosition({ element: state.svg.elementDict[elementId], elementSelection });
+  applyPosition({ element, elementSelection, state });
 }
 
 const mouseDown: DataSliceReducer<{ targetId: string; canvasPosition: Coordinate }> = (state, { payload }) => {
@@ -57,7 +62,7 @@ const mouseDown: DataSliceReducer<{ targetId: string; canvasPosition: Coordinate
     state.mouseEvent = {
       status: 'mouseDownElement',
       targetId: payload.targetId,
-      initialElementPosition: element.position,
+      initialElementPosition: getCoordinate({ coordinateEquations: element.position, state }),
       initialMousePosition: payload.canvasPosition,
     };
     state.svg.selectedElementId = payload.targetId;
