@@ -56,7 +56,6 @@ export default function Input({ inputType, valueType, label, value, setValue }: 
       onChange={(e) => {
         onChange(e.target.value);
       }}
-      helperText="Incorrect input"
       variant="filled"
     />
   );

@@ -1,9 +1,9 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { submitEquation } from 'redux/dataStore/dataSlice';
-import { getEquationById } from 'redux/dataStore/dataSelectors';
+import { getEquationById } from 'redux/dataStore/equations/selectors';
 
 export interface EquationInputProps {
   equationId: string;
@@ -16,16 +16,15 @@ export default function EquationInput(props: EquationInputProps) {
   // input field state
   const [hover, setHover] = useState<boolean>(false);
   const [focus, setFocus] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   // equation id state (can be modified by click on text which opens a modal)
-  const defaultValue = '';
   const equation = useAppSelector(getEquationById(props.equationId));
 
-  useEffect(() => {
-    dispatch(submitEquation({ id: props.equationId, input: defaultValue }));
-  }, []);
-
-  const dispatch = useAppDispatch();
+  if (!equation) {
+    // equation does not exist yet -> add it to the store with empty string as initial value
+    dispatch(submitEquation({ id: props.equationId, input: '' }));
+  }
 
   const onValueChange = (newValue: string) => {
     if (newValue !== equation?.input) {

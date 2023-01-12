@@ -4,7 +4,7 @@ import cn from 'classnames';
 import styles from '../../styles/SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
 import { useAppDispatch } from 'redux/hooks';
-import { addElement } from 'redux/dataStore/dataSlice';
+import { addBaseElementPixels } from 'redux/dataStore/dataSlice';
 import { sampleLine, sampleRect } from './testData';
 import LeftSideMenu from './LeftSideMenu';
 
@@ -16,10 +16,10 @@ export default function SvgEditor() {
     <div className={styles.container}>
       <Grid container rowSpacing={0} columnSpacing={0}>
         <Grid item xs={12} md={12} className={styles.topRow}>
-          <Button variant="outlined" onClick={() => dispatch(addElement({ element: sampleRect }))}>
+          <Button variant="outlined" onClick={() => dispatch(addBaseElementPixels({ element: sampleRect }))}>
             Add Rect
           </Button>
-          <Button variant="outlined" onClick={() => dispatch(addElement({ element: sampleLine }))}>
+          <Button variant="outlined" onClick={() => dispatch(addBaseElementPixels({ element: sampleLine }))}>
             Add Line
           </Button>
         </Grid>

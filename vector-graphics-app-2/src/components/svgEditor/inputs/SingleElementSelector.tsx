@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { getElementDict, getSelectedElementId } from 'redux/dataStore/dataSelectors';
 import { ElementDict, mapElements } from 'redux/dataStore/svg/elementDict';
 import { selectSingleElement } from 'redux/dataStore/dataSlice';
+import { getElementDict, getSelectedElementId } from 'redux/dataStore/svg/selectors';
 
 export default function SelectSingleElementDropdown() {
   const elementDict: ElementDict = useAppSelector(getElementDict);

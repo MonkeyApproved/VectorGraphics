@@ -1,20 +1,16 @@
-import { getSelectedElement } from 'redux/dataStore/dataSelectors';
-import { BaseElement } from 'redux/dataStore/svg/element';
+import { getSelectedElementId } from 'redux/dataStore/svg/selectors';
 import { useAppSelector } from 'redux/hooks';
-import ElementPositionInput from './ElementPositionInput';
-import ElementSizeInput from './ElementSizeInput';
-import ElementStrokeInput from './ElementStrokeInput';
+import CoordinateInput from './CoordinateInput';
 
 export default function ElementSettings() {
-  const element: BaseElement | undefined = useAppSelector(getSelectedElement);
+  const elementId = useAppSelector(getSelectedElementId);
 
-  if (!element) return <></>;
+  if (!elementId) return <></>;
 
   return (
     <div>
-      <ElementStrokeInput element={element} />
-      <ElementPositionInput element={element} />
-      <ElementSizeInput element={element} />
+      <CoordinateInput elementId={elementId} type="position" />
+      <CoordinateInput elementId={elementId} type="size" />
     </div>
   );
 }

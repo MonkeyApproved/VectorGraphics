@@ -1,5 +1,10 @@
+import { DataState } from '../dataSlice';
+import { Coordinate, CoordinateEquations } from '../svg/coordinate';
+import { NumberProperty } from '../svg/element';
 import { Dependencies } from './dependencies';
 import { RpnToken, Token } from './tokenTypes';
+
+export type Result = number | number[] | undefined;
 
 export interface Equation {
   id: string;
@@ -8,10 +13,9 @@ export interface Equation {
   tokens?: Token[];
   errorMessage?: string;
   rpn?: RpnToken[];
-  result?: number | number[] | undefined;
+  result?: Result;
+  lastValidNumber?: number;
 }
-
-export type EquationResultType = 'number' | 'color';
 
 export function getRandomId() {
   return Math.random()
@@ -23,25 +27,67 @@ export function getNewEquation({ id, input }: { id: string; input?: string }): E
   return { id, input, dependencies: { children: [], parents: [] } };
 }
 
+export function getNewSvgPropertyEquation({
+  property,
+  initialValue,
+}: {
+  property: NumberProperty;
+  initialValue: number;
+}): Equation {
+  return {
+    id: `${property.elementId}_${property.type}${property.dimension ? '_' + property.dimension : ''}`,
+    dependencies: { children: [], parents: [], svgUsage: [property] },
+    input: `${initialValue}`,
+    result: initialValue,
+    lastValidNumber: initialValue,
+  };
+}
+
 export interface EquationDict {
   [id: string]: Equation;
+}
+
+export function addSvgPropertyEquation({
+  property,
+  initialValue,
+  state,
+}: {
+  property: NumberProperty;
+  initialValue: number;
+  state: DataState;
+}): string {
+  const equation = getNewSvgPropertyEquation({ property, initialValue });
+  state.equations[equation.id] = equation;
+  return equation.id;
 }
 
 export function setEquationError({ equation, errorMessage }: { equation: Equation; errorMessage: string }) {
   equation.errorMessage = errorMessage;
   equation.result = undefined;
+  return equation;
 }
 
-export function getEquationResultAsNumber({
-  equationId,
-  equationDict,
-}: {
-  equationId: string;
-  equationDict: EquationDict;
-}): number | undefined {
-  const result = equationDict[equationId].result;
-  if (result === undefined || typeof result === 'number') {
-    return result;
+export function setEquationResult({ equation, result }: { equation: Equation; result: Result }) {
+  equation.result = result;
+  if (typeof result === 'number') {
+    equation.lastValidNumber = result;
   }
-  return undefined;
+}
+
+export function getNumber({ equationId, state }: { equationId: string; state: DataState }): number {
+  const equation = state.equations[equationId];
+  return equation?.lastValidNumber || NaN;
+}
+
+export function getCoordinate({
+  coordinateEquations,
+  state,
+}: {
+  coordinateEquations: CoordinateEquations;
+  state: DataState;
+}): Coordinate {
+  return {
+    x: getNumber({ equationId: coordinateEquations.x, state }),
+    y: getNumber({ equationId: coordinateEquations.y, state }),
+  };
 }

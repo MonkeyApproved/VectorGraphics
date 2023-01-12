@@ -10,7 +10,7 @@ export interface AddElementProps {
 }
 
 export function addElementToDict({ dict, newElement }: AddElementProps): BaseElement {
-  const element: BaseElement = { ...newElement, id: `${newElement.type}_${getId()}` };
+  const element: BaseElement = { ...newElement, id: `${newElement.type}_${getId(newElement.type)}` };
   dict[element.id] = element;
   return element;
 }
