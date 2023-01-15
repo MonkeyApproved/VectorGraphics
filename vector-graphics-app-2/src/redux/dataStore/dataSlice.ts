@@ -2,21 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EquationDict } from './equations/equation';
 import { equationReducers } from './equations/reducers';
 import { CanvasMouseEvent, mouseReducers } from './handlers/mouseHandlers';
-
-import { ElementDict } from './svg/elementDict';
 import { svgReducers } from './svg/reducers';
-
-export interface SvgState {
-  elementDict: ElementDict;
-  canvasId: string | undefined;
-  selectedElementId: string | undefined;
-}
-
-const initialSvgState: SvgState = {
-  elementDict: {},
-  canvasId: undefined,
-  selectedElementId: undefined,
-};
+import { initialSvgState, SvgState } from './svg/svgSlice';
 
 const initialMouseEventState: CanvasMouseEvent = {
   status: 'idle',
@@ -46,6 +33,8 @@ const dataSlice = createSlice({
 export default dataSlice;
 export const {
   setCanvasId,
+  setBottomCanvasId,
+  setActiveTool,
   addElement,
   addBaseElementPixels,
   updateElementPosition,

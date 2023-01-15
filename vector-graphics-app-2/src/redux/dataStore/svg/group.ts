@@ -61,7 +61,7 @@ export interface DrawGroupProps {
 
 export function drawGroup({ group, containerId, state }: DrawGroupProps): Group {
   // add group to container
-  const groupSelection = appendElementToContainer({ element: group, containerId, state });
+  const groupSelection = appendElementToContainer({ elementType: group.type, containerId });
 
   // set styles & other base attributes
   setBaseElementAttributes({ element: group, elementSelection: groupSelection, state });

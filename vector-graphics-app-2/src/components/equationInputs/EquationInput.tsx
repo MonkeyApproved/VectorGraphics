@@ -37,7 +37,7 @@ export default function EquationInput(props: EquationInputProps) {
     if (hover) return equation.input;
     if (focus) return equation.input;
     if (equation.errorMessage) return equation.input;
-    return equation.result;
+    return equation.lastValidNumber;
   };
 
   return (
