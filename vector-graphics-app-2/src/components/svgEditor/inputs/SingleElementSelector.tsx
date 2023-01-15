@@ -2,12 +2,12 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@m
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { ElementDict, mapElements } from 'redux/dataStore/svg/elementDict';
 import { selectSingleElement } from 'redux/dataStore/dataSlice';
-import { getElementDict, getSelectedElementId } from 'redux/dataStore/svg/selectors';
+import { getElementDict, getSelectedElementIds } from 'redux/dataStore/svg/selectors';
 
 export default function SelectSingleElementDropdown() {
   const elementDict: ElementDict = useAppSelector(getElementDict);
   const dispatch = useAppDispatch();
-  const selectedElementId: string | undefined = useAppSelector(getSelectedElementId);
+  const selectedElementIds = useAppSelector(getSelectedElementIds);
 
   const handleElementSelectionChange = (event: SelectChangeEvent) => {
     if (event.target.value !== '') {
@@ -22,7 +22,7 @@ export default function SelectSingleElementDropdown() {
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         label="Element"
-        value={selectedElementId || ''}
+        value={selectedElementIds[0] || ''}
         onChange={handleElementSelectionChange}
         disabled={Object.keys(elementDict).length === 0}
       >
@@ -31,7 +31,7 @@ export default function SelectSingleElementDropdown() {
           func: (element) => {
             return (
               <MenuItem key={`element_select_${element.id}`} value={element.id}>
-                {element.type}
+                {element.id}
               </MenuItem>
             );
           },

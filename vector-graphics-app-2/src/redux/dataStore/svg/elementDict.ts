@@ -1,4 +1,6 @@
-import { BaseElement, getId } from './element';
+import { DataState } from '../dataSlice';
+import { addSvgPropertyEquation } from '../equations/equation';
+import { BaseElement, BaseElementPixels, getId } from './element';
 
 export interface ElementDict {
   [id: string]: BaseElement;
@@ -13,6 +15,52 @@ export function addElementToDict({ dict, newElement }: AddElementProps): BaseEle
   const element: BaseElement = { ...newElement, id: `${newElement.type}_${getId(newElement.type)}` };
   dict[element.id] = element;
   return element;
+}
+
+export function addElementPixelsToDict({
+  state,
+  element,
+}: {
+  state: DataState;
+  element: BaseElementPixels;
+}): BaseElement {
+  const id = getId(element.type);
+  const unit = 'pixel';
+  const baseElement: BaseElement = {
+    id,
+    containerId: element.containerId,
+    type: element.type,
+    position: {
+      x: addSvgPropertyEquation({
+        property: { elementId: id, unit, type: 'position', dimension: 'x' },
+        initialValue: element.position.x,
+        state,
+      }),
+      y: addSvgPropertyEquation({
+        property: { elementId: id, unit, type: 'position', dimension: 'y' },
+        initialValue: element.position.y,
+        state,
+      }),
+    },
+    size: {
+      x: addSvgPropertyEquation({
+        property: { elementId: id, unit, type: 'size', dimension: 'x' },
+        initialValue: element.size.x,
+        state,
+      }),
+      y: addSvgPropertyEquation({
+        property: { elementId: id, unit, type: 'size', dimension: 'y' },
+        initialValue: element.size.y,
+        state,
+      }),
+    },
+    stroke: element.stroke,
+    fill: element.fill,
+    transformations: element.transformations,
+    enableDrag: true,
+  };
+  state.svg.elementDict[id] = baseElement;
+  return baseElement;
 }
 
 export interface UpdateElementProps {

@@ -1,7 +1,8 @@
 import { DataSliceReducer, DataState } from '../dataSlice';
 import { getCoordinate } from '../equations/equation';
-import { applyPosition, Coordinate, getPositionAfterDrag, setPosition } from '../svg/coordinate';
+import { applyElementPosition, Coordinate, getPositionAfterDrag, setPosition } from '../svg/coordinate';
 import { selectElementById } from '../svg/element';
+import { completeSelectionBoxOnMouseUp, updateSelectionBoxDuringDrag } from './selectionBox';
 
 /*
   The mouse handlers are modeled as action of our redux store (check dataSlice.ts).
@@ -45,7 +46,7 @@ function updateElementPositionDuringDrag({
 
   // update element position on canvas
   const elementSelection = selectElementById({ elementId });
-  applyPosition({ element, elementSelection, state });
+  applyElementPosition({ element, elementSelection, state });
 }
 
 const mouseDown: DataSliceReducer<{ targetId: string; canvasPosition: Coordinate }> = (state, { payload }) => {
@@ -65,7 +66,7 @@ const mouseDown: DataSliceReducer<{ targetId: string; canvasPosition: Coordinate
       initialElementPosition: getCoordinate({ coordinateEquations: element.position, state }),
       initialMousePosition: payload.canvasPosition,
     };
-    state.svg.selectedElementId = payload.targetId;
+    state.svg.selectedElementIds = [payload.targetId];
   }
 };
 
@@ -74,8 +75,10 @@ const mouseDrag: DataSliceReducer<{ canvasPosition: Coordinate }> = (state, { pa
   switch (state.mouseEvent.status) {
     case 'mouseDownCanvas':
     case 'mouseDragCanvas':
-      // dragging the mouse over canvas -> TODO: show selection box
+      // dragging the mouse over canvas -> update mouse status
       state.mouseEvent.status = 'mouseDragCanvas';
+      // show selection box
+      updateSelectionBoxDuringDrag({ state, currentMousePosition: payload.canvasPosition });
       break;
     case 'mouseDownElement':
     case 'mouseDragElement': {
@@ -83,7 +86,6 @@ const mouseDrag: DataSliceReducer<{ canvasPosition: Coordinate }> = (state, { pa
       state.mouseEvent.status = 'mouseDragElement';
       // update element position in state and canvas
       updateElementPositionDuringDrag({ state, currentMousePosition: payload.canvasPosition });
-
       break;
     }
   }
@@ -94,14 +96,15 @@ const mouseUp: DataSliceReducer<{ canvasPosition: Coordinate }> = (state, { payl
   switch (state.mouseEvent.status) {
     case 'mouseDownCanvas':
       // click onto the svg canvas outside any elements -> deselect everything
-      state.svg.selectedElementId = undefined;
+      state.svg.selectedElementIds = [];
+      break;
+    case 'mouseDragCanvas':
+      // new element or selection box was drawn
+      completeSelectionBoxOnMouseUp({ state, currentMousePosition: payload.canvasPosition });
       break;
     case 'mouseDownElement':
       // click on a single element -> select element
-      state.svg.selectedElementId = state.mouseEvent.targetId;
-      break;
-    case 'mouseDragCanvas':
-      // selection of potentially multiple elements -> TODO: multi element select
+      state.svg.selectedElementIds = [state.mouseEvent.targetId];
       break;
     case 'mouseDragElement': {
       // update dragged element's position in state and canvas

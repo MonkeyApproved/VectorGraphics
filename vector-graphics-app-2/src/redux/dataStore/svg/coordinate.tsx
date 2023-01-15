@@ -3,7 +3,7 @@ import { BaseSyntheticEvent } from 'react';
 import { DataState } from '../dataSlice';
 import { updateEquationInput } from '../equations/computeResult';
 import { getCoordinate } from '../equations/equation';
-import { BaseElement, BaseElementFunction } from './element';
+import { BaseElement, BaseElementFunction, ElementSelection, ElementTypes } from './element';
 
 export interface Coordinate {
   x: number;
@@ -48,38 +48,66 @@ export function setSize({ element, x, y, state }: SetCoordinateProps) {
   updateEquationInput({ equationId: element.size.y, value: y, state });
 }
 
-export function applyPosition({ element, elementSelection, state }: BaseElementFunction): BaseElement {
+export function applyElementPosition({ element, elementSelection, state }: BaseElementFunction): BaseElement {
   const position = getCoordinate({ coordinateEquations: element.position, state });
-  if (element.type === 'rect') {
+  const size = getCoordinate({ coordinateEquations: element.size, state });
+  applyPosition({ position, size, type: element.type, elementSelection });
+  return element;
+}
+
+export function applyPosition({
+  position,
+  size,
+  type,
+  elementSelection,
+}: {
+  position: Coordinate;
+  size: Coordinate;
+  type: ElementTypes;
+  elementSelection: ElementSelection;
+}) {
+  if (type === 'rect') {
     elementSelection.attr('x', position.x).attr('y', position.y);
   }
-  if (element.type === 'ellipse') {
+  if (type === 'ellipse') {
     elementSelection.attr('cx', position.x).attr('cy', position.y);
   }
-  if (element.type === 'line') {
-    const size = getCoordinate({ coordinateEquations: element.size, state });
+  if (type === 'line') {
     const endpoint = addCoordinates({ leftArg: position, rightArg: size });
     elementSelection.attr('x2', endpoint.x).attr('y2', endpoint.y);
     elementSelection.attr('x1', position.x).attr('y1', position.y);
   }
+}
+
+export function applyElementSize({ element, elementSelection, state }: BaseElementFunction): BaseElement {
+  const position = getCoordinate({ coordinateEquations: element.position, state });
+  const size = getCoordinate({ coordinateEquations: element.size, state });
+  applySize({ position, size, type: element.type, elementSelection });
   return element;
 }
 
-export function applySize({ element, elementSelection, state }: BaseElementFunction): BaseElement {
-  const size = getCoordinate({ coordinateEquations: element.size, state });
-  if (element.type === 'rect') {
+export function applySize({
+  position,
+  size,
+  type,
+  elementSelection,
+}: {
+  position: Coordinate;
+  size: Coordinate;
+  type: ElementTypes;
+  elementSelection: ElementSelection;
+}) {
+  if (type === 'rect') {
     elementSelection.attr('width', size.x).attr('height', size.y);
   }
-  if (element.type === 'ellipse') {
+  if (type === 'ellipse') {
     elementSelection.attr('rx', size.x).attr('ry', size.y);
   }
-  if (element.type === 'line') {
-    const position = getCoordinate({ coordinateEquations: element.position, state });
+  if (type === 'line') {
     const endpoint = addCoordinates({ leftArg: position, rightArg: size });
     elementSelection.attr('x2', endpoint.x).attr('y2', endpoint.y);
-    elementSelection.attr('x1', element.position.x).attr('y1', element.position.y);
+    elementSelection.attr('x1', position.x).attr('y1', position.y);
   }
-  return element;
 }
 
 export function getMousePosition({ event }: { event: BaseSyntheticEvent }): Coordinate {

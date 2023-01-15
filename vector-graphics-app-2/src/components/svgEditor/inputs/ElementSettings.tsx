@@ -1,16 +1,20 @@
-import { getSelectedElementId } from 'redux/dataStore/svg/selectors';
+import { getSelectedElementIds } from 'redux/dataStore/svg/selectors';
 import { useAppSelector } from 'redux/hooks';
 import CoordinateInput from './CoordinateInput';
+import styles from './ElementSettings.module.css';
 
 export default function ElementSettings() {
-  const elementId = useAppSelector(getSelectedElementId);
-
-  if (!elementId) return <></>;
+  const elementIds = useAppSelector(getSelectedElementIds);
 
   return (
-    <div>
-      <CoordinateInput elementId={elementId} type="position" />
-      <CoordinateInput elementId={elementId} type="size" />
-    </div>
+    <>
+      {elementIds.map((id) => (
+        <div key={`element_settings_${id}`} className={styles.elementSettings}>
+          <span>{id}</span>
+          <CoordinateInput elementId={id} type="position" />
+          <CoordinateInput elementId={id} type="size" />
+        </div>
+      ))}
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { BaseElement, BaseElementFunction } from './element';
+import { BaseElement, BaseElementFunction, ElementSelection } from './element';
 
 export const defaultStrokeStyle: Stroke = {
   color: 'black',
@@ -27,33 +27,37 @@ export function updateStroke({ element, updates }: UpdateStrokeProps): BaseEleme
   return { ...element, stroke: newStroke };
 }
 
-export function applyStroke({ element, elementSelection }: BaseElementFunction): BaseElement {
+export function applyElementStroke({ element, elementSelection }: BaseElementFunction): BaseElement {
   if (!elementSelection || !element.stroke) {
     return element;
   }
-  if (element.stroke.color) {
-    elementSelection.style('stroke', element.stroke.color);
-  }
-  if (element.stroke.opacity) {
-    elementSelection.style('stroke-opacity', element.stroke.opacity);
-  }
-  if (element.stroke.width) {
-    elementSelection.style('stroke-width', element.stroke.width);
-  }
-  if (element.stroke.lineJoin) {
-    elementSelection.style('stroke-linejoin', element.stroke.lineJoin);
-  }
-  if (element.stroke.lineJoin === 'miter' && element.stroke.miterLimit) {
-    elementSelection.style('stroke-miterlimit', element.stroke.miterLimit);
-  }
-  if (element.stroke.lineCap) {
-    elementSelection.style('stroke-linecap', element.stroke.lineCap);
-  }
-  if (element.stroke.dashArray) {
-    elementSelection.style('stroke-dasharray', element.stroke.dashArray.join(' '));
-  }
-  if (element.stroke.dashArray && element.stroke.dashOffset) {
-    elementSelection.style('stroke-dashoffset', element.stroke.dashOffset);
-  }
+  applyStroke({ stroke: element.stroke, elementSelection });
   return element;
+}
+
+export function applyStroke({ stroke, elementSelection }: { stroke: Stroke; elementSelection: ElementSelection }) {
+  if (stroke.color) {
+    elementSelection.style('stroke', stroke.color);
+  }
+  if (stroke.opacity) {
+    elementSelection.style('stroke-opacity', stroke.opacity);
+  }
+  if (stroke.width) {
+    elementSelection.style('stroke-width', stroke.width);
+  }
+  if (stroke.lineJoin) {
+    elementSelection.style('stroke-linejoin', stroke.lineJoin);
+  }
+  if (stroke.lineJoin === 'miter' && stroke.miterLimit) {
+    elementSelection.style('stroke-miterlimit', stroke.miterLimit);
+  }
+  if (stroke.lineCap) {
+    elementSelection.style('stroke-linecap', stroke.lineCap);
+  }
+  if (stroke.dashArray) {
+    elementSelection.style('stroke-dasharray', stroke.dashArray.join(' '));
+  }
+  if (stroke.dashArray && stroke.dashOffset) {
+    elementSelection.style('stroke-dashoffset', stroke.dashOffset);
+  }
 }

@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
 import { DataState } from '../dataSlice';
-import { applyPosition, applySize, Coordinate, Position, Size } from './coordinate';
-import { applyFill, FillStyle } from './fill';
+import { applyElementPosition, applyElementSize, Coordinate, Position, Size } from './coordinate';
+import { applyElementArea } from './area';
+import { applyElementFill, FillStyle } from './fill';
 import { drawGroup, Group } from './group';
-import { applyStroke, Stroke } from './stroke';
+import { applyElementStroke, Stroke } from './stroke';
 import { Transformation } from './transformation';
 
 export function generateId(): string {
@@ -43,7 +44,7 @@ export interface BaseElement {
   stroke?: Stroke;
   fill?: FillStyle;
   transformations?: Transformation[];
-  enableDrag: boolean;
+  enableDrag?: boolean;
 }
 
 export interface NumberProperty {
@@ -70,7 +71,7 @@ export function drawElement({ element, containerId, state }: ElementAndContainer
     return drawGroup({ group: element as Group, containerId, state });
   }
 
-  const elementSelection = appendElementToContainer({ element, containerId, state });
+  const elementSelection = appendElementToContainer({ elementType: element.type, containerId });
   setBaseElementAttributes({ element, elementSelection, state });
   return element;
 }
@@ -79,9 +80,15 @@ export function selectElementById({ elementId }: { elementId: string }): Element
   return d3.select(`#${elementId}`);
 }
 
-export function appendElementToContainer({ element, containerId }: ElementAndContainerProps): ElementSelection {
+export function appendElementToContainer({
+  elementType,
+  containerId,
+}: {
+  elementType: ElementTypes;
+  containerId: string;
+}): ElementSelection {
   const containerSelection = selectElementById({ elementId: containerId });
-  return containerSelection.append(element.type);
+  return containerSelection.append(elementType);
 }
 
 export function updateElement({ elementId, state }: { elementId: string; state: DataState }) {
@@ -90,20 +97,23 @@ export function updateElement({ elementId, state }: { elementId: string; state: 
     elementSelection: selectElementById({ elementId }),
     state,
   };
-  applyPosition(props);
-  applySize(props);
+  applyElementPosition(props);
+  applyElementSize(props);
 }
 
 export function setBaseElementAttributes(props: BaseElementFunction): void {
-  applyId(props);
-  applyFill(props);
-  applyStroke(props);
-  applyPosition(props);
-  applySize(props);
+  applyElementId(props);
+  applyElementFill(props);
+  applyElementStroke(props);
+  applyElementArea(props);
 }
 
-export function applyId({ element, elementSelection }: BaseElementFunction): void {
-  elementSelection.attr('id', element.id);
+export function applyElementId({ element, elementSelection }: BaseElementFunction): void {
+  applyId({ id: element.id, elementSelection });
+}
+
+export function applyId({ id, elementSelection }: { id: string; elementSelection: ElementSelection }) {
+  elementSelection.attr('id', id);
 }
 
 export function getNewElement(element: Omit<BaseElement, 'id'>): BaseElement {

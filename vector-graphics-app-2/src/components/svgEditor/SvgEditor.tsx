@@ -1,33 +1,26 @@
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import cn from 'classnames';
 
-import styles from '../../styles/SvgEditor.module.css';
+import styles from './SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
-import { useAppDispatch } from 'redux/hooks';
-import { addBaseElementPixels } from 'redux/dataStore/dataSlice';
-import { sampleLine, sampleRect } from './testData';
 import LeftSideMenu from './LeftSideMenu';
+import HeaderMenu from './HeaderMenu';
 
 export default function SvgEditor() {
-  const svgId = 'svgCanvas';
-  const dispatch = useAppDispatch();
+  const canvasId = 'mainCanvas';
+  const bottomCanvasId = 'bottomCanvas';
 
   return (
     <div className={styles.container}>
       <Grid container rowSpacing={0} columnSpacing={0}>
         <Grid item xs={12} md={12} className={styles.topRow}>
-          <Button variant="outlined" onClick={() => dispatch(addBaseElementPixels({ element: sampleRect }))}>
-            Add Rect
-          </Button>
-          <Button variant="outlined" onClick={() => dispatch(addBaseElementPixels({ element: sampleLine }))}>
-            Add Line
-          </Button>
+          <HeaderMenu />
         </Grid>
         <Grid item xs={6} md={2} className={cn(styles.middleRow, styles.leftMenu)}>
           <LeftSideMenu />
         </Grid>
         <Grid item xs={6} md={10} className={styles.middleRow}>
-          <SvgCanvas svgId={svgId} viewBox="0 0 100 100" />
+          <SvgCanvas canvasId={canvasId} bottomCanvasId={bottomCanvasId} viewBox="0 0 100 100" />
         </Grid>
         <Grid item xs={12} md={12} className={styles.bottomRow}>
           <div>Footer</div>
