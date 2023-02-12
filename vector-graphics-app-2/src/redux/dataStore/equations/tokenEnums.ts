@@ -73,6 +73,7 @@ export enum TokenError {
   sequence = 'invalid sequence',
   openParenthesisMissing = 'no matching open parenthesis',
   closeParenthesisMissing = 'closing parenthesis missing',
+  misplacedParenthesis = 'some parenthesis are misplaced',
   openArrayMissing = 'no matching open array',
   closeArrayMissing = 'array is not closed',
   misplacedColon = 'misplaced colon',

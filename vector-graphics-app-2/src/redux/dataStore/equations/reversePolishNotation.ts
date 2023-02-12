@@ -12,7 +12,7 @@ export default function getRPN({ equation }: { equation: Equation }): Equation {
   const syntaxStack: SyntaxToken[] = [];
 
   equation.tokens.forEach((token) => {
-    if (isValue(token)) {
+    if (isValue({ token })) {
       outputQueue.push(token);
     } else if (token.type === TokenType.Function) {
       syntaxStack.push(token);

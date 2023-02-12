@@ -58,11 +58,17 @@ export interface VariableToken extends BaseToken {
   valid: boolean;
 }
 
+export interface CellDetails {
+  columnString: string;
+  rowString: string;
+  columnIndex: number;
+  rowIndex: number;
+}
+
 export interface CellToken extends BaseToken {
   type: TokenType.Cell;
   name: string;
-  row: number;
-  column: number;
+  details: CellDetails;
   value: number[] | number | undefined;
 }
 
@@ -70,6 +76,7 @@ export interface CellRangeToken extends BaseToken {
   type: TokenType.CellRange;
   from: CellToken;
   to: CellToken;
+  cellList?: string[];
   value: number[] | undefined;
 }
 
