@@ -1,3 +1,4 @@
+import { stringToCellDetails } from 'generalHelpers/stringHelper';
 import { getMathFunctionDetails, isValidFunctionName } from './mathFunctions';
 import { associativity, operators, precedence, CompositionString, TokenType } from './tokenEnums';
 
@@ -13,6 +14,7 @@ import {
   EndToken,
   CellRangeToken,
 } from './tokenTypes';
+import { cellRangeToCellList } from './tokenUtils';
 
 export function getOperatorToken(symbol: string, offset: number) {
   const name = operators[symbol];
@@ -84,8 +86,7 @@ export function getCellToken(name: string, row: number, column: number, offset: 
     position: { offset, length: name.length },
     name,
     value: undefined,
-    row,
-    column,
+    details: stringToCellDetails({ cellName: name }),
     symbol: name,
   };
   return token;
@@ -99,6 +100,7 @@ export function getCellRangeToken(from: CellToken, to: CellToken) {
     position: { offset, length },
     from,
     to,
+    cellList: cellRangeToCellList({ from, to }),
     value: undefined,
     symbol: `${from.symbol}:${to.symbol}`,
   };

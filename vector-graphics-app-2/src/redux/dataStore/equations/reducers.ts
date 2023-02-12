@@ -1,5 +1,5 @@
 import { DataSliceReducer } from '../dataSlice';
-import { computeAllResults, updateEquationInput } from './computeResult';
+import { computeAllResults, updateEquationInput } from './updateEquation';
 
 const submitEquation: DataSliceReducer<{ id: string; input: string }> = (state, { payload }) => {
   updateEquationInput({ equationId: payload.id, value: payload.input, state });

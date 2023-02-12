@@ -15,10 +15,11 @@ export function updateDependencies({ equation, state }: { equation: Equation; st
   // get current parents from token list
   const currentParents: Set<string> = new Set();
   for (const token of equation.tokens) {
-    if (token.type !== TokenType.Variable && token.type !== TokenType.Cell) {
-      continue;
+    if (token.type === TokenType.CellRange && token.cellList) {
+      token.cellList.forEach((cellName) => currentParents.add(cellName));
+    } else if (token.type === TokenType.Variable || token.type === TokenType.Cell) {
+      currentParents.add(token.name);
     }
-    currentParents.add(token.name);
   }
 
   // check for any parents that have been removed
@@ -47,6 +48,16 @@ export function updateParentValues({ equation, state }: { equation: Equation; st
   equation.rpn.forEach((token) => {
     if (token.type === TokenType.Variable || token.type === TokenType.Cell) {
       token.value = state.equations[token.name].result;
+    } else if (token.type === TokenType.CellRange) {
+      if (!token.cellList) {
+        token.value = undefined;
+      } else {
+        token.value = token.cellList.map((cellId) => {
+          const result = state.equations[cellId].result;
+          if (typeof result === 'number') return result;
+          return NaN;
+        });
+      }
     }
   });
 }

@@ -1,3 +1,4 @@
+import { concatCamelCase } from 'generalHelpers/stringHelper';
 import { DataState } from '../dataSlice';
 import { Coordinate, CoordinateEquations } from '../svg/coordinate';
 import { NumberProperty } from '../svg/element';
@@ -17,14 +18,15 @@ export interface Equation {
   lastValidNumber?: number;
 }
 
-export function getRandomId() {
-  return Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, '');
-}
-
 export function getNewEquation({ id, input }: { id: string; input?: string }): Equation {
   return { id, input, dependencies: { children: [], parents: [] } };
+}
+
+export function getSvgPropertyEquationId({ property }: { property: NumberProperty }): string {
+  if (property.dimension) {
+    return concatCamelCase({ stringList: [property.elementId, property.type, property.dimension] });
+  }
+  return concatCamelCase({ stringList: [property.elementId, property.type] });
 }
 
 export function getNewSvgPropertyEquation({
@@ -35,7 +37,7 @@ export function getNewSvgPropertyEquation({
   initialValue: number;
 }): Equation {
   return {
-    id: `${property.elementId}_${property.type}${property.dimension ? '_' + property.dimension : ''}`,
+    id: getSvgPropertyEquationId({ property }),
     dependencies: { children: [], parents: [], svgUsage: [property] },
     input: `${initialValue}`,
     result: initialValue,

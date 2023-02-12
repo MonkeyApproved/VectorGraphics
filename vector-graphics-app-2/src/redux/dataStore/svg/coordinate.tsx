@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { BaseSyntheticEvent } from 'react';
 import { DataState } from '../dataSlice';
-import { updateEquationInput } from '../equations/computeResult';
+import { updateEquationInput } from '../equations/updateEquation';
 import { getCoordinate } from '../equations/equation';
 import { BaseElement, BaseElementFunction, ElementSelection, ElementTypes } from './element';
 

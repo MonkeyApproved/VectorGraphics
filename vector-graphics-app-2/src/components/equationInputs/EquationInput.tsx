@@ -1,6 +1,5 @@
 import { CSSProperties, useState } from 'react';
-import { InputAdornment, TextField } from '@mui/material';
-import CalculateIcon from '@mui/icons-material/Calculate';
+import { TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { submitEquation } from 'redux/dataStore/dataSlice';
 import { getEquationById } from 'redux/dataStore/equations/selectors';
@@ -37,6 +36,7 @@ export default function EquationInput(props: EquationInputProps) {
     if (hover) return equation.input;
     if (focus) return equation.input;
     if (equation.errorMessage) return equation.input;
+    if (equation.result) return equation.result;
     return equation.lastValidNumber;
   };
 
@@ -56,13 +56,6 @@ export default function EquationInput(props: EquationInputProps) {
         onBlur={() => setFocus(false)}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <CalculateIcon />
-            </InputAdornment>
-          ),
-        }}
         id={`equation-input-${props.equationId}`}
       />
     </>

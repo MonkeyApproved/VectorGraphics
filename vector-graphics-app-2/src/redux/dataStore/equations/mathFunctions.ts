@@ -56,6 +56,7 @@ const part: twoArgFunction = ({ x, y }): number | string => {
 };
 
 export const oneArgFunctionDict: { [key: string]: oneArgFunction } = {
+  negative: ({ x }) => oneArgFunctionFactory(x, (x) => -x),
   sin: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sin(x)),
   cos: ({ x }) => oneArgFunctionFactory(x, (x) => Math.cos(x)),
   tan: ({ x }) => oneArgFunctionFactory(x, (x) => Math.tan(x)),
