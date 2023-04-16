@@ -29,13 +29,11 @@ export function addNewElement({ state, element }: { state: DataState; element: O
         value: element.position.x,
         state,
       }),
-      xOffset: element.position.xOffset,
       y: updateSvgPropertyEquation({
         property: { elementId: id, type: 'position', dimension: 'y' },
         value: element.position.y,
         state,
       }),
-      yOffset: element.position.yOffset,
     },
     size: {
       x: updateSvgPropertyEquation({
@@ -43,13 +41,11 @@ export function addNewElement({ state, element }: { state: DataState; element: O
         value: element.size.x,
         state,
       }),
-      xOffset: element.size.xOffset,
       y: updateSvgPropertyEquation({
         property: { elementId: id, type: 'size', dimension: 'y' },
         value: element.size.y,
         state,
       }),
-      yOffset: element.size.yOffset,
     },
     stroke: element.stroke,
     fill: element.fill,

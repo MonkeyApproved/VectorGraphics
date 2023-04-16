@@ -36,6 +36,7 @@ export const {
   setBottomCanvasId,
   setActiveTool,
   addElement,
+  addPath,
   updateElementProperty,
   updateElementStroke,
   deleteElement,

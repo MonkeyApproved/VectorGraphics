@@ -3,6 +3,7 @@ import { SvgProperty, updateSvgProperty } from '../equations/svgEquation';
 import { applyElementStroke } from './applyAttributes';
 import { BaseElement, drawElement, selectElementById } from './element';
 import { addElementToDict, forEachElement, removeElementFromDict } from './elementDict';
+import { addPathFromDefinition, drawPath } from './path';
 import { SvgTool } from './settings';
 import { Stroke, updateStroke } from './stroke';
 
@@ -35,6 +36,15 @@ const addElement: DataSliceReducer<{ element: Omit<BaseElement, 'id'> }> = (stat
   // if we already have a canvas, we can draw the element right away
   if (state.svg.canvasId) {
     drawElement({ element: addedElement, containerId: state.svg.canvasId, state });
+  }
+};
+
+const addPath: DataSliceReducer<{ definition: string }> = (state, { payload }) => {
+  const path = addPathFromDefinition({ definition: payload.definition, state });
+
+  // if we already have a canvas, we can draw the element right away
+  if (state.svg.canvasId) {
+    drawPath({ path, containerId: state.svg.canvasId, state });
   }
 };
 
@@ -74,6 +84,7 @@ export const svgReducers = {
   setBottomCanvasId,
   setActiveTool,
   addElement,
+  addPath,
   updateElementProperty,
   updateElementStroke,
   selectSingleElement,

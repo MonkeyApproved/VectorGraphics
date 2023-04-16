@@ -19,6 +19,7 @@ export const elementCounter: { [key: string]: number } = {
   line: 0,
   rect: 0,
   ellipse: 0,
+  path: 0,
 };
 
 export function getId(type: ElementTypes): string {

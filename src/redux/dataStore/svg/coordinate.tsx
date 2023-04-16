@@ -6,9 +6,9 @@ import { BaseElement } from './element';
 
 export interface Coordinate {
   x: number | string;
-  xOffset: number;
+  xOffset?: number;
   y: number | string;
-  yOffset: number;
+  yOffset?: number;
 }
 
 export type Position = Coordinate;
@@ -31,8 +31,8 @@ export function getCoordinatePixels({
   state: DataState;
 }): CoordinatePixels {
   return {
-    x: getNumberInPixels({ number: coordinate.x, state }) + coordinate.xOffset,
-    y: getNumberInPixels({ number: coordinate.y, state }) + coordinate.yOffset,
+    x: getNumberInPixels({ number: coordinate.x, state }) + (coordinate.xOffset || 0),
+    y: getNumberInPixels({ number: coordinate.y, state }) + (coordinate.yOffset || 0),
   };
 }
 

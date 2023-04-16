@@ -63,7 +63,7 @@ const mouseDown: DataSliceReducer<{ targetId: string; canvasPosition: Coordinate
     state.mouseEvent = {
       status: 'mouseDownElement',
       targetId: payload.targetId,
-      initialElementOffset: { x: element.position.xOffset, y: element.position.yOffset },
+      initialElementOffset: { x: element.position.xOffset || 0, y: element.position.yOffset || 0 },
       initialMousePosition: payload.canvasPosition,
     };
     state.svg.selectedElementIds = [payload.targetId];
