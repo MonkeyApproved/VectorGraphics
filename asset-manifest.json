@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/VectorGraphics/static/css/main.e3707360.css",
-    "main.js": "/VectorGraphics/static/js/main.a7129c2f.js",
+    "main.js": "/VectorGraphics/static/js/main.59e65928.js",
     "index.html": "/VectorGraphics/index.html",
     "main.e3707360.css.map": "/VectorGraphics/static/css/main.e3707360.css.map",
-    "main.a7129c2f.js.map": "/VectorGraphics/static/js/main.a7129c2f.js.map"
+    "main.59e65928.js.map": "/VectorGraphics/static/js/main.59e65928.js.map"
   },
   "entrypoints": [
     "static/css/main.e3707360.css",
-    "static/js/main.a7129c2f.js"
+    "static/js/main.59e65928.js"
   ]
 }
