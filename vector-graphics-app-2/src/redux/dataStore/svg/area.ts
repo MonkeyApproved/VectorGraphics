@@ -1,52 +1,21 @@
-import { getCoordinate } from '../equations/equation';
-import { BaseElement, BaseElementFunction, ElementSelection, ElementTypes } from './element';
-import { Coordinate, addCoordinates } from './coordinate';
+import { BaseElement } from './element';
+import { CoordinatePixels, addCoordinates, getCoordinatePixels } from './coordinate';
 import { DataState } from '../dataSlice';
 import { forEachElement } from './elementDict';
 
 export interface Area {
-  position: Coordinate;
-  size: Coordinate;
+  position: CoordinatePixels;
+  size: CoordinatePixels;
 }
 
 export function getElementArea({ element, state }: { element: BaseElement; state: DataState }): Area {
   return {
-    position: getCoordinate({ coordinateEquations: element.position, state }),
-    size: getCoordinate({ coordinateEquations: element.size, state }),
+    position: getCoordinatePixels({ coordinate: element.position, state }),
+    size: getCoordinatePixels({ coordinate: element.size, state }),
   };
 }
 
-export function applyElementArea({ element, elementSelection, state }: BaseElementFunction): BaseElement {
-  const area = getElementArea({ element, state });
-  applyArea({ area, type: element.type, elementSelection });
-  return element;
-}
-
-export function applyArea({
-  area,
-  type,
-  elementSelection,
-}: {
-  area: Area;
-  type: ElementTypes;
-  elementSelection: ElementSelection;
-}) {
-  if (type === 'rect') {
-    elementSelection.attr('x', area.position.x).attr('y', area.position.y);
-    elementSelection.attr('width', area.size.x).attr('height', area.size.y);
-  }
-  if (type === 'ellipse') {
-    elementSelection.attr('cx', area.position.x).attr('cy', area.position.y);
-    elementSelection.attr('rx', area.size.x).attr('ry', area.size.y);
-  }
-  if (type === 'line') {
-    const endpoint = addCoordinates({ leftArg: area.position, rightArg: area.size });
-    elementSelection.attr('x1', area.position.x).attr('y1', area.position.y);
-    elementSelection.attr('x2', endpoint.x).attr('y2', endpoint.y);
-  }
-}
-
-export function getAreaContainingCoordinates({ coordinateList }: { coordinateList: Coordinate[] }): Area {
+export function getAreaContainingCoordinates({ coordinateList }: { coordinateList: CoordinatePixels[] }): Area {
   if (coordinateList.length === 0) throw new Error('Cannot calculate area for empty list of elements');
   const xPositions = coordinateList.map((coordinate) => coordinate.x);
   const yPositions = coordinateList.map((coordinate) => coordinate.y);
@@ -96,7 +65,7 @@ export function getMinimumAreaContainingAllElements({
   state: DataState;
 }): Area {
   // we take the top-left and bottom-right corner of all the elements and find the rect that contains all those points
-  const coordinateList: Coordinate[] = [];
+  const coordinateList: CoordinatePixels[] = [];
   elementIds.forEach((id) => {
     const area = getElementArea({ element: state.svg.elementDict[id], state });
     const bottomRight = addCoordinates({ leftArg: area.position, rightArg: area.size });

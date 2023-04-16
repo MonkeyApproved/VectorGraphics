@@ -1,21 +1,21 @@
-import EquationInput from 'components/equationInputs/EquationInput';
-import { CoordinateEquations } from 'redux/dataStore/svg/coordinate';
+import { Coordinate } from 'redux/dataStore/svg/coordinate';
 import { BaseElement } from 'redux/dataStore/svg/element';
-import { getElementAttribute } from 'redux/dataStore/svg/selectors';
-import { useAppSelector } from 'redux/hooks';
 import { KeysMatchingType } from 'types';
+import SvgPropertyInput from './SvgPropertyInput';
+import { CSSProperties } from 'react';
 
 export interface CoordinateInputProps {
-  type: KeysMatchingType<BaseElement, CoordinateEquations>;
+  type: KeysMatchingType<BaseElement, Coordinate>;
   elementId: string;
+  className?: string;
+  style?: CSSProperties;
 }
 
-export default function CoordinateInput({ type, elementId }: CoordinateInputProps) {
-  const coordinateEquations = useAppSelector(getElementAttribute<CoordinateEquations>(elementId, type));
+export default function CoordinateInput(props: CoordinateInputProps) {
   return (
     <>
-      <EquationInput equationId={coordinateEquations.x} />
-      <EquationInput equationId={coordinateEquations.y} />
+      <SvgPropertyInput svgProperty={{ elementId: props.elementId, type: props.type, dimension: 'x' }} />
+      <SvgPropertyInput svgProperty={{ elementId: props.elementId, type: props.type, dimension: 'y' }} />
     </>
   );
 }

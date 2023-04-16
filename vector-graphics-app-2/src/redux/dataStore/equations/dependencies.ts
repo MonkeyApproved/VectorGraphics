@@ -1,12 +1,12 @@
 import { DataState } from '../dataSlice';
-import { NumberProperty } from '../svg/element';
 import { Equation, setEquationError } from './equation';
+import { SvgProperty } from './svgEquation';
 import { TokenType } from './tokenEnums';
 
 export interface Dependencies {
   children: string[];
   parents: string[];
-  svgUsage?: NumberProperty[];
+  svgUsage?: SvgProperty[];
 }
 
 export function updateDependencies({ equation, state }: { equation: Equation; state: DataState }): Equation {
@@ -179,13 +179,17 @@ export function addSvgDependency({
   state,
 }: {
   equationId: string;
-  property: NumberProperty;
+  property: SvgProperty;
   state: DataState;
 }) {
   const equation = state.equations[equationId];
   if (!equation) throw new Error(`Equation with id "${equationId}" does not exist`);
 
   if (equation.dependencies.svgUsage) {
+    for (const usage of equation.dependencies.svgUsage) {
+      // if property already in svgUsage, don't do anything
+      if (usage.elementId === property.elementId) return;
+    }
     equation.dependencies.svgUsage.push(property);
   } else {
     equation.dependencies.svgUsage = [property];

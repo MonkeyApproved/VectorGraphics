@@ -1,6 +1,7 @@
 import { DataState } from '../dataSlice';
 import { SELECTION_BOX_ID } from '../handlers/selectionBox';
-import { applyArea, getMinimumAreaContainingAllElements } from './area';
+import { applyArea } from './applyAttributes';
+import { getMinimumAreaContainingAllElements } from './area';
 import { selectElementById } from './element';
 
 export function setSelectedElementList({ selectedElements, state }: { selectedElements: string[]; state: DataState }) {

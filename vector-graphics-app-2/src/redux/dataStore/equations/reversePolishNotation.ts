@@ -6,7 +6,7 @@ import { isValue } from './tokenUtils';
 export default function getRPN({ equation }: { equation: Equation }): Equation {
   // calculate reverse polish notation based on Shunting-yard algorithm
   if (equation.errorMessage) return equation;
-  if (!equation.tokens) return equation;
+  if (!equation.tokens || equation.tokens.length == 0) return equation;
 
   const outputQueue: Token[] = [];
   const syntaxStack: SyntaxToken[] = [];
