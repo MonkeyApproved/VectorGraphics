@@ -1,5 +1,4 @@
-import * as d3 from 'd3';
-import { getCoordinatePixels, Position, Size } from './coordinate';
+import { Coordinate, getCoordinatePixels, getNumberInPixels, Position, Size } from './coordinate';
 import { appendElementToContainer, BaseElement, getId } from './element';
 import { DataState } from '../dataSlice';
 import { applyBaseElementAttributes } from './applyAttributes';
@@ -20,13 +19,13 @@ export interface LineSegment extends BaseSegment {
 export interface QuadraticCurveSegment extends BaseSegment {
   type: 'quadraticCurve';
   smooth: boolean;
-  cp: Position;
+  cp?: Position;
 }
 
 export interface CubicCurveSegment extends BaseSegment {
   type: 'cubicCurve';
   smooth: boolean;
-  cp1: Position;
+  cp1?: Position;
   cp2: Position;
 }
 
@@ -99,7 +98,6 @@ export function parseSegmentDefinition({ cmd, definition }: { cmd: string; defin
       absolute: cmd === 'S',
       smooth: true,
       endPoint: { x: args[2], y: args[3] },
-      cp1: { x: args[0], y: args[1] },
       cp2: { x: args[0], y: args[1] },
     };
   } else if (['Q', 'q'].includes(cmd)) {
@@ -125,7 +123,6 @@ export function parseSegmentDefinition({ cmd, definition }: { cmd: string; defin
       type: 'quadraticCurve',
       absolute: cmd === 'T',
       smooth: true,
-      cp: { x: 0, y: 0 },
       endPoint: { x: args[0], y: args[1] },
     };
   } else if (['A', 'a'].includes(cmd)) {
@@ -155,7 +152,7 @@ export function parsePathDefinition({ path }: { path: Path }): void {
     return '';
   });
 
-  // grab all segment definitions
+  // parse all segment definitions
   const segments: PathSegment[] = [];
   leftOver = leftOver.replace(/(?<cmd>[MLHVCSQTAmlhvcsqta])(?<definition>[\d\se\-.,]+)?/g, (_, cmd, definition) => {
     segments.push(parseSegmentDefinition({ cmd, definition }));
@@ -170,29 +167,58 @@ export function parsePathDefinition({ path }: { path: Path }): void {
   path.segments = segments;
 }
 
-export function updatePathDefinition({ path, state }: { path: Path; state: DataState }): void {
-  const definition = d3.path();
-  path.segments.forEach((seg: PathSegment) => {
-    const endPoint = getCoordinatePixels({ coordinate: seg.endPoint, state });
-    if (seg.type === 'line') {
-      definition.lineTo(endPoint.x, endPoint.y);
-    } else if (seg.type === 'move') {
-      definition.moveTo(endPoint.x, endPoint.y);
-    } else if (seg.type === 'quadraticCurve') {
-      const cp = getCoordinatePixels({ coordinate: seg.cp, state });
-      definition.quadraticCurveTo(cp.x, cp.y, endPoint.x, endPoint.y);
-    } else if (seg.type === 'cubicCurve') {
-      const cp1 = getCoordinatePixels({ coordinate: seg.cp1, state });
-      const cp2 = getCoordinatePixels({ coordinate: seg.cp2, state });
-      definition.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, endPoint.x, endPoint.y);
+function getSegmentCmd({ segment }: { segment: PathSegment }): string {
+  let lowerCase = segment.type.charAt(0);
+  if (segment.type === 'cubicCurve' && segment.smooth) lowerCase = 's';
+  if (segment.type === 'quadraticCurve' && segment.smooth) lowerCase = 't';
+  return segment.absolute ? lowerCase.toUpperCase() : lowerCase;
+}
+
+function getCoordinateString({ coordinate, state }: { coordinate?: Coordinate; state: DataState }): string {
+  if (!coordinate) return '';
+  const coordinatePixels = getCoordinatePixels({ coordinate, state });
+  return ` ${coordinatePixels.x} ${coordinatePixels.y}`;
+}
+
+function getControlPointString({ segment, state }: { segment: PathSegment; state: DataState }): string {
+  switch (segment.type) {
+    case 'line':
+    case 'move':
+      return '';
+    case 'quadraticCurve':
+      return getCoordinateString({ coordinate: segment.cp, state });
+    case 'cubicCurve': {
+      const cp1 = getCoordinateString({ coordinate: segment.cp1, state });
+      const cp2 = getCoordinateString({ coordinate: segment.cp2, state });
+      return `${cp1}${cp2}`;
     }
+    case 'arc': {
+      const radius = getCoordinateString({ coordinate: segment.radius, state });
+      const rot = getNumberInPixels({ number: segment.rotation, state });
+      const flags = `${Number(segment.largeFlag)} ${Number(segment.sweepFlag)}`;
+      return `${radius} ${rot} ${flags}`;
+    }
+  }
+}
+
+function getSegmentString({ segment, state }: { segment: PathSegment; state: DataState }): string {
+  const cmd = getSegmentCmd({ segment });
+  const endPoint = getCoordinateString({ coordinate: segment.endPoint, state });
+  const additional = getControlPointString({ segment, state });
+  return cmd + additional + endPoint;
+}
+
+export function updatePathDefinition({ path, state }: { path: Path; state: DataState }): void {
+  let definition = '';
+  path.segments.forEach((segment: PathSegment) => {
+    definition += getSegmentString({ segment, state });
   });
 
   if (path.close) {
-    definition.closePath();
+    definition += 'Z';
   }
 
-  path.definition = definition.toString();
+  path.definition = definition;
 }
 
 export interface DrawPathProps {
