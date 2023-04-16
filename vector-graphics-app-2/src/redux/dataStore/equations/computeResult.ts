@@ -32,7 +32,7 @@ export function computeEquationResult({ equationId, state }: { equationId: strin
 
   // check if equation has a rpn, indicating, that there was no error until this point.
   if (!equation) throw new Error(`Unknown equation "${equationId}"`);
-  if (!equation.rpn) return equation;
+  if (!equation.rpn || equation.rpn.length === 0) return equation;
   equation.errorMessage = undefined;
 
   updateParentValues({ equation, state });

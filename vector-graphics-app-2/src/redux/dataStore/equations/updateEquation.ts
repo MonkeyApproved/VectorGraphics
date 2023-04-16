@@ -1,16 +1,16 @@
 import { DataState } from '../dataSlice';
-import { updateElement } from '../svg/element';
 import {
   collectDependentChildren,
   markCyclicDependency,
   removeEquationFromDependencyMap,
   updateDependencies,
 } from './dependencies';
-import { Equation, getNewEquation } from './equation';
+import { Equation, getNewEquation, setEquationResult } from './equation';
 import { fixTokens } from './fixTokens';
 import getTokens from './parseEquation';
 import getRPN from './reversePolishNotation';
 import { computeEquationResult } from './computeResult';
+import { applyElementEquationChanges } from '../svg/applyAttributes';
 
 export function updateEquationInput({
   equationId,
@@ -28,23 +28,26 @@ export function updateEquationInput({
     equation = state.equations[equationId];
   }
 
+  equation.errorMessage = undefined;
+  equation.tokens = [];
+  equation.rpn = [];
+
   if (typeof value == 'number') {
-    // a number, not an equation (string) was passed -> only update lastValidNumber
-    equation.lastValidNumber = value;
-    return;
+    // a number, not an equation (string) was passed -> no need to evaluate result
+    setEquationResult({ equation, result: value });
+    equation.dependencies.parents = [];
+  } else {
+    // if a real equation is passed, we evaluate it
+    equation.input = value;
+
+    // parse equation
+    getTokens({ equation });
+    fixTokens({ equation });
+    getRPN({ equation });
   }
 
-  // if a real equation is passed, we evaluate it and also resolve all dependencies
-  equation.input = value;
-  equation.errorMessage = undefined;
-  equation.tokens = undefined;
-  equation.rpn = undefined;
-
-  // parse equation
-  getTokens({ equation });
-  fixTokens({ equation });
-  getRPN({ equation });
-  updateDependencies({ equation, state }); // check for new or deprecated parents
+  // check for new or deprecated parents
+  updateDependencies({ equation, state });
 
   // compute result of equation and all modified children
   computeAllResults({ equationId, state });
@@ -75,7 +78,7 @@ export function computeAllResults({ equationId, state }: { equationId: string; s
   }
 
   // update all dependent svg elements
-  affectedSvgElements.forEach((elementId) => updateElement({ elementId, state }));
+  affectedSvgElements.forEach((elementId) => applyElementEquationChanges({ elementId, state }));
 
   // check if all equation have been evaluated (resulting in an empty dependency map)
   if (Object.keys(dependencyMap).length !== 0) {

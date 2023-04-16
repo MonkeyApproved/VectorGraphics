@@ -1,6 +1,6 @@
 import { DataState } from '../dataSlice';
-import { addSvgPropertyEquation } from '../equations/equation';
-import { BaseElement, BaseElementPixels, getId } from './element';
+import { updateSvgPropertyEquation } from '../equations/svgEquation';
+import { BaseElement, getId } from './element';
 
 export interface ElementDict {
   [id: string]: BaseElement;
@@ -17,42 +17,39 @@ export function addElementToDict({ dict, newElement }: AddElementProps): BaseEle
   return element;
 }
 
-export function addElementPixelsToDict({
-  state,
-  element,
-}: {
-  state: DataState;
-  element: BaseElementPixels;
-}): BaseElement {
+export function addNewElement({ state, element }: { state: DataState; element: Omit<BaseElement, 'id'> }): BaseElement {
   const id = getId(element.type);
-  const unit = 'pixel';
   const baseElement: BaseElement = {
     id,
     containerId: element.containerId,
     type: element.type,
     position: {
-      x: addSvgPropertyEquation({
-        property: { elementId: id, unit, type: 'position', dimension: 'x' },
-        initialValue: element.position.x,
+      x: updateSvgPropertyEquation({
+        property: { elementId: id, type: 'position', dimension: 'x' },
+        value: element.position.x,
         state,
       }),
-      y: addSvgPropertyEquation({
-        property: { elementId: id, unit, type: 'position', dimension: 'y' },
-        initialValue: element.position.y,
+      xOffset: element.position.xOffset,
+      y: updateSvgPropertyEquation({
+        property: { elementId: id, type: 'position', dimension: 'y' },
+        value: element.position.y,
         state,
       }),
+      yOffset: element.position.yOffset,
     },
     size: {
-      x: addSvgPropertyEquation({
-        property: { elementId: id, unit, type: 'size', dimension: 'x' },
-        initialValue: element.size.x,
+      x: updateSvgPropertyEquation({
+        property: { elementId: id, type: 'size', dimension: 'x' },
+        value: element.size.x,
         state,
       }),
-      y: addSvgPropertyEquation({
-        property: { elementId: id, unit, type: 'size', dimension: 'y' },
-        initialValue: element.size.y,
+      xOffset: element.size.xOffset,
+      y: updateSvgPropertyEquation({
+        property: { elementId: id, type: 'size', dimension: 'y' },
+        value: element.size.y,
         state,
       }),
+      yOffset: element.size.yOffset,
     },
     stroke: element.stroke,
     fill: element.fill,

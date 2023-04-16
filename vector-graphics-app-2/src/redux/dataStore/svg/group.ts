@@ -1,5 +1,6 @@
 import { DataState } from '../dataSlice';
-import { appendElementToContainer, BaseElement, drawElement, setBaseElementAttributes } from './element';
+import { applyBaseElementAttributes } from './applyAttributes';
+import { appendElementToContainer, BaseElement, drawElement } from './element';
 import {
   addElementToDict,
   ElementDict,
@@ -64,7 +65,7 @@ export function drawGroup({ group, containerId, state }: DrawGroupProps): Group 
   const groupSelection = appendElementToContainer({ elementType: group.type, containerId });
 
   // set styles & other base attributes
-  setBaseElementAttributes({ element: group, elementSelection: groupSelection, state });
+  applyBaseElementAttributes({ element: group, elementSelection: groupSelection, state });
 
   // draw all elements inside the group
   forEachElement({ dict: group.elements, func: (element) => drawElement({ element, containerId: group.id, state }) });

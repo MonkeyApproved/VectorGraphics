@@ -1,19 +1,11 @@
 import { DataState } from '../dataSlice';
-import { Coordinate } from '../svg/coordinate';
-import { applyArea, getAllElementsWithinArea, getAreaContainingCoordinates } from '../svg/area';
-import {
-  appendElementToContainer,
-  applyId,
-  BaseElementPixels,
-  drawElement,
-  ElementTypes,
-  selectElementById,
-} from '../svg/element';
-import { addElementPixelsToDict } from '../svg/elementDict';
-import { applyFill } from '../svg/fill';
+import { CoordinatePixels } from '../svg/coordinate';
+import { getAllElementsWithinArea, getAreaContainingCoordinates } from '../svg/area';
+import { appendElementToContainer, BaseElement, drawElement, ElementTypes, selectElementById } from '../svg/element';
 import { SvgTool } from '../svg/settings';
-import { applyStroke } from '../svg/stroke';
 import { setSelectedElementList } from '../svg/elementSelection';
+import { applyArea, applyFill, applyId, applyStroke } from '../svg/applyAttributes';
+import { addNewElement } from '../svg/elementDict';
 
 export const SELECTION_BOX_ID = 'selectionBox';
 
@@ -36,7 +28,7 @@ export function updateSelectionBoxDuringDrag({
   currentMousePosition,
 }: {
   state: DataState;
-  currentMousePosition: Coordinate;
+  currentMousePosition: CoordinatePixels;
 }) {
   const type = getElementType({ tool: state.svg.settings.activeTool });
   const isSelectTool = state.svg.settings.activeTool === 'select';
@@ -63,7 +55,7 @@ export function completeSelectionBoxOnMouseUp({
   currentMousePosition,
 }: {
   state: DataState;
-  currentMousePosition: Coordinate;
+  currentMousePosition: CoordinatePixels;
 }) {
   // get selection box element and it's area
   const initialPosition = state.mouseEvent.initialMousePosition;
@@ -88,12 +80,13 @@ export function completeSelectionBoxOnMouseUp({
   const type = getElementType({ tool: state.svg.settings.activeTool });
 
   // 3. add element to the main canvas and the elementDict
-  const baseElementPixels: BaseElementPixels = {
+  const baseElementPixels: Omit<BaseElement, 'id'> = {
     containerId: state.svg.canvasId,
     type,
-    ...area,
+    position: { ...area.position, xOffset: 0, yOffset: 0 },
+    size: { ...area.size, xOffset: 0, yOffset: 0 },
     ...state.svg.settings.defaultElementStyle,
   };
-  const baseElement = addElementPixelsToDict({ state, element: baseElementPixels });
+  const baseElement = addNewElement({ state, element: baseElementPixels });
   drawElement({ element: baseElement, containerId: state.svg.canvasId, state });
 }

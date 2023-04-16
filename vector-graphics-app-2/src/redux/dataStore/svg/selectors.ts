@@ -1,6 +1,7 @@
 import type { RootState } from 'redux/store';
 import { KeysMatchingType } from 'types';
 import { BaseElement } from './element';
+import { SvgProperty, svgPropertyValue } from '../equations/svgEquation';
 
 export const getElementDict = (state: RootState) => state.data.svg.elementDict;
 
@@ -12,6 +13,9 @@ export const getElementAttribute =
   <T>(id: string, attribute: KeysMatchingType<BaseElement, T>) =>
   (state: RootState) =>
     state.data.svg.elementDict[id][attribute];
+
+export const getSvgPropertyValue = (property: SvgProperty) => (state: RootState) =>
+  svgPropertyValue({ property, state: state.data });
 
 export const getSelectedElementIds = (state: RootState): string[] => state.data.svg.selectedElementIds;
 

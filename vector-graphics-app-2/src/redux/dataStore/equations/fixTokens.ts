@@ -13,7 +13,7 @@ interface EquationStats {
 }
 
 export function fixTokens({ equation }: { equation: Equation }): Equation {
-  if (!equation.tokens) return equation;
+  if (!equation.tokens || equation.tokens.length === 0) return equation;
 
   const tracker: EquationStats = {
     groundLevelCommas: 0,

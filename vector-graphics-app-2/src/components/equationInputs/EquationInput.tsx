@@ -1,11 +1,13 @@
 import { CSSProperties, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { submitEquation } from 'redux/dataStore/dataSlice';
+import { submitEquation, updateElementProperty } from 'redux/dataStore/dataSlice';
 import { getEquationById } from 'redux/dataStore/equations/selectors';
+import { SvgProperty } from 'redux/dataStore/equations/svgEquation';
 
 export interface EquationInputProps {
   equationId: string;
+  svgProperty?: SvgProperty;
   label?: string;
   className?: string;
   style?: CSSProperties;
@@ -26,8 +28,11 @@ export default function EquationInput(props: EquationInputProps) {
   }
 
   const onValueChange = (newValue: string) => {
-    if (newValue !== equation?.input) {
+    if (newValue === equation?.input) return;
+    if (!props.svgProperty) {
       dispatch(submitEquation({ id: props.equationId, input: newValue }));
+    } else {
+      dispatch(updateElementProperty({ property: props.svgProperty, value: newValue }));
     }
   };
 
@@ -41,23 +46,21 @@ export default function EquationInput(props: EquationInputProps) {
   };
 
   return (
-    <>
-      <TextField
-        className={props.className}
-        style={props.style}
-        label={props.label}
-        error={!!equation?.errorMessage}
-        helperText={equation?.errorMessage}
-        value={getDisplayValue()}
-        onChange={(e) => onValueChange(e.target.value)}
-        margin="dense"
-        size="small"
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        id={`equation-input-${props.equationId}`}
-      />
-    </>
+    <TextField
+      className={props.className}
+      style={props.style}
+      label={'equation'}
+      error={!!equation?.errorMessage}
+      helperText={equation?.errorMessage}
+      value={getDisplayValue()}
+      onChange={(e) => onValueChange(e.target.value)}
+      margin="dense"
+      size="small"
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      id={`equation-input-${props.equationId}`}
+    />
   );
 }
