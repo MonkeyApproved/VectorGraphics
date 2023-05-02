@@ -3,15 +3,11 @@ import { useState } from 'react';
 import { range } from 'generalHelpers/numberHelper';
 import { getSpreadsheetColumnLabel, getSpreadsheetRowLabel } from 'generalHelpers/stringHelper';
 import EquationInput from './EquationInput';
+import { Spreadsheet as SpreadsheetContent } from 'redux/dataStore/userInterface/mainContent';
 
-export interface SpreadsheetProps {
-  initialRows: number;
-  initialColumns: number;
-}
-
-export default function Spreadsheet({ initialRows, initialColumns }: SpreadsheetProps) {
-  const [rowCount, setRowCount] = useState<number>(initialRows);
-  const [columnCount, setColumnCount] = useState<number>(initialColumns);
+export default function Spreadsheet({ content }: { content: SpreadsheetContent }) {
+  const [rowCount, setRowCount] = useState<number>(content.nRows);
+  const [columnCount, setColumnCount] = useState<number>(content.nColumns);
 
   const columnLabels = range({ n: columnCount }).map((index) => getSpreadsheetColumnLabel({ index }));
   const rowLabels = range({ n: rowCount }).map((index) => getSpreadsheetRowLabel({ index }));

@@ -3,9 +3,10 @@ import { useState } from 'react';
 import VariableInput from './VariableInput';
 import styles from './styles.module.css';
 import EquationIdModal from './EquationIdModal';
+import { VariableTable as VariableTableContent } from 'redux/dataStore/userInterface/variableTable';
 
-export default function VariableTable() {
-  const [variableList, setVariableList] = useState<string[]>(['A', 'B']);
+export default function VariableTable({ content }: { content: VariableTableContent }) {
+  const [variableList, setVariableList] = useState<string[]>(content.variableIds);
 
   // state of new variables -> once the button is clicked, user can add a new variable name in the modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
