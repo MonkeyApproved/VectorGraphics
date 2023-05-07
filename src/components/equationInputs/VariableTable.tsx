@@ -4,24 +4,25 @@ import VariableInput from './VariableInput';
 import styles from './styles.module.css';
 import EquationIdModal from './EquationIdModal';
 import { VariableTable as VariableTableContent } from 'redux/dataStore/userInterface/variableTable';
+import { useAppDispatch } from 'redux/hooks';
+import { addVariable } from 'redux/dataStore/dataSlice';
 
 export default function VariableTable({ content }: { content: VariableTableContent }) {
-  const [variableList, setVariableList] = useState<string[]>(content.variableIds);
-
   // state of new variables -> once the button is clicked, user can add a new variable name in the modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const handleModalClose = (success: boolean, newId: string) => {
     if (success) {
       // the user confirmed the new variable name by clicking the "Apply" button
-      setVariableList([...variableList, newId]);
+      dispatch(addVariable({ equationId: newId, variableTableId: content.id }));
     }
     setModalOpen(false);
   };
 
   return (
     <div className={styles.variableListWrapper}>
-      {variableList.map((id: string) => (
+      {content.variableIds.map((id: string) => (
         <VariableInput defaultEquationId={id} key={`variable-list-item-${id}`} />
       ))}
       <div className={styles.addVariableButton}>

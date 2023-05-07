@@ -52,9 +52,10 @@ export const {
   mouseUp,
   // equation reducers
   submitEquation,
-  renameEquation,
   // ui reducers
   addVariable,
+  renameVariable,
+  removeVariableFromTable,
   addNewContentToTabs,
   removeContentFromTabs,
   selectTab,
