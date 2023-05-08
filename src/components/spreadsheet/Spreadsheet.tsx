@@ -2,7 +2,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { useState } from 'react';
 import { range } from 'generalHelpers/numberHelper';
 import { getSpreadsheetColumnLabel, getSpreadsheetRowLabel } from 'generalHelpers/stringHelper';
-import EquationInput from './EquationInput';
+import EquationInput from '../equationInputs/EquationInput';
 import { Spreadsheet as SpreadsheetContent } from 'redux/dataStore/userInterface/spreadsheet';
 
 export default function Spreadsheet({ content }: { content: SpreadsheetContent }) {

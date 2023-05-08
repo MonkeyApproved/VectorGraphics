@@ -5,20 +5,7 @@
   margin-top: 0.5em;
 }
 
-.variableListWrapper {
-  padding-top: 2em;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: top;
-}
-
 .modal {
   width: 80vw;
   max-width: 450px;
-}
-
-.addVariableButton {
-  margin-top: 1em;
 }

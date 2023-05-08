@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import VariableInput from './VariableInput';
+import VariableInput from '../equationInputs/VariableInput';
 import styles from './styles.module.css';
-import EquationIdModal from './EquationIdModal';
+import EquationIdModal from '../equationInputs/EquationIdModal';
 import { VariableTable as VariableTableContent } from 'redux/dataStore/userInterface/variableTable';
 import { useAppDispatch } from 'redux/hooks';
 import { addVariable } from 'redux/dataStore/dataSlice';

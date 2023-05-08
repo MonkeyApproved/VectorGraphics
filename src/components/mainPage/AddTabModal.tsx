@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
-import styles from '../equationInputs/styles.module.css';
+import styles from './styles.module.css';
 import ContentIcon from './MainContentIcon';
 import { MainContentTypes } from 'redux/dataStore/userInterface/content';
 

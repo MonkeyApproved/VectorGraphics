@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import ContentIcon from './MainContentIcon';
 import { useState } from 'react';
 import AddTabModal from './AddTabModal';
+import styles from './styles.module.css';
 
 export default function MainTabs() {
   const [addTabOpen, setAddTabOpen] = useState<boolean>(false);
@@ -40,11 +41,14 @@ export default function MainTabs() {
         <Tabs value={selectedTab} onChange={handleChange} aria-label="tabs">
           {tabContent.map((content: AnyContent, index: number) => (
             <Tab
-              icon={<ContentIcon contentType={content.type} />}
-              label={content.label}
+              label={
+                <div className={styles.tabLabelWrapper}>
+                  <ContentIcon contentType={content.type} />
+                  <span>{content.label}</span>
+                </div>
+              }
               key={`tab-${index}`}
               id={`tab-${index}`}
-              iconPosition="start"
               aria-controls={`tabpanel-${index}`}
             />
           ))}

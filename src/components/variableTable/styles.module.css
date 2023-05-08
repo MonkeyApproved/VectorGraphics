@@ -1,0 +1,12 @@
+.variableListWrapper {
+  padding-top: 2em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+}
+
+.addVariableButton {
+  margin-top: 1em;
+}
