@@ -22,7 +22,7 @@ export const elementCounter: { [key: string]: number } = {
   path: 0,
 };
 
-export function getId(type: ElementTypes): string {
+export function getElementId(type: ElementTypes): string {
   elementCounter[type] += 1;
   return `${type}${elementCounter[type]}`;
 }

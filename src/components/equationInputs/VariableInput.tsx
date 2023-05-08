@@ -4,7 +4,7 @@ import EquationInput from './EquationInput';
 import EquationIdModal from './EquationIdModal';
 import styles from './styles.module.css';
 import { useAppDispatch } from 'redux/hooks';
-import { renameEquation } from 'redux/dataStore/dataSlice';
+import { renameVariable } from 'redux/dataStore/dataSlice';
 
 export interface VariableInputProps {
   defaultEquationId: string;
@@ -25,7 +25,7 @@ export default function VariableInput(props: VariableInputProps) {
   const handleModalClose = (success: boolean, newId: string) => {
     if (success) {
       // the user confirmed the new variable name by clicking the "Apply" button
-      dispatch(renameEquation({ oldId: equationId, newId: newId }));
+      dispatch(renameVariable({ oldId: equationId, newId: newId }));
       setEquationId(newId);
     }
     setModalOpen(false);

@@ -5,8 +5,9 @@ import styles from './SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
 import LeftSideMenu from './LeftSideMenu';
 import HeaderMenu from './HeaderMenu';
+import { SvgEditor as SvgEditorContent } from 'redux/dataStore/userInterface/svgEditor';
 
-export default function SvgEditor() {
+export default function SvgEditor({ content }: { content: SvgEditorContent }) {
   const canvasId = 'mainCanvas';
   const bottomCanvasId = 'bottomCanvas';
 

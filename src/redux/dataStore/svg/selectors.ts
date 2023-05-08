@@ -1,4 +1,4 @@
-import type { RootState } from 'redux/store';
+import { RootState } from 'redux/store';
 import { KeysMatchingType } from 'types';
 import { BaseElement } from './element';
 import { SvgProperty, svgPropertyValue } from '../equations/svgEquation';

@@ -1,3 +1,22 @@
+:root {
+	--color-blue1: #011a27;
+	--color-blue2: #063852;
+	--color-white: #fff;
+	--color-orange1: #e4b600;
+	--color-orange2: #f78b2d;
+	--cell-height: 4vh;
+	--cell-width: minmax(100px, auto);
+	--resize-size: 5px;
+	--resize-offset: -5px;
+	--topBar-height: 20px;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

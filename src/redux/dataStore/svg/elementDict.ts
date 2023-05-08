@@ -1,6 +1,6 @@
 import { DataState } from '../dataSlice';
 import { updateSvgPropertyEquation } from '../equations/svgEquation';
-import { BaseElement, getId } from './element';
+import { BaseElement, getElementId } from './element';
 
 export interface ElementDict {
   [id: string]: BaseElement;
@@ -12,13 +12,13 @@ export interface AddElementProps {
 }
 
 export function addElementToDict({ dict, newElement }: AddElementProps): BaseElement {
-  const element: BaseElement = { ...newElement, id: `${newElement.type}_${getId(newElement.type)}` };
+  const element: BaseElement = { ...newElement, id: `${newElement.type}_${getElementId(newElement.type)}` };
   dict[element.id] = element;
   return element;
 }
 
 export function addNewElement({ state, element }: { state: DataState; element: Omit<BaseElement, 'id'> }): BaseElement {
-  const id = getId(element.type);
+  const id = getElementId(element.type);
   const baseElement: BaseElement = {
     id,
     containerId: element.containerId,

@@ -1,5 +1,5 @@
 import { Coordinate, getCoordinatePixels, getNumberInPixels, Position, Size } from './coordinate';
-import { appendElementToContainer, BaseElement, getId } from './element';
+import { appendElementToContainer, BaseElement, getElementId } from './element';
 import { DataState } from '../dataSlice';
 import { applyBaseElementAttributes } from './applyAttributes';
 import { defaultSvgSettings } from './settings';
@@ -242,7 +242,7 @@ export function drawPath({ path, containerId, state }: DrawPathProps): Path {
 }
 
 export function addPathFromDefinition({ definition, state }: { definition: string; state: DataState }): Path {
-  const id = getId('path');
+  const id = getElementId('path');
   const newPath: Path = {
     id,
     containerId: state.svg.canvasId || '',
