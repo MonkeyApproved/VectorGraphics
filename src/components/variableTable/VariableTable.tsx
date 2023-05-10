@@ -1,36 +1,19 @@
-import { Button } from '@mui/material';
-import { useState } from 'react';
-import VariableInput from '../equationInputs/VariableInput';
 import styles from './styles.module.css';
-import EquationIdModal from '../equationInputs/EquationIdModal';
-import { VariableTable as VariableTableContent } from 'redux/dataStore/userInterface/variableTable';
-import { useAppDispatch } from 'redux/hooks';
-import { addVariable } from 'redux/dataStore/dataSlice';
+import VariableInput from './VariableInput';
+import { VariableTable as VariableTableType } from 'redux/dataStore/userInterface/variableTable';
 
-export default function VariableTable({ content }: { content: VariableTableContent }) {
-  // state of new variables -> once the button is clicked, user can add a new variable name in the modal
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
+export interface VariableTableProps {
+  content: VariableTableType;
+}
 
-  const handleModalClose = (success: boolean, newId: string) => {
-    if (success) {
-      // the user confirmed the new variable name by clicking the "Apply" button
-      dispatch(addVariable({ equationId: newId, variableTableId: content.id }));
-    }
-    setModalOpen(false);
-  };
-
+export default function VariableTable({ content }: VariableTableProps) {
   return (
-    <div className={styles.variableListWrapper}>
-      {content.variableIds.map((id: string) => (
-        <VariableInput defaultEquationId={id} key={`variable-list-item-${id}`} />
+    <div className={styles.variableTable}>
+      <div className={styles.tableHeader}>NAME</div>
+      <div className={styles.tableHeader}>VALUE</div>
+      {[...content.variableIds, undefined].map((_, index) => (
+        <VariableInput index={index} variableTableId={content.id} key={`${content.id}-var-${index}`} />
       ))}
-      <div className={styles.addVariableButton}>
-        <Button variant="contained" onClick={() => setModalOpen(true)}>
-          Add New Variable
-        </Button>
-      </div>
-      <EquationIdModal equationId="" modalOpen={modalOpen} onClose={handleModalClose} />
     </div>
   );
 }

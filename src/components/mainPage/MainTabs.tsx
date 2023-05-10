@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -9,7 +10,6 @@ import MainContent from './MainContent';
 import { AnyContent, MainContentTypes } from 'redux/dataStore/userInterface/content';
 import { Button } from '@mui/material';
 import ContentIcon from './MainContentIcon';
-import { useState } from 'react';
 import AddTabModal from './AddTabModal';
 import styles from './styles.module.css';
 

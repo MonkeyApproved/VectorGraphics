@@ -60,6 +60,8 @@ const addVariable: DataSliceReducer<Omit<SingleVariableFuncProps, 'state'>> = (s
 };
 
 const renameVariable: DataSliceReducer<Omit<RenameIdProps, 'state'>> = (state, { payload }) => {
+  if (!payload.newId) return;
+  if (Object.keys(state.equations).includes(payload.newId)) return;
   renameEquationInAllVariableTables({ ...payload, state });
   renameEquation({ ...payload, state });
 };

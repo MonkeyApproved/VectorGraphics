@@ -2,9 +2,11 @@ import { RootState } from 'redux/store';
 import { Equation } from './equation';
 
 export const getEquationById =
-  (id: string) =>
-  (state: RootState): Equation | undefined =>
-    state.data.equations[id];
+  (id: string | undefined) =>
+  (state: RootState): Equation | undefined => {
+    if (!id) return undefined;
+    return state.data.equations[id];
+  };
 
 export const checkIfEquationIdExists =
   (id: string) =>

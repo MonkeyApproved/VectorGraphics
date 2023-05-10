@@ -1,4 +1,5 @@
 import { RootState } from 'redux/store';
+import { Equation } from '../equations/equation';
 
 export const getTabContentIds = (state: RootState) => state.data.userInterface.tabs.contentList;
 
@@ -12,5 +13,18 @@ export const getSelectedTabIndex = (state: RootState) => {
   const index = state.data.userInterface.tabs.contentList.indexOf(state.data.userInterface.tabs.selected);
   return index === -1 ? false : index;
 };
+
+export const getVariableTableEquation =
+  (index: number, variableTableId: string) =>
+  (state: RootState): Equation | undefined => {
+    const content = state.data.userInterface.allContent[variableTableId];
+    if (content.type !== 'variables') {
+      throw new Error('Invalid content type.');
+    }
+
+    if (index >= content.variableIds.length) return undefined;
+    const equationId = content.variableIds[index];
+    return state.data.equations[equationId];
+  };
 
 export const getContent = (contentId: string) => (state: RootState) => state.data.userInterface.allContent[contentId];
