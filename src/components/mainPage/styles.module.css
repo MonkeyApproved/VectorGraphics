@@ -1,12 +1,63 @@
+.modal {
+  width: 80vw;
+  max-width: 450px;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 30px auto;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: flex-end;
+  grid-row: 1;
+  background-color: var(--color-blue1);
+}
+
 .tabLabelWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
   text-transform: none;
+  color: var(--color-white);
+  padding: 4px;
+  min-width: 150px;
+  border-right: 3px white solid;
+  cursor: pointer;
 }
 
-.modal {
-  width: 80vw;
-  max-width: 450px;
+.addTabButton {
+  color: var(--color-white);
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  grid-row: 2;
+  padding: 10px;
+}
+
+.unselected {
+  opacity: 0.6;
+}
+
+.spreadsheetBgColor {
+  background-image: linear-gradient(to bottom left, var(--color-teal1), var(--color-teal2));
+}
+
+.variablesBgColor {
+  background-image: linear-gradient(to bottom left, var(--color-orange1), var(--color-orange2));
+}
+
+.canvasBgColor {
+  background-image: linear-gradient(to bottom left, var(--color-lavender1), var(--color-lavender2));
 }

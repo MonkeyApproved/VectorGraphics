@@ -2,13 +2,21 @@
 	--color-blue1: #011a27;
 	--color-blue2: #063852;
 	--color-white: #fff;
+	--color-grey-1: #bbbbbb;
 	--color-orange1: #e4b600;
 	--color-orange2: #f78b2d;
+	--color-teal1: #55bcca;
+	--color-teal2: #45acba;
+	--color-lavender1: #c3a8ff;
+	--color-lavender2: #b398ff;
 	--cell-height: 4vh;
 	--cell-width: minmax(100px, auto);
 	--resize-size: 5px;
 	--resize-offset: -5px;
 	--topBar-height: 20px;
+
+	--input-height: 20px;
+	--grid-table-gap: 2px;
 }
 
 *, *::before, *::after {

@@ -1,53 +1,30 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useState } from 'react';
-import { range } from 'generalHelpers/numberHelper';
+import { range, range2d } from 'generalHelpers/numberHelper';
+import CellInput from './CellInput';
+import styles from './styles.module.css';
 import { getSpreadsheetColumnLabel, getSpreadsheetRowLabel } from 'generalHelpers/stringHelper';
-import EquationInput from '../equationInputs/EquationInput';
-import { Spreadsheet as SpreadsheetContent } from 'redux/dataStore/userInterface/spreadsheet';
+import { useAppSelector } from 'redux/hooks';
+import { getContent } from 'redux/dataStore/userInterface/selectors';
 
-export default function Spreadsheet({ content }: { content: SpreadsheetContent }) {
-  const [rowCount, setRowCount] = useState<number>(content.nRows);
-  const [columnCount, setColumnCount] = useState<number>(content.nColumns);
-
-  const columnLabels = range({ n: columnCount }).map((index) => getSpreadsheetColumnLabel({ index }));
-  const rowLabels = range({ n: rowCount }).map((index) => getSpreadsheetRowLabel({ index }));
+export default function Spreadsheet({ contentId }: { contentId: string }) {
+  const content = useAppSelector(getContent(contentId));
+  if (content.type !== 'spreadsheet') return <div>ERROR</div>;
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} size="small" aria-label="spreadsheet table">
-        <TableHead>
-          <TableRow>
-            <TableCell id="spreadsheetCorner" />
-            {columnLabels.map((label) => (
-              <TableCell key={`spreadsheetHeader${label}`} align="center">
-                {label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rowLabels.map((rowLabel, rowIndex) => (
-            <TableRow key={`spreadsheetRow${rowLabel}`}>
-              <TableCell>{rowLabel}</TableCell>
-              {columnLabels.map((columnLabel) => (
-                <TableCell key={`spreadsheetCell${columnLabel}${rowLabel}`} align="center">
-                  <EquationInput equationId={`${columnLabel}${rowLabel}`} style={{ padding: '0px' }} />
-                </TableCell>
-              ))}
-              {rowIndex === 0 && (
-                <TableCell rowSpan={rowCount}>
-                  <Button onClick={() => setColumnCount(columnCount + 1)}>Add Column</Button>
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={columnCount + 1} align="center">
-              <Button onClick={() => setRowCount(rowCount + 1)}>Add Row</Button>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className={styles.spreadsheet}>
+      <div className={styles.tableCorner} />
+      {range({ n: content.nColumns }).map((x) => (
+        <div className={styles.tableColumnLabel} style={{ gridColumn: x + 2 }} key={`${content.id}-col-label-${x}`}>
+          {getSpreadsheetColumnLabel({ index: x })}
+        </div>
+      ))}
+      {range({ n: content.nRows }).map((y) => (
+        <div className={styles.tableRowLabel} style={{ gridRow: y + 2 }} key={`${content.id}-col-label-${y}`}>
+          {getSpreadsheetRowLabel({ index: y })}
+        </div>
+      ))}
+      {range2d({ x: content.nColumns, y: content.nRows }).map(({ x, y }) => {
+        return <CellInput rowIndex={y} columnIndex={x} spreadsheetId={content.id} key={`${content.id}-${x}-${y}`} />;
+      })}
+    </div>
   );
 }

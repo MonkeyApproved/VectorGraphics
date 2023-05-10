@@ -2,17 +2,21 @@ import SvgEditor from 'components/svgEditor/SvgEditor';
 import Spreadsheet from 'components/spreadsheet/Spreadsheet';
 import VariableTable from 'components/variableTable/VariableTable';
 import DataExplorer from 'components/dataExplorer/DataExplorer';
-import { AnyContent } from 'redux/dataStore/userInterface/content';
+import { useAppSelector } from 'redux/hooks';
+import { getContentType } from 'redux/dataStore/userInterface/selectors';
 
-export default function MainContent({ content }: { content: AnyContent }) {
-  if (content.type === 'canvas') {
-    return <SvgEditor content={content} />;
-  } else if (content.type === 'spreadsheet') {
-    return <Spreadsheet content={content} />;
-  } else if (content.type === 'variables') {
-    return <VariableTable content={content} />;
-  } else if (content.type === 'data') {
-    return <DataExplorer content={content} />;
+export default function MainContent({ contentId }: { contentId: string | undefined }) {
+  if (!contentId) return <></>;
+
+  const contentType = useAppSelector(getContentType(contentId));
+  if (contentType === 'canvas') {
+    return <SvgEditor contentId={contentId} />;
+  } else if (contentType === 'spreadsheet') {
+    return <Spreadsheet contentId={contentId} />;
+  } else if (contentType === 'variables') {
+    return <VariableTable contentId={contentId} />;
+  } else if (contentType === 'data') {
+    return <DataExplorer contentId={contentId} />;
   }
   return <></>;
 }

@@ -5,11 +5,12 @@ import styles from './SvgEditor.module.css';
 import SvgCanvas from './SvgCanvas';
 import LeftSideMenu from './LeftSideMenu';
 import HeaderMenu from './HeaderMenu';
-import { SvgEditor as SvgEditorContent } from 'redux/dataStore/userInterface/svgEditor';
+import { useAppSelector } from 'redux/hooks';
+import { getContent } from 'redux/dataStore/userInterface/selectors';
 
-export default function SvgEditor({ content }: { content: SvgEditorContent }) {
-  const canvasId = 'mainCanvas';
-  const bottomCanvasId = 'bottomCanvas';
+export default function SvgEditor({ contentId }: { contentId: string }) {
+  const content = useAppSelector(getContent(contentId));
+  if (content.type !== 'canvas') return <div>ERROR</div>;
 
   return (
     <div className={styles.container}>
@@ -21,7 +22,7 @@ export default function SvgEditor({ content }: { content: SvgEditorContent }) {
           <LeftSideMenu />
         </Grid>
         <Grid item xs={6} md={10} className={styles.middleRow}>
-          <SvgCanvas canvasId={canvasId} bottomCanvasId={bottomCanvasId} viewBox="0 0 100 100" />
+          <SvgCanvas canvasId={`${content.id}_main`} bottomCanvasId={`${content.id}_bottom`} viewBox="0 0 100 100" />
         </Grid>
         <Grid item xs={12} md={12} className={styles.bottomRow}>
           <div>Footer</div>

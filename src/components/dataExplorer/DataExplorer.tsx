@@ -1,33 +1,14 @@
 import { DataExplorer as DataExplorerType } from 'redux/dataStore/userInterface/dataExplorer';
-import styles from './styles.module.css';
+import { useAppSelector } from 'redux/hooks';
+import { getContent } from 'redux/dataStore/userInterface/selectors';
 
 export interface DataExplorerProps {
   content: DataExplorerType;
 }
 
-function TableRow({ key }: { key: string }) {
-  return (
-    <>
-      <div key={`variable-name-${key}`} className={styles.inputWrapper}>
-        <div className={styles.result}>test</div>
-        <input className={styles.input}></input>
-      </div>
-      <div key={`variable-value-${key}`} className={styles.inputWrapper}>
-        <div className={styles.result}></div>
-        <input className={styles.input}></input>
-      </div>
-    </>
-  );
-}
+export default function DataExplorer({ contentId }: { contentId: string }) {
+  const content = useAppSelector(getContent(contentId));
+  if (content.type !== 'data') return <div>ERROR</div>;
 
-export default function DataExplorer({ content }: DataExplorerProps) {
-  return (
-    <div className={styles.variableTable}>
-      <div className={styles.tableHeader}>NAME</div>
-      <div className={styles.tableHeader}>VALUE</div>
-      {[...Array(10)].map((_, i) => (
-        <TableRow key={String(i)} />
-      ))}
-    </div>
-  );
+  return <div>{content.id}</div>;
 }
