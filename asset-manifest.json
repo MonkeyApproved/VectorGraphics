@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/VectorGraphics/static/css/main.e3707360.css",
-    "main.js": "/VectorGraphics/static/js/main.834b008a.js",
+    "main.css": "/VectorGraphics/static/css/main.5c5ee651.css",
+    "main.js": "/VectorGraphics/static/js/main.04d25b60.js",
     "index.html": "/VectorGraphics/index.html",
-    "main.e3707360.css.map": "/VectorGraphics/static/css/main.e3707360.css.map",
-    "main.834b008a.js.map": "/VectorGraphics/static/js/main.834b008a.js.map"
+    "main.5c5ee651.css.map": "/VectorGraphics/static/css/main.5c5ee651.css.map",
+    "main.04d25b60.js.map": "/VectorGraphics/static/js/main.04d25b60.js.map"
   },
   "entrypoints": [
-    "static/css/main.e3707360.css",
-    "static/js/main.834b008a.js"
+    "static/css/main.5c5ee651.css",
+    "static/js/main.04d25b60.js"
   ]
 }
