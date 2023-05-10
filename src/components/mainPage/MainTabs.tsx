@@ -18,8 +18,6 @@ export default function MainTabs() {
     dispatch(selectTab({ id: newId }));
   };
 
-  console.log('tabs render');
-
   return (
     <div className={styles.page}>
       <div className={styles.tabs}>
