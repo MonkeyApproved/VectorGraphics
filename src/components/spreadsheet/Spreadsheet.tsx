@@ -1,10 +1,14 @@
 import { range, range2d } from 'generalHelpers/numberHelper';
-import { Spreadsheet as SpreadsheetContent } from 'redux/dataStore/userInterface/spreadsheet';
 import CellInput from './CellInput';
 import styles from './styles.module.css';
 import { getSpreadsheetColumnLabel, getSpreadsheetRowLabel } from 'generalHelpers/stringHelper';
+import { useAppSelector } from 'redux/hooks';
+import { getContent } from 'redux/dataStore/userInterface/selectors';
 
-export default function Spreadsheet({ content }: { content: SpreadsheetContent }) {
+export default function Spreadsheet({ contentId }: { contentId: string }) {
+  const content = useAppSelector(getContent(contentId));
+  if (content.type !== 'spreadsheet') return <div>ERROR</div>;
+
   return (
     <div className={styles.spreadsheet}>
       <div className={styles.tableCorner} />
