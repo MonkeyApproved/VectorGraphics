@@ -5,10 +5,13 @@
 	--color-grey-1: #bbbbbb;
 	--color-orange1: #e4b600;
 	--color-orange2: #f78b2d;
+	--color-orange-bgd: #e3d8cf;
 	--color-teal1: #55bcca;
 	--color-teal2: #45acba;
+	--color-teal-bgd: #c9e0e3;
 	--color-lavender1: #c3a8ff;
 	--color-lavender2: #b398ff;
+	--color-lavender-bgd: #e1e0e6;
 	--cell-height: 4vh;
 	--cell-width: minmax(100px, auto);
 	--resize-size: 5px;
