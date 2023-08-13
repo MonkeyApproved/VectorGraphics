@@ -1,3 +1,15 @@
+.variableBgd {
+  background-color: var(--color-orange-bgd);
+}
+
+.spreadsheetBgd {
+  background-color: var(--color-teal-bgd);
+}
+
+.canvasBgd {
+  background-color: var(--color-lavender-bgd);
+}
+
 .modal {
   width: 80vw;
   max-width: 450px;
