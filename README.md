@@ -2,6 +2,11 @@
 
 Running version of the app can be found on [GitHub Pages](https://monkeyapproved.github.io/VectorGraphics/).
 
+## Run local version
+
+In order to start the frontend, you should first install all dependencies using `yarn install`.
+Afterwards, the application can be started with `yarn start`.
+
 ## Deploy latest version
 
 In order to deploy the latest version of the app to GitHub pages, you can simply run
