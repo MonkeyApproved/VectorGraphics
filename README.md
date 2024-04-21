@@ -2,6 +2,11 @@
 
 Running version of the app can be found on [GitHub Pages](https://monkeyapproved.github.io/VectorGraphics/).
 
+## Run local version
+
+In order to start the frontend, you should first install all dependencies using `yarn install`.
+Afterwards, the application can be started with `yarn start`.
+
 ## Deploy latest version
 
 In order to deploy the latest version of the app to GitHub pages, you can simply run
@@ -38,5 +43,3 @@ Used to track any user input in the from of ouse events.
 
 All values in the app can either be inserted as plain numbers or as equations, which can then also reference
 any other equation in the app.
-
-bob sign me again testing
