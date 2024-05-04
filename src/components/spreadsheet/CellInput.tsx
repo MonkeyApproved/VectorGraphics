@@ -37,7 +37,7 @@ export default function CellInput({ spreadsheetId, rowIndex, columnIndex }: Cell
       style={{ gridColumn: columnIndex + 2, gridRow: rowIndex + 2 }}
     >
       <div className={styles.result}>{getDisplayValue()}</div>
-      <input className={styles.input} value={equation?.input} onChange={(e) => onValueChange(e.target.value)}></input>
+      <input className={styles.input} value={equation?.input || ''} onChange={(e) => onValueChange(e.target.value)} />
     </div>
   );
 }

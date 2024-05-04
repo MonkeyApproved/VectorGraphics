@@ -1,23 +1,23 @@
 .variableTable {
-  position: relative;
+	position: relative;
 	display: grid;
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 	gap: var(--grid-table-gap);
 	grid-template-columns: minmax(100px, 40%) minmax(100px, 60%);
-  padding-top: 15px;
-  min-width: 200px;
-  max-width: 600px;
+	padding-top: 15px;
+	min-width: 200px;
+	max-width: 600px;
 }
 
 .tableHeader {
-  display: block;
-  top: 0;
-  position: sticky;
-  height: var(--input-height);
+	display: block;
+	top: 0;
+	position: sticky;
+	height: var(--input-height);
 	z-index: 3;
 	font-size: 100%;
-  line-height: var(--input-height);
+	line-height: var(--input-height);
 	text-align: center;
 	white-space: nowrap;
 	overflow: hidden;

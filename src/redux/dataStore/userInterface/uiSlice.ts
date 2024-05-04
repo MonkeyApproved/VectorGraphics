@@ -1,5 +1,6 @@
 import { ContentDict } from './contentDict';
 import { ContentGroup } from './contentGroup';
+import { DataExplorer, getNewDataExplorer } from './dataExplorer';
 import { SvgEditor, getNewSvgEditor } from './svgEditor';
 import { VariableTable, getNewVariableTable } from './variableTable';
 
@@ -11,6 +12,10 @@ export interface UiState {
 const allContent: ContentDict = {};
 const tabContent: string[] = [];
 
+const data: DataExplorer = getNewDataExplorer({ label: 'Data', containerId: 'tabs' });
+allContent[data.id] = data;
+tabContent.push(data.id);
+
 const canvas: SvgEditor = getNewSvgEditor({ label: 'Canvas', containerId: 'tabs' });
 allContent[canvas.id] = canvas;
 tabContent.push(canvas.id);
@@ -21,5 +26,5 @@ tabContent.push(variables.id);
 
 export const initialUiState: UiState = {
   allContent,
-  tabs: { contentList: tabContent, selected: canvas.id },
+  tabs: { contentList: tabContent, selected: data.id },
 };

@@ -7,7 +7,7 @@ export interface DataExplorer extends MainContent {
 
 export function getNewDataExplorer({ label, containerId }: NewContentFunction): DataExplorer {
   return {
-    id: getContentId({ type: 'variables' }),
+    id: getContentId({ type: 'data' }),
     containerId: containerId,
     type: 'data',
     label: label,

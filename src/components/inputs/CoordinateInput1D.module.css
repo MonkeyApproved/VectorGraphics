@@ -1,0 +1,14 @@
+.coordinateInput {
+	display: grid;
+	width: 100%;
+  height: var(--input-height);
+	grid-template-columns: [scale] 4vh [value] 1fr;
+}
+
+.coordinateInput .scale {
+  border-radius: 5px 0 0 5px;
+}
+
+.coordinateInput .value {
+  border-radius: 0 5px 5px 0;
+}

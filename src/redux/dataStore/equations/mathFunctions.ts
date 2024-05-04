@@ -57,12 +57,37 @@ const part: twoArgFunction = ({ x, y }): number | string => {
 
 export const oneArgFunctionDict: { [key: string]: oneArgFunction } = {
   negative: ({ x }) => oneArgFunctionFactory(x, (x) => -x),
-  sin: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sin(x)),
+  acos: ({ x }) => oneArgFunctionFactory(x, (x) => Math.acos(x)),
+  acosh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.acosh(x)),
+  asin: ({ x }) => oneArgFunctionFactory(x, (x) => Math.asin(x)),
+  asinh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.asinh(x)),
+  atan: ({ x }) => oneArgFunctionFactory(x, (x) => Math.atan(x)),
+  atanh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.atanh(x)),
+  cbrt: ({ x }) => oneArgFunctionFactory(x, (x) => Math.cbrt(x)),
+  ceil: ({ x }) => oneArgFunctionFactory(x, (x) => Math.ceil(x)),
+  clz32: ({ x }) => oneArgFunctionFactory(x, (x) => Math.clz32(x)),
   cos: ({ x }) => oneArgFunctionFactory(x, (x) => Math.cos(x)),
-  tan: ({ x }) => oneArgFunctionFactory(x, (x) => Math.tan(x)),
-  abs: ({ x }) => oneArgFunctionFactory(x, (x) => Math.abs(x)),
-  log: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log(x)),
+  cosh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.cosh(x)),
   exp: ({ x }) => oneArgFunctionFactory(x, (x) => Math.exp(x)),
+  expm1: ({ x }) => oneArgFunctionFactory(x, (x) => Math.expm1(x)),
+  floor: ({ x }) => oneArgFunctionFactory(x, (x) => Math.floor(x)),
+  fround: ({ x }) => oneArgFunctionFactory(x, (x) => Math.fround(x)),
+  hypot: ({ x }) => oneArgFunctionFactory(x, (x) => Math.hypot(x)),
+  log: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log(x)),
+  log10: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log10(x)),
+  log1p: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log1p(x)),
+  log2: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log2(x)),
+  max: ({ x }) => oneArgFunctionFactory(x, (x) => Math.max(x)),
+  min: ({ x }) => oneArgFunctionFactory(x, (x) => Math.min(x)),
+  random: ({ x }) => oneArgFunctionFactory(x, (x) => x * Math.random()),
+  round: ({ x }) => oneArgFunctionFactory(x, (x) => Math.round(x)),
+  sign: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sign(x)),
+  sin: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sin(x)),
+  sinh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sinh(x)),
+  sqrt: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sqrt(x)),
+  tan: ({ x }) => oneArgFunctionFactory(x, (x) => Math.tan(x)),
+  tanh: ({ x }) => oneArgFunctionFactory(x, (x) => Math.tanh(x)),
+  trunc: ({ x }) => oneArgFunctionFactory(x, (x) => Math.trunc(x)),
 };
 
 export const twoArgFunctionDict: { [key: string]: twoArgFunction } = {
@@ -71,6 +96,9 @@ export const twoArgFunctionDict: { [key: string]: twoArgFunction } = {
   sub: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => x - y),
   mul: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => x * y),
   div: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => x / y),
+  atan2: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => Math.atan2(x, y)),
+  imul: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => Math.imul(x, y)),
+  pow: ({ x, y }) => twoArgFunctionFactory(x, y, (x, y) => Math.pow(x, y)),
 };
 
 const array: nArgFunction = ({ args }): number[] | string => {
