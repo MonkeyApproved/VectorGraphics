@@ -1,5 +1,5 @@
-import { Fill } from './fill';
-import { Stroke } from './stroke';
+import { Fill } from './style/fill';
+import { Stroke } from './style/stroke';
 
 export type SvgTool = 'select' | 'addLine' | 'addRect' | 'addEllipse';
 
