@@ -1,4 +1,4 @@
-import { CellDetails } from 'redux/dataStore/equations/tokenTypes';
+import { CellDetails } from '../redux/math/equationParsing/tokenUtils';
 
 export function capitalizeFirstLetter({ string }: { string: string }) {
   return string.charAt(0).toUpperCase() + string.slice(1);

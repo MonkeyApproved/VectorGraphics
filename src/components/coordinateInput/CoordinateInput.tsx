@@ -1,7 +1,6 @@
 import CoordinateInput1D from 'components/inputs/CoordinateInput1D';
 import CoordinateScalingToggle from './CoordinateScalingToggle';
 import styles from './input.module.css';
-import cn from 'classnames';
 
 export interface CoordinateInputProps {
   x: number;
@@ -26,7 +25,7 @@ export default function CoordinateInput({ x, y }: CoordinateInputProps) {
         </div>
       </div>
       <div style={{ width: '200px', position: 'absolute', top: '440px', left: '200px' }}>
-        <CoordinateInput1D dimension="x" equationId="pos123" />
+        <CoordinateInput1D unit="px" equationId="pos123" />
       </div>
     </>
   );

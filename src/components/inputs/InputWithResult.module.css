@@ -23,7 +23,6 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-align: left;
-	vertical-align: middle;
 }
 
 /* The result div sits below the input showing the current result */

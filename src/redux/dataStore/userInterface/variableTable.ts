@@ -1,5 +1,6 @@
 import { DataSliceReducer, DataState } from '../dataSlice';
-import { RenameIdProps, getNewEquation, renameEquation } from '../equations/equation';
+import { RenameIdProps, getNewEquation } from '../../math/mathSlice';
+import renameEquation from '../../math/equationParsing/renameEquation';
 import { MainContent, NewContentFunction, getContentId } from './content';
 
 export interface VariableTable extends MainContent {

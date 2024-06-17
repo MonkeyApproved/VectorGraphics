@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { TextField } from '@mui/material';
-import { SvgProperty, getSvgPropertyEquationId } from 'redux/dataStore/equations/svgEquation';
+import { SvgProperty, getSvgPropertyEquationId } from 'redux/dataStore/svg/context';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { getSvgPropertyValue } from 'redux/dataStore/svg/selectors';
 import { updateElementProperty } from 'redux/dataStore/dataSlice';

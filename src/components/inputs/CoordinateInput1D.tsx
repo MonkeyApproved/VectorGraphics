@@ -2,10 +2,10 @@ import { CSSProperties } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { submitEquation, updateElementProperty } from 'redux/dataStore/dataSlice';
-import { getEquationById } from 'redux/dataStore/equations/selectors';
-import { SvgProperty } from 'redux/dataStore/equations/svgEquation';
+import { getEquationById } from 'redux/math/selectors';
+import { SvgProperty, Unit } from 'redux/dataStore/svg/context';
 import cssStyles from './CoordinateInput1D.module.css';
-import ScalingToggle, { Scaling } from './ScalingToggle';
+import ScalingToggle from './ScalingToggle';
 import InputWithResult from './InputWithResult';
 
 export interface CoordinateInput1DStyles {
@@ -14,9 +14,9 @@ export interface CoordinateInput1DStyles {
 }
 
 export interface CoordinateInput1DProps {
-  dimension: 'x' | 'y';
+  unit: Unit;
   equationId: string;
-  svgProperty?: SvgProperty;
+  svgProperty: SvgProperty;
   styles?: CoordinateInput1DStyles;
 }
 
@@ -34,14 +34,12 @@ export default function CoordinateInput1D(props: CoordinateInput1DProps) {
   const onValueChange = (newValue: string) => {
     if (newValue === equation?.input) return;
     if (!props.svgProperty) {
-      dispatch(submitEquation({ id: props.equationId, input: newValue }));
-    } else {
       dispatch(updateElementProperty({ property: props.svgProperty, value: newValue }));
     }
   };
 
-  const onScalingChange = (newScaling: Scaling) => {
-    console.log(`New scaling: ${newScaling}`);
+  const onScalingChange = () => {
+    // update unit in equation
   };
 
   const getDisplayValue = () => {
@@ -53,18 +51,14 @@ export default function CoordinateInput1D(props: CoordinateInput1DProps) {
 
   return (
     <div className={cn(cssStyles.coordinateInput, props.styles?.wrapperClass)} style={props.styles?.wrapperStyles}>
-      <ScalingToggle
-        absoluteLabel={props.dimension}
-        relativeLabel={`d${props.dimension}`}
-        scaling="absolute"
-        onScalingChange={onScalingChange}
-        styles={{ buttonClass: cssStyles.scale }}
-      />
-      <InputWithResult
-        value={equation?.input || ''}
-        result={getDisplayValue()}
-        onValueChange={onValueChange}
-        styles={{ inputClass: cssStyles.value, resultClass: cssStyles.value }}
+      <div className={cssStyles.label}>{props.svgProperty.dimension}=</div>
+      <InputWithResult value={equation?.input || ''} result={getDisplayValue()} onValueChange={onValueChange} />
+      <ScalingToggle<Unit>
+        choiceLeft="px"
+        choiceRight="%"
+        value={props.unit}
+        onValueChange={onScalingChange}
+        styles={{ buttonClass: cssStyles.unit }}
       />
     </div>
   );

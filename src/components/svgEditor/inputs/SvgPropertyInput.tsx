@@ -1,6 +1,6 @@
 import EquationInput from 'components/equationInputs/EquationInput';
 import { CSSProperties } from 'react';
-import { SvgProperty } from 'redux/dataStore/equations/svgEquation';
+import { SvgProperty } from 'redux/dataStore/svg/context';
 import { getSvgPropertyValue } from 'redux/dataStore/svg/selectors';
 import { useAppSelector } from 'redux/hooks';
 import NumberInput from './NumberInput';

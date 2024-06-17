@@ -1,7 +1,7 @@
 import React from 'react';
 import cssStyles from './InputWithResult.module.css';
 import cn from 'classnames';
-import { Result } from 'redux/dataStore/equations/equation';
+import { Result } from 'redux/math/mathSlice';
 
 export interface InputWithResultStyles {
   wrapperClass?: string;

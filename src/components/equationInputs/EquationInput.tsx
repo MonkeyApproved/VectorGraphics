@@ -2,8 +2,8 @@ import { CSSProperties, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { submitEquation, updateElementProperty } from 'redux/dataStore/dataSlice';
-import { getEquationById } from 'redux/dataStore/equations/selectors';
-import { SvgProperty } from 'redux/dataStore/equations/svgEquation';
+import { getEquationById } from 'redux/math/selectors';
+import { SvgProperty } from 'redux/dataStore/svg/context';
 
 export interface EquationInputProps {
   equationId: string;

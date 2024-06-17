@@ -1,7 +1,7 @@
 import { RootState } from 'redux/store';
 import { KeysMatchingType } from 'types';
 import { BaseElement } from './element';
-import { SvgProperty, svgPropertyValue } from '../equations/svgEquation';
+import { SvgProperty, svgPropertyValue } from './context';
 
 export const getElementDict = (state: RootState) => state.data.svg.elementDict;
 

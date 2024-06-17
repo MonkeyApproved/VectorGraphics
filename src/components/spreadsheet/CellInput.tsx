@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { submitEquation } from 'redux/dataStore/dataSlice';
 import { getSpreadsheetColumnLabel, getSpreadsheetRowLabel } from 'generalHelpers/stringHelper';
-import { getEquationById } from 'redux/dataStore/equations/selectors';
+import { getEquationById } from 'redux/math/selectors';
 import styles from './styles.module.css';
 
 export interface CellInputProps {

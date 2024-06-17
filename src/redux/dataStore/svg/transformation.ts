@@ -1,26 +1,24 @@
-export interface Rotation {
+export interface BaseTransformation {
+  type: string;
+  x: number;
+  y: number;
+}
+
+export interface Rotation extends BaseTransformation {
   type: 'rotate';
   angle: number;
-  x: number;
-  y: number;
 }
 
-export interface Translation {
+export interface Translation extends BaseTransformation {
   type: 'translate';
-  x: number;
-  y: number;
 }
 
-export interface Scale {
+export interface Scale extends BaseTransformation {
   type: 'scale';
-  x: number;
-  y: number;
 }
 
-export interface Skew {
+export interface Skew extends BaseTransformation {
   type: 'skew';
-  direction: 'x' | 'y';
-  factor: number;
 }
 
 export type Transformation = Rotation | Translation | Scale | Skew;

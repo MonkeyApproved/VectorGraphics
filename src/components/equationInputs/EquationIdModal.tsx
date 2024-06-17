@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useAppSelector } from 'redux/hooks';
 import styles from './styles.module.css';
-import { checkIfEquationIdExists } from 'redux/dataStore/equations/selectors';
+import { checkIfEquationIdExists } from 'redux/math/selectors';
 
 export interface EquationIdModalProps {
   equationId: string;

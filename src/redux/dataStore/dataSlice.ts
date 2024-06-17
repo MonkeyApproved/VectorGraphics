@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { EquationDict } from './equations/equation';
-import { equationReducers } from './equations/reducers';
 import { CanvasMouseEvent, mouseReducers } from './handlers/mouseHandlers';
 import { svgReducers } from './svg/reducers';
 import { initialSvgState, SvgState } from './svg/svgSlice';
@@ -15,14 +13,12 @@ const initialMouseEventState: CanvasMouseEvent = {
 export interface DataState {
   svg: SvgState;
   mouseEvent: CanvasMouseEvent;
-  equations: EquationDict;
   userInterface: UiState;
 }
 
 const initialState: DataState = {
   svg: initialSvgState,
   mouseEvent: initialMouseEventState,
-  equations: {},
   userInterface: initialUiState,
 };
 
@@ -31,7 +27,7 @@ export type DataSliceReducer<PayloadType> = (state: DataState, { payload, type }
 const dataSlice = createSlice({
   name: 'data',
   initialState,
-  reducers: { ...svgReducers, ...mouseReducers, ...equationReducers, ...uiReducers },
+  reducers: { ...svgReducers, ...mouseReducers, ...uiReducers },
 });
 
 export default dataSlice;
@@ -50,8 +46,6 @@ export const {
   mouseDown,
   mouseDrag,
   mouseUp,
-  // equation reducers
-  submitEquation,
   // ui reducers
   addVariable,
   renameVariable,

@@ -1,11 +1,16 @@
 import { DataSliceReducer } from '../dataSlice';
-import { SvgProperty, updateSvgProperty } from '../equations/svgEquation';
+import { SvgProperty, updateSvgProperty } from './context';
 import { applyElementStroke } from './applyAttributes';
 import { BaseElement, drawElement, selectElementById } from './element';
 import { addElementToDict, forEachElement, removeElementFromDict } from './elementDict';
 import { addPathFromDefinition, drawPath } from './path';
 import { SvgTool } from './settings';
 import { Stroke, updateStroke } from './stroke';
+
+/** Canvas level reducers:
+ *
+ * - setCanvasId: There can be multiple canvases and they are references by the svg element id
+ */
 
 const setCanvasId: DataSliceReducer<{ canvasId: string }> = (state, { payload }) => {
   state.svg.canvasId = payload.canvasId;

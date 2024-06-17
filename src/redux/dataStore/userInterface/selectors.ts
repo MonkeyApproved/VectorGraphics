@@ -1,5 +1,5 @@
 import { RootState } from 'redux/store';
-import { Equation } from '../equations/equation';
+import { Equation } from '../../math/mathSlice';
 import { AnyContent } from './content';
 
 export const getTabContentIds = (state: RootState) => state.data.userInterface.tabs.contentList;

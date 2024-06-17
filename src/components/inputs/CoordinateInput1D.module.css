@@ -2,13 +2,31 @@
 	display: grid;
 	width: 100%;
   height: var(--input-height);
-	grid-template-columns: [scale] 4vh [value] 1fr;
+	grid-template-columns: [label] 4vh [value] 1fr [unit] 4vh;
 }
 
-.coordinateInput .scale {
+.coordinateInput .label {
+  /* positioning */
+	width: 100%;
+  height: 100%;
+
+  /* border & background */
   border-radius: 5px 0 0 5px;
+	background-color: var(--color-blue2);
+
+  /* font settings */
+  color: var(--color-blue2);
+	background-color: var(--color-grey2);
+	line-height: var(--input-height);
+  font-size: var(--input-font-size);
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: nowrap;
+
+  /* cursor */
+  cursor: default;
 }
 
-.coordinateInput .value {
+.coordinateInput .unit {
   border-radius: 0 5px 5px 0;
 }

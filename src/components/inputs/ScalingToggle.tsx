@@ -2,8 +2,6 @@ import React from 'react';
 import cn from 'classnames';
 import cssStyles from './ScalingToggle.module.css';
 
-export type Scaling = 'absolute' | 'relative';
-
 export interface ScalingToggleStyles {
   wrapperClass?: string;
   wrapperStyles?: React.CSSProperties;
@@ -11,40 +9,32 @@ export interface ScalingToggleStyles {
   buttonStyles?: React.CSSProperties;
 }
 
-export interface ScalingToggleProps {
-  relativeLabel: string;
-  absoluteLabel: string;
-  scaling: Scaling;
-  onScalingChange?: (newScaling: Scaling) => void;
+export interface ScalingToggleProps<T = string> {
+  choiceLeft: T;
+  choiceRight: T;
+  value: T;
+  onValueChange?: (newValue: T) => void;
   styles?: ScalingToggleStyles;
 }
 
-export default function ScalingToggle({
-  absoluteLabel,
-  relativeLabel,
-  scaling,
-  onScalingChange,
-  styles,
-}: ScalingToggleProps) {
+export default function Toggle2Choices<T>(props: ScalingToggleProps<T>) {
   const onChoiceClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
-    const label = target.innerHTML;
+    const newValue = target.innerHTML;
 
-    const newScaling: Scaling = label === absoluteLabel ? 'absolute' : 'relative';
-
-    if (newScaling !== scaling && onScalingChange) {
-      onScalingChange(newScaling);
+    if (props.value !== newValue && props.onValueChange) {
+      props.onValueChange(newValue as T);
     }
   };
 
   return (
-    <div className={cn(cssStyles.wrapper, styles?.wrapperClass)} style={styles?.wrapperStyles}>
-      <button className={cn(cssStyles.selected, styles?.buttonClass)} style={styles?.buttonStyles}>
-        {scaling === 'absolute' ? absoluteLabel : relativeLabel}
+    <div className={cn(cssStyles.wrapper, props.styles?.wrapperClass)} style={props.styles?.wrapperStyles}>
+      <button className={cn(cssStyles.selected, props.styles?.buttonClass)} style={props.styles?.buttonStyles}>
+        {props.value as string}
       </button>
       <div className={cssStyles.choices} onClick={onChoiceClick}>
-        <button className={cssStyles.choice1}>{absoluteLabel}</button>
-        <button className={cssStyles.choice2}>{relativeLabel}</button>
+        <button className={cssStyles.choice1}>{props.choiceLeft as string}</button>
+        <button className={cssStyles.choice2}>{props.choiceRight as string}</button>
       </div>
     </div>
   );
