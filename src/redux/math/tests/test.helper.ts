@@ -57,12 +57,14 @@ export function compareResults({ result1, result2 }: { result1: Result; result2:
     expect(result1).toStrictEqual(result2);
   } else if (Number.isInteger(result1)) {
     expect(result1).toStrictEqual(result2);
+  } else if (Number.isNaN(result1)) {
+    expect(result2).toBeNaN();
   } else if (Array.isArray(result2)) {
     expect(Array.isArray(result1)).toBeTruthy();
     expect(result1).toHaveLength(result2.length);
-    result2.forEach((r, i) => {
-      // compare each element of array allowing for floating point numbers
-      expect((result1 as number[])[i]).toBeCloseTo(r, 6);
+    result2.forEach((element, i) => {
+      // do the same check for each element of the array separately
+      compareResults({ result1: (result1 as number[])[i], result2: element });
     });
   } else {
     expect(result1).toBeCloseTo(result2, 6);

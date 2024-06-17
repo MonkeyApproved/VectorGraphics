@@ -34,9 +34,8 @@ const testEquations: InvalidSyntaxParams[] = [
   { input: ']1,[2', expectedError: tokenError.closeArrayMissing, errorPosition: [1] },
   { input: '[1,2,,3]', expectedError: tokenError.sequence, errorPosition: [6, 7] },
   // parenthesis mixed with array brackets
-  { input: '([1,2),3]', expectedError: tokenError.openArrayMissing, errorPosition: [10] },
-  // TODO: fix this behavior (all brackets are currently handled the same)
-  //{ input: '[1,2)', expectedError: tokenError.misplacedParenthesis },
+  { input: '([1,2),3]', expectedError: tokenError.openArrayMissing, errorPosition: [7, 10] },
+  { input: '[1,2)', expectedError: tokenError.misplacedParenthesis, errorPosition: [6] },
   // invalid function usage
   { input: 'sin(1,2)', expectedError: tooManyArgsError },
   { input: 'sin()', expectedError: insufficientArgsError },

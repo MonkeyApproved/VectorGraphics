@@ -1,7 +1,5 @@
 import { AppStore, makeStore } from '../../store';
-import { equationContext, initialMathStates } from './test.helper';
-import { addEquation } from '../mathSlice';
-import { getEquation } from '../selectors';
+import { addEquationToStore, initialMathStates } from './test.helper';
 import { Equation } from '..';
 import { TokenType } from '../equationParsing/tokenUtils';
 import { compareResults } from './test.helper';
@@ -53,27 +51,19 @@ const testEquations: EquationParsingParams[] = [
 ];
 
 describe.each<EquationParsingParams>(testEquations)(
-  'Equation with variables: $input (A=1, B=2, C=4)',
+  'Simple equation with variables: $input (A=1, B=2, C=4)',
   ({ input, tokenTypes, result }) => {
     let store: AppStore;
 
-    // fixed variables used in variable X
-    const contextA = equationContext.variable_A;
-    const contextB = equationContext.variable_B;
-    const contextC = equationContext.variable_C;
-
     // test equation (variable X)
     let equationX: Equation | undefined;
-    const contextX = equationContext.variable_X;
 
     beforeEach(() => {
       store = makeStore({ math: initialMathStates.default });
-      store.dispatch(addEquation({ context: contextA, value: '1' }));
-      store.dispatch(addEquation({ context: contextB, value: '2' }));
-      store.dispatch(addEquation({ context: contextC, value: '4' }));
-      store.dispatch(addEquation({ context: contextX, value: input }));
-      equationX = getEquation(contextX)(store.getState());
-      expect(equationX).toBeDefined();
+      addEquationToStore({ store, name: 'A', value: '1' });
+      addEquationToStore({ store, name: 'B', value: '2' });
+      addEquationToStore({ store, name: 'C', value: '4' });
+      equationX = addEquationToStore({ store, name: 'X', value: input });
     });
 
     it(`parses the equation into ${tokenTypes.length} tokens of the correct type`, () => {
@@ -86,8 +76,36 @@ describe.each<EquationParsingParams>(testEquations)(
     });
 
     it(`correctly computes the result: ${result}`, () => {
-      const equationResult = equationX?.result;
-      compareResults({ result1: equationResult, result2: result });
+      compareResults({ result1: equationX?.result, result2: result });
+    });
+  },
+);
+
+const complexTestEquations: Omit<EquationParsingParams, 'tokenTypes'>[] = [
+  // using different nested functions
+  { input: 'A*(12/(A-17)+sin(25))+cos(17/A)/sqrt(2)', result: -2.391558 },
+  { input: '(sinh(A)-cosh(max(A*5,[4,22/A])))/(exp(4)+min(55,42,A*4))', result: -24542.703777 },
+  { input: 'log2(282736)^( tanh(A) - sqrt(A*tan(A / (-5+8))))', result: 0.034095 },
+  // vector equation, with 3rd element being complex (negative sqrt) and should result in NaN
+  { input: 'cos([A,7,-A])+sqrt([4,A,-1]^3-sqrt([17,2A,6]))', result: [6.7480236, 5.7087494, NaN] },
+];
+
+describe.each<Omit<EquationParsingParams, 'tokenTypes'>>(complexTestEquations)(
+  'Complex equation with single variable: $input (A=3)',
+  ({ input, result }) => {
+    let store: AppStore;
+
+    // test equation (variable X)
+    let equationX: Equation | undefined;
+
+    beforeEach(() => {
+      store = makeStore({ math: initialMathStates.default });
+      addEquationToStore({ store, name: 'A', value: '3' });
+      equationX = addEquationToStore({ store, name: 'X', value: input });
+    });
+
+    it(`correctly computes the result: ${result}`, () => {
+      compareResults({ result1: equationX?.result, result2: result });
     });
   },
 );

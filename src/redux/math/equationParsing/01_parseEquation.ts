@@ -17,6 +17,7 @@ import { Equation } from './types';
  * The input string is split up into tokens, which are subsequently reorganized into a
  * Reverse Polish Notation (RPN) representation of the equation and calculate it's result.
  *
+ * Any parsed token will contain information about it's initial position in the input string (token.offset).
  * Possible tokens are:
  *  - Variables: any word (letter followed by additional letters or numbers) that is not a function
  *  - Functions: any word that is listed in state.math.functions

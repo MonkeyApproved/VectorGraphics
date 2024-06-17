@@ -1,5 +1,5 @@
 import { AppStore, makeStore } from '../../store';
-import { equationContext, initialMathStates } from './test.helper';
+import { addEquationToStore, equationContext, initialMathStates } from './test.helper';
 import { addEquation } from '../mathSlice';
 import { getEquation } from '../selectors';
 import { Equation } from '..';
@@ -79,29 +79,31 @@ const testEquations: EquationParsingParams[] = [
   { input: '2sqrt(9)', tokenTypes: [n, o, ...fcnc], result: 6 },
 ];
 
-describe.each<EquationParsingParams>(testEquations)('Single equation: $input', ({ input, tokenTypes, result }) => {
-  let store: AppStore;
-  let equation: Equation | undefined;
-  const context = equationContext.variable_A;
+describe.each<EquationParsingParams>(testEquations)(
+  'Equation without variables: $input',
+  ({ input, tokenTypes, result }) => {
+    let store: AppStore;
 
-  beforeEach(() => {
-    store = makeStore({ math: initialMathStates.default });
-    store.dispatch(addEquation({ context, value: input }));
-    equation = getEquation(context)(store.getState());
-    expect(equation).toBeDefined();
-  });
+    // test equation (variable A
+    let equation: Equation | undefined;
 
-  it(`parses the equation into ${tokenTypes.length} tokens of the correct type`, () => {
-    const tokens = equation?.tokens?.map((token) => token.type);
-    expect(tokens).toEqual(['start', ...tokenTypes, 'end']);
-  });
+    beforeEach(() => {
+      store = makeStore({ math: initialMathStates.default });
+      equation = addEquationToStore({ store, name: 'A', value: input });
+    });
 
-  it('does not detect errors for valid equations', () => {
-    expect(equation?.errorMessage).toEqual(undefined);
-  });
+    it(`parses the equation into ${tokenTypes.length} tokens of the correct type`, () => {
+      const tokens = equation?.tokens?.map((token) => token.type);
+      expect(tokens).toEqual(['start', ...tokenTypes, 'end']);
+    });
 
-  it(`correctly computes the result: ${result}`, () => {
-    const equationResult = equation?.result;
-    compareResults({ result1: equationResult, result2: result });
-  });
-});
+    it('does not detect errors for valid equations', () => {
+      expect(equation?.errorMessage).toEqual(undefined);
+    });
+
+    it(`correctly computes the result: ${result}`, () => {
+      const equationResult = equation?.result;
+      compareResults({ result1: equationResult, result2: result });
+    });
+  },
+);

@@ -46,8 +46,6 @@ export const oneArgFunctionDict: { [key: string]: oneArgFunction } = {
   log10: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log10(x)),
   log1p: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log1p(x)),
   log2: ({ x }) => oneArgFunctionFactory(x, (x) => Math.log2(x)),
-  max: ({ x }) => oneArgFunctionFactory(x, (x) => Math.max(x)),
-  min: ({ x }) => oneArgFunctionFactory(x, (x) => Math.min(x)),
   random: ({ x }) => oneArgFunctionFactory(x, (x) => x * Math.random()),
   round: ({ x }) => oneArgFunctionFactory(x, (x) => Math.round(x)),
   sign: ({ x }) => oneArgFunctionFactory(x, (x) => Math.sign(x)),
@@ -66,6 +64,8 @@ export const twoArgFunctionDict: { [key: string]: twoArgFunction } = {
 
 export const nArgFunctionDict: { [key: string]: nArgFunction } = {
   sum,
+  max: ({ args }) => Math.max(...args.flat()),
+  min: ({ args }) => Math.min(...args.flat()),
 };
 
 export function getFunctionDict(): { [functionName: string]: DefaultFunction } {

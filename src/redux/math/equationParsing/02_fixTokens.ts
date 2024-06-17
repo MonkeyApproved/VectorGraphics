@@ -19,19 +19,32 @@ import {
 import { Equation } from './types';
 
 interface EquationStats {
+  // track number of commas outside of functions or arrays
   groundLevelCommas: number;
-  currentLevel: number;
-  hierarchy: Token[];
-  index: number;
-  length: number;
+  // track parenthesis nesting
+  currentLevel: number; // number of currently open parenthesis
+  hierarchy: Token[]; // for each level of parenthesis, store the relevant token
+  // track progress of the loop
+  index: number; // current index of token being checked (might jump during the loop)
+  length: number; // length of the tokens array (might change during the loop)
 }
 
+/**
+ * This function checks for different patterns in the parsed tokens and addresses the following issues:
+ *  - Add missing multiplication: It is common practice to omit the multiplication operator, e.g. '2sin(A)' => '2*sin(A)'
+ *  - Fix signs: '-' and '+' can be used as signs, not as operators, e.g. '-1+2' or '2+(-3+5)'. For this purpose, we have
+ *    introduced a 'negative' operator, that is used to represent the negation of numbers: '-1+2' => 'negative 1 + 2'.
+ *
+ * @param {Object} params - Parameters
+ * @param {Equation} params.equation - Equation with newly parsed tokens that need to be fixed
+ * @returns {Equation} Equation with fixed tokens (in place)
+ */
 export default function fixTokens({ equation }: { equation: Equation }): Equation {
   if (!equation.tokens || equation.tokens.length === 0) return equation;
 
   const tracker: EquationStats = {
-    groundLevelCommas: 0,
-    currentLevel: -1,
+    groundLevelCommas: 0, // commas outside of any function or array: will be interpreted as an array
+    currentLevel: -1, // current level of parenthesis nesting
     hierarchy: [],
     index: 0,
     length: equation.tokens.length,
@@ -142,8 +155,8 @@ function handleComposition({ tokens, tracker }: HelperFunctionProps): void {
     }
 
     tracker.currentLevel -= 1;
-    const reference = tracker.hierarchy.pop();
-    if (reference?.type === TokenType.Composition && reference.name === CompositionType.ArrayStart) {
+    const reference = tracker.hierarchy.pop(); // if the reference is a function, nArgs has reached it's final value
+    if (reference?.type === TokenType.Function && reference.symbol === 'array') {
       // check that the corresponding token from hierarchy is not an array, but came from a left parenthesis
       token.error = tokenError.misplacedParenthesis;
       return;
@@ -159,8 +172,7 @@ function handleComposition({ tokens, tracker }: HelperFunctionProps): void {
     tracker.currentLevel -= 1;
     const reference = tracker.hierarchy.pop();
     if (reference?.type === TokenType.Function && reference.definition.name === 'array') {
-      // check if corresponding token was "open array"
-      // replace with parenthesis
+      // check if corresponding token was "open array": replace with parenthesis
       const rightParenthesis = getCompositionToken(')', token.position.offset);
       tokens.splice(tracker.index, 1, rightParenthesis);
     } else {
