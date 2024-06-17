@@ -1,6 +1,7 @@
 import { EquationDict, MathState } from '../mathSlice';
 import updateExistingEquation from './00_setEquationInput';
-import { Context, Equation } from './types';
+import { Equation } from './types';
+import { Context } from '../context';
 import { retrieveExistingDependencies } from './unknownReference';
 
 export default function getNewEquation({

@@ -1,4 +1,4 @@
-import { VARIABLE_NAMESPACE } from 'src/redux/variables/context';
+import { VARIABLE_NAMESPACE } from 'src/redux/variableManager/context';
 import { Context } from '..';
 import { addUnknownReference } from './unknownReference';
 import { MathState } from '../mathSlice';

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reducers } from './reducers';
 import { MathFunction, Equation, getFunctionDict } from './equationParsing';
-import { VARIABLE_CONTEXT_TYPE, VARIABLE_NAMESPACE } from '../variables/context';
+import { VARIABLE_CONTEXT_TYPE, VARIABLE_NAMESPACE } from '../variableManager/context';
 import { MAIN_UNKNOWN_NAMESPACE, UnknownReferencesDict } from './equationParsing/unknownReference';
 
 export interface EquationDict {

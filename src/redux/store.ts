@@ -1,8 +1,21 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
-import mathSlice from './math/mathSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-const rootReducer = combineSlices(mathSlice);
+import { mathSlice } from './math';
+import { userInterfaceSlice } from './userInterface';
+import { canvasSlice } from './canvas';
+import { spreadsheetSlice } from './spreadsheet';
+import { dataExplorerSlice } from './dataExplorer';
+import { variableManagerSlice } from './variableManager';
+
+const rootReducer = combineSlices(
+  mathSlice,
+  variableManagerSlice,
+  userInterfaceSlice,
+  canvasSlice,
+  spreadsheetSlice,
+  dataExplorerSlice,
+);
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {

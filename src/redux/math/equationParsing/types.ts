@@ -1,15 +1,5 @@
 import { RpnToken, Token } from './tokenUtils/tokenTypes';
-import { SvgContext } from 'src/redux/dataStore/svg/context';
-import { UndefinedContext } from './unknownReference';
-import { VariableContext } from 'src/redux/variables/context';
-
-export interface BaseContext {
-  type: string;
-  namespace: string;
-  name: string;
-}
-
-export type Context = UndefinedContext | VariableContext | SvgContext;
+import { Context } from '../context';
 
 export type Result = number | number[] | undefined;
 

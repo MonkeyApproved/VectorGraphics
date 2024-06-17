@@ -1,4 +1,4 @@
-import { Context } from './types';
+import { Context } from '../context';
 import { MathState } from '../mathSlice';
 
 export interface RenameEquationProps {

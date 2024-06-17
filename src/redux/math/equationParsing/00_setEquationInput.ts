@@ -6,7 +6,8 @@ import computeAllResults from './06_computeResult';
 import updateDependencies from './04_updateDependencies';
 import { getExistingEquation } from './getEquation';
 import { setEquationResult } from './setResult';
-import { Context, Equation } from './types';
+import { Equation } from './types';
+import { Context } from '../context';
 import getDependencyMap, { getAffectedEquation, markCyclicDependency } from './05_dependencyMap';
 
 function resetEquationEvaluation({ equation }: { equation: Equation }) {

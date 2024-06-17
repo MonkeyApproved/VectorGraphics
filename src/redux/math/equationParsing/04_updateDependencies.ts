@@ -1,7 +1,8 @@
 import { MathState } from '../mathSlice';
 import { getEquation } from './getEquation';
 import { TokenType } from './tokenUtils/tokenEnums';
-import { Context, Equation } from './types';
+import { Equation } from './types';
+import { Context } from '../context';
 import { UNKNOWN_CONTEXT_TYPE, removeChildFromUnknownReference } from './unknownReference';
 import { deleteContext, findMatchingContext, getDependencyContext } from './contextUtils';
 

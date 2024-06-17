@@ -1,4 +1,4 @@
-import { BaseContext } from '../math';
+import { BaseContext } from 'src/redux/math';
 
 export const VARIABLE_CONTEXT_TYPE = 'variable';
 export const VARIABLE_NAMESPACE = 'variables';
