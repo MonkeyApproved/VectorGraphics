@@ -1,4 +1,5 @@
 import { Coordinate, Length } from '../../types';
+import { getFreshStats } from '../../utils';
 import { addCoordinates } from '../coordinateUtils';
 import { Path } from '../path';
 import { CubicCurveSegment, LineSegment, PathSegment, QuadraticCurveSegment } from './segmentTypes';
@@ -7,6 +8,7 @@ export function pathToShape({ id, label, definition }: { id: string; label: stri
   // check if the path is closed (Z at the end of the definition)
   const path: Path = {
     id,
+    stats: getFreshStats(),
     label,
     type: 'path',
     segments: [],

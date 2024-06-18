@@ -56,3 +56,14 @@ export interface Area {
 }
 
 export type ElementSelection = d3.Selection<d3.BaseType, unknown, HTMLElement, undefined>;
+
+export interface Stats {
+  usages: number;
+  version: number;
+}
+
+export interface BaseEntity {
+  id: string;
+  stats: Stats;
+  label?: string;
+}

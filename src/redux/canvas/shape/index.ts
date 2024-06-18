@@ -1,3 +1,3 @@
 export * from './pathUtils';
 export * from './shape';
-export * from './shapeId';
+export * from './path';

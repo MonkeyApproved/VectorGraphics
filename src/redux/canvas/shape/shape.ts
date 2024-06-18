@@ -1,4 +1,4 @@
-import { ElementSelection } from '../types';
+import { BaseEntity, ElementSelection, Stats } from '../types';
 import { Circle, getCircleParams } from './circle';
 import { Ellipse, getEllipseParams } from './ellipse';
 import { Line, getLineParams } from './line';
@@ -9,9 +9,7 @@ import { Rect, getRectParams } from './rect';
 
 export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polygon' | 'polyline';
 
-export interface BaseShape {
-  id: string;
-  label?: string;
+export interface BaseShape extends BaseEntity {
   type: ShapeType;
 }
 
@@ -19,7 +17,7 @@ export type Shape = Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;
 
 export type GetSvgParams<S> = ({ shape }: { shape: S }) => { [attr: string]: number | string | undefined };
 
-export function applyShape({ shape, selection }: { shape: Shape; selection: ElementSelection }) {
+export function setShapeAttributes({ shape, selection }: { shape: Shape; selection: ElementSelection }) {
   const params = getSvgParams({ shape });
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined) {

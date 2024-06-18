@@ -1,6 +1,4 @@
-import { on } from 'events';
-import { PathSegment, PathSegmentTypes, getSvgParams, pathToShape } from '../shape';
-import { Path } from '../shape/path';
+import { Path, PathSegment, PathSegmentTypes, getSvgParams, pathToShape } from '../shape';
 import { Coordinate } from '../types';
 
 const l: PathSegmentTypes = 'line';
