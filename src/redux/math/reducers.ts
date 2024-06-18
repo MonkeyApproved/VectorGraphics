@@ -1,5 +1,5 @@
+import { Context } from './context';
 import { getNewEquation, renameExistingEquation, updateExistingEquation } from './equationParsing';
-import { Context } from './equationParsing';
 import { MathSliceReducer } from './mathSlice';
 
 const updateEquationValue: MathSliceReducer<{ context: Context; value: string }> = (state, { payload }) => {

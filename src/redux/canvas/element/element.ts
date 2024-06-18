@@ -3,5 +3,4 @@ export interface Element {
   shapeId: string;
   styleId: string;
   transformationId: string;
-  children?: Element[];
 }
