@@ -1,7 +1,7 @@
 import { UndefinedContext } from './equationParsing/unknownReference';
 import { SvgContext } from 'src/redux/canvas';
 import { VariableContext } from 'src/redux/variableManager';
-import { SpreadsheetContent } from '../spreadsheet';
+import { SpreadsheetContext } from '../spreadsheet';
 import { DataContext } from '../dataExplorer';
 
 export interface BaseContext {
@@ -10,4 +10,4 @@ export interface BaseContext {
   name: string;
 }
 
-export type Context = UndefinedContext | VariableContext | SvgContext | SpreadsheetContent | DataContext;
+export type Context = UndefinedContext | VariableContext | SvgContext | SpreadsheetContext | DataContext;

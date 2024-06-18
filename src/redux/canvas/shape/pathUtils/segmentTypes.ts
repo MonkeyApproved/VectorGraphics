@@ -1,10 +1,9 @@
-import { Coordinate, Length } from "../../types";
+import { Coordinate, Length } from '../../types';
 
 export type PathSegmentTypes = 'move' | 'line' | 'quadraticCurve' | 'cubicCurve' | 'arc';
 
 export interface BaseSegment {
   type: PathSegmentTypes;
-  absolute: boolean;
   endPoint: Coordinate;
 }
 
@@ -35,4 +34,3 @@ export interface ArcSegment extends BaseSegment {
 }
 
 export type PathSegment = LineSegment | QuadraticCurveSegment | CubicCurveSegment | ArcSegment;
-

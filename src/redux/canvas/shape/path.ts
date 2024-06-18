@@ -1,5 +1,5 @@
 import { PathSegment } from './pathUtils/segmentTypes';
-import { getPathDefinition } from './pathUtils/shapeToPath';
+import { shapeToPath } from './pathUtils/shapeToPath';
 import { BaseShape, GetSvgParams } from './shape';
 
 export interface Path extends BaseShape {
@@ -10,6 +10,6 @@ export interface Path extends BaseShape {
 
 export const getPathParams: GetSvgParams<Path> = ({ shape }) => {
   return {
-    d: getPathDefinition({ shape }),
+    d: shapeToPath({ shape }),
   };
 };

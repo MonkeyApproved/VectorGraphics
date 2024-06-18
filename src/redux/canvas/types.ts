@@ -46,8 +46,13 @@ export interface Coordinate {
   y: YCoordinate;
 }
 
+export type Offset = Coordinate;
+export type Scale = Coordinate;
+
 export interface Area {
   position: Coordinate;
   positionAnchor: RelativePosition2D;
   size: Size;
 }
+
+export type ElementSelection = d3.Selection<d3.BaseType, unknown, HTMLElement, undefined>;

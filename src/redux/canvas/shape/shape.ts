@@ -1,3 +1,4 @@
+import { ElementSelection } from '../types';
 import { Circle, getCircleParams } from './circle';
 import { Ellipse, getEllipseParams } from './ellipse';
 import { Line, getLineParams } from './line';
@@ -6,19 +7,26 @@ import { Polygon, getPolygonParams } from './polygon';
 import { Polyline, getPolylineParams } from './polyline';
 import { Rect, getRectParams } from './rect';
 
+export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polygon' | 'polyline';
+
 export interface BaseShape {
   id: string;
-  label: string;
-  type: string;
+  label?: string;
+  type: ShapeType;
 }
 
-export interface UnknownShape extends BaseShape {
-  type: 'unknown';
-}
-
-export type Shape = UnknownShape | Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;
+export type Shape = Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;
 
 export type GetSvgParams<S> = ({ shape }: { shape: S }) => { [attr: string]: number | string | undefined };
+
+export function applyShape({ shape, selection }: { shape: Shape; selection: ElementSelection }) {
+  const params = getSvgParams({ shape });
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined) {
+      selection.attr(key, value);
+    }
+  }
+}
 
 export const getSvgParams: GetSvgParams<Shape> = ({ shape }) => {
   if (shape.type === 'line') return getLineParams({ shape });
@@ -28,5 +36,5 @@ export const getSvgParams: GetSvgParams<Shape> = ({ shape }) => {
   if (shape.type === 'polygon') return getPolygonParams({ shape });
   if (shape.type === 'polyline') return getPolylineParams({ shape });
   if (shape.type === 'path') return getPathParams({ shape });
-  throw new Error(`Unknown shape type for ${shape.id}`);
+  throw new Error(`Unknown shape type: ${(shape as Shape).type}`);
 };

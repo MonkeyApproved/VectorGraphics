@@ -2,26 +2,26 @@ import { Coordinate } from '../../types';
 import { Path } from '../path';
 import { PathSegment } from './segmentTypes';
 
-export function getPathDefinition({ shape }: { shape: Path }): string {
-  const segment = shape.segments.map((segment) => getSegmentString({ segment })).join(' ');
+export function shapeToPath({ shape }: { shape: Path }): string {
+  const segments = shape.segments.map((segment) => getSegmentString({ segment }));
   if (shape.closed) {
-    return segment + ' Z';
+    segments.push('Z');
   }
-  return segment;
+  return segments.join(' ');
 }
 
 function getSegmentString({ segment }: { segment: PathSegment }): string {
   const cmd = formatSegmentCmd({ segment });
   const endPoint = formatCoordinate({ coordinate: segment.endPoint });
   const additional = formatControlPoint({ segment });
-  return cmd + additional + endPoint;
+  return `${cmd}${additional} ${endPoint}`;
 }
 
 function formatSegmentCmd({ segment }: { segment: PathSegment }): string {
-  let lowerCase = segment.type.charAt(0);
-  if (segment.type === 'cubicCurve' && segment.smooth) lowerCase = 's';
-  if (segment.type === 'quadraticCurve' && segment.smooth) lowerCase = 't';
-  return segment.absolute ? lowerCase.toUpperCase() : lowerCase;
+  let cmd = segment.type.charAt(0);
+  if (segment.type === 'cubicCurve' && segment.smooth) cmd = 's';
+  if (segment.type === 'quadraticCurve' && segment.smooth) cmd = 't';
+  return cmd.toUpperCase();
 }
 
 function formatCoordinate({ coordinate }: { coordinate: Coordinate | undefined }): string {
@@ -35,17 +35,20 @@ function formatControlPoint({ segment }: { segment: PathSegment }): string {
     case 'move':
       return '';
     case 'quadraticCurve':
-      return formatCoordinate({ coordinate: segment.cp });
+      if (segment.smooth) return '';
+      const cp = formatCoordinate({ coordinate: segment.cp });
+      return ` ${cp}`;
     case 'cubicCurve': {
-      const cp1 = formatCoordinate({ coordinate: segment.cp1 });
       const cp2 = formatCoordinate({ coordinate: segment.cp2 });
-      return `${cp1}${cp2}`;
+      if (segment.smooth) return ` ${cp2}`;
+      const cp1 = formatCoordinate({ coordinate: segment.cp1 });
+      return ` ${cp1} ${cp2}`;
     }
     case 'arc': {
       const radius = `${segment.radiusX} ${segment.radiusY}`;
       const rot = segment.rotation;
       const flags = `${Number(segment.largeFlag)} ${Number(segment.sweepFlag)}`;
-      return `${radius} ${rot} ${flags}`;
+      return ` ${radius} ${rot} ${flags}`;
     }
   }
 }
