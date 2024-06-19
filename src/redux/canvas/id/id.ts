@@ -33,17 +33,25 @@ export function getGroupId({ state }: { state: CanvasState }): string {
   return `${GroupIdSuffix}${state.counters.groups}`;
 }
 
+export const CanvasIdSuffix = 'canvas';
+export function getCanvasId({ state }: { state: CanvasState }): string {
+  state.counters.canvases += 1;
+  return `${CanvasIdSuffix}${state.counters.canvases}`;
+}
+
 export type IdType =
   | ShapeType
   | typeof TransformationIdSuffix
   | typeof StyleIdSuffix
   | typeof ElementIdSuffix
-  | typeof GroupIdSuffix;
+  | typeof GroupIdSuffix
+  | typeof CanvasIdSuffix;
 
 export function getId({ type, state }: { type: IdType; state: CanvasState }): string {
   if (type === StyleIdSuffix) return getStyleId({ state });
   if (type === TransformationIdSuffix) return getTransformationId({ state });
   if (type === ElementIdSuffix) return getElementId({ state });
   if (type === GroupIdSuffix) return getGroupId({ state });
+  if (type === CanvasIdSuffix) return getCanvasId({ state });
   return getShapeId({ type, state });
 }

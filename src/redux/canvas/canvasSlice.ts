@@ -1,20 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { reducers } from './reducers';
+import { ComponentCounter, initialCounterState } from './id';
 import { defaultSvgSettings, SvgSettings } from './settings';
 import { Shape } from './shape';
 import { Style } from './style';
 import { Transformation } from './transformation';
 import { Element } from './element';
 import { Group } from './group';
-import { ComponentCounter, initialCounterState } from './id';
-
-export interface Canvas {
-  id: string;
-  name: string;
-  viewBox: string;
-  elementIds: string[]; // can be elements or groups
-  localSettings: SvgSettings;
-}
+import { Canvas } from './canvas';
+import { reducers } from './reducers';
 
 export interface CanvasState {
   globalSettings: SvgSettings;
@@ -49,4 +42,18 @@ const canvasSlice = createSlice({
   reducers: { ...reducers },
 });
 export default canvasSlice;
-export const {} = canvasSlice.actions;
+export const {
+  // canvas reducers
+  addCanvas,
+  removeCanvas,
+  addElementToCanvas,
+  // element/shape reducers
+  addElement,
+  duplicateElement,
+  removeElement,
+  updateShape,
+  // style reducers
+  applyNewStyle,
+  applyExistingStyle,
+  updateStyle,
+} = canvasSlice.actions;

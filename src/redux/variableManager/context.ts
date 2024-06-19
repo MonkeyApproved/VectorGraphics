@@ -7,3 +7,5 @@ export interface VariableContext extends BaseContext {
   type: typeof VARIABLE_CONTEXT_TYPE;
   namespace: typeof VARIABLE_NAMESPACE;
 }
+
+

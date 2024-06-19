@@ -1,8 +1,9 @@
 import { CanvasSliceReducer } from './canvasSlice';
-import { IdType, getElementId, getId, getShapeId, getStyleId } from './id';
-import { applyStyle } from './reducers.helper';
+import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
+import { applyStyle, getExistingCanvasElement } from './reducers.helper';
 import { Shape } from './shape';
 import { Style } from './style';
+import { getEmptyCanvas } from './canvas';
 import { getFreshStats } from './utils';
 
 type NewShape = Omit<Shape, 'id' | 'stats'>;
@@ -10,21 +11,64 @@ type NewStyle = Omit<Style, 'id' | 'stats'>;
 type ExistingShape = Omit<Shape, 'stats'>;
 type ExistingStyle = Omit<Style, 'stats'>;
 
-const getNewId: CanvasSliceReducer<{ type: IdType }> = (state, { payload }) => getId({ type: payload.type, state });
+const addCanvas: CanvasSliceReducer<{ label?: string }> = (state, { payload }) => {
+  const canvasId = getCanvasId({ state });
+  state.canvases[canvasId] = { ...getEmptyCanvas({ label: payload.label }), id: canvasId };
+};
+
+const removeCanvas: CanvasSliceReducer<{ canvasId: string }> = (state, { payload }) => {
+  // get the canvas to remove
+  const canvas = state.canvases[payload.canvasId];
+  if (!canvas) {
+    throw new Error(`Canvas with id ${payload.canvasId} not found`);
+  }
+
+  // update usage of all elements in the canvas
+  for (const elementId of canvas.elementIds) {
+    const element = getExistingCanvasElement({ id: elementId, state });
+    element.stats.usages--;
+  }
+
+  // remove the canvas
+  delete state.canvases[payload.canvasId];
+};
+
+const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; elementId: string }> = (state, { payload }) => {
+  // get the canvas to add the element to
+  const canvas = state.canvases[payload.canvasId];
+  if (!canvas) {
+    throw new Error(`Canvas with id ${payload.canvasId} not found`);
+  }
+
+  // get the element to add to the canvas
+  const element = state.elements[payload.elementId];
+  if (!element) {
+    throw new Error(`Element with id ${payload.elementId} not found`);
+  }
+
+  // add the element to the canvas
+  canvas.elementIds.push(payload.elementId);
+  element.stats.usages++;
+};
 
 const addElement: CanvasSliceReducer<{ shape: NewShape }> = (state, { payload }) => {
+  // add shape to store
   const shapeId = getShapeId({ type: payload.shape.type, state });
   state.shapes[shapeId] = { ...payload.shape, id: shapeId, stats: getFreshStats() } as Shape;
 
+  // add element to store, referencing the new shape
   const elementId = getElementId({ state });
   state.elements[elementId] = { id: elementId, stats: getFreshStats(), shapeId };
 };
 
 const duplicateElement: CanvasSliceReducer<{ elementId: string }> = (state, { payload }) => {
+  // get the element to duplicate
   const element = state.elements[payload.elementId];
   if (!element) {
     throw new Error(`Element with id ${payload.elementId} not found`);
   }
+
+  // generate a new element with the same shape shape, style and transformations as the original
   const newElementId = getElementId({ state });
   state.elements[newElementId] = { ...element, id: newElementId, stats: getFreshStats() };
 };
@@ -77,8 +121,11 @@ const removeElement: CanvasSliceReducer<{ elementId: string }> = (state, { paylo
 };
 
 export const reducers = {
-  getNewId,
-  // element/shape reduces
+  // canvas reducers
+  addCanvas,
+  removeCanvas,
+  addElementToCanvas,
+  // element/shape reducers
   addElement,
   duplicateElement,
   removeElement,

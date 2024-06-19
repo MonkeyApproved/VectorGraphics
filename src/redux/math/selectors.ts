@@ -1,6 +1,7 @@
 import { RootState } from '../store';
-import { Context, Equation, getNumberFromEquation } from './equationParsing';
+import { Equation, getNumberFromEquation } from './equationParsing';
 import { getEquationById, getExistingEquation } from './equationParsing/getEquation';
+import { Context } from './context';
 
 export const getEquation =
   (context: Context) =>

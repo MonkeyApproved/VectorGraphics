@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reducers } from './reducers';
 
 export interface UiState {
+  tabCounter: number;
   tabs: Tabs;
 }
 
 export const initialState: UiState = {
+  tabCounter: 0,
   tabs: { type: 'single', tabs: [] },
 };
 
@@ -18,4 +20,4 @@ const uiSlice = createSlice({
   reducers: { ...reducers },
 });
 export default uiSlice;
-export const {} = uiSlice.actions;
+export const { addNewTab, removeTab, moveTab, changeTabAreaType } = uiSlice.actions;

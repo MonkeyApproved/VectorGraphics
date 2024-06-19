@@ -12,7 +12,7 @@ export interface SpreadsheetRow {
 
 export interface Spreadsheet {
   id: string;
-  label: string;
+  label?: string;
   columns: SpreadsheetColumn[];
   rows: SpreadsheetRow[];
 }

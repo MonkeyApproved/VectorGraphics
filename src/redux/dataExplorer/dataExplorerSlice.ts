@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reducers } from './reducers';
+import { DataExplorer } from './types';
 
 export interface DataExplorerState {
-  dataSets: string[];
+  dataSets: { [key: string]: DataExplorer };
 }
 
 export const initialState: DataExplorerState = {
-  dataSets: [],
+  dataSets: {},
 };
 
 export type DataExplorerSliceReducer<PayloadType> = (

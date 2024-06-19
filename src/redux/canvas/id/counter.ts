@@ -4,6 +4,7 @@ export interface ComponentCounter {
   transformations: number;
   elements: number;
   groups: number;
+  canvases: number;
 }
 
 export const initialCounterState: ComponentCounter = {
@@ -20,4 +21,5 @@ export const initialCounterState: ComponentCounter = {
   transformations: 0,
   elements: 0,
   groups: 0,
+  canvases: 0,
 };

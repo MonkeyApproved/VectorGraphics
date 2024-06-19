@@ -3,11 +3,17 @@ import { reducers } from './reducers';
 import { VariableManager } from './types';
 
 export interface VariableManagerState {
-  managers: VariableManager[];
+  managers: { [key: string]: VariableManager };
 }
 
 export const initialState: VariableManagerState = {
-  managers: [],
+  managers: {
+    variableManager1: {
+      id: 'variableManager1',
+      label: 'Variables',
+      variables: [],
+    },
+  },
 };
 
 export type VariableManagerSliceReducer<PayloadType> = (

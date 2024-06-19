@@ -42,3 +42,20 @@ export function applyStyle({ targetId, styleId, state }: { targetId: string; sty
   target.stats.version++;
   style.stats.usages++;
 }
+
+export function getCanvasElement({ id, state }: { id: string; state: CanvasState }): Element | Group | undefined {
+  if (id.startsWith(GroupIdSuffix)) {
+    return state.groups[id];
+  } else if (id.startsWith(ElementIdSuffix)) {
+    return state.elements[id];
+  }
+  throw new Error(`Unknown canvas element type for id ${id}. Expected group or element.`);
+}
+
+export function getExistingCanvasElement({ id, state }: { id: string; state: CanvasState }): Element | Group {
+  const element = getCanvasElement({ id, state });
+  if (!element) {
+    throw new Error(`Canvas element with id ${id} not found`);
+  }
+  return element;
+}
