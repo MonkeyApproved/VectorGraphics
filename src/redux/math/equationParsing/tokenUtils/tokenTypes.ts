@@ -67,7 +67,6 @@ export interface CellDetails {
 export interface CellToken extends BaseToken {
   type: TokenType.Cell;
   name: string;
-  details: CellDetails;
   value: number[] | number | undefined;
 }
 

@@ -4,7 +4,7 @@ import { addEquation } from '../mathSlice';
 import { getEquation } from '../selectors';
 import { Equation, MathFunction } from '..';
 import { equationError, tokenError } from '../equationParsing/errors';
-import { FunctionToken, getFunctionToken, getOperatorToken } from '../equationParsing/tokenUtils';
+import { FunctionToken, getFunctionToken } from '../equationParsing/tokenUtils';
 
 interface InvalidSyntaxParams {
   input: string;
@@ -74,7 +74,7 @@ describe.each<InvalidSyntaxParams>(testEquations)(
 
     it('marks the correct tokens as erroneous', () => {
       const errorTokens: number[] = [];
-      const tokens = equation?.tokens?.forEach((token, index) => {
+      equation?.tokens?.forEach((token, index) => {
         if (token.error) {
           errorTokens.push(index);
         }

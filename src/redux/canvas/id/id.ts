@@ -9,49 +9,49 @@ export function getShapeId({ type, state }: { type: ShapeType; state: CanvasStat
   return `${type}${state.counters.shapes[type]}`;
 }
 
-export const StyleIdSuffix = 'style';
+export const StyleIdPrefix = 'style';
 export function getStyleId({ state }: { state: CanvasState }): string {
   state.counters.styles += 1;
-  return `${StyleIdSuffix}${state.counters.styles}`;
+  return `${StyleIdPrefix}${state.counters.styles}`;
 }
 
-export const TransformationIdSuffix = 'transformation';
+export const TransformationIdPrefix = 'transformation';
 export function getTransformationId({ state }: { state: CanvasState }): string {
   state.counters.transformations += 1;
-  return `${TransformationIdSuffix}${state.counters.transformations}`;
+  return `${TransformationIdPrefix}${state.counters.transformations}`;
 }
 
-export const ElementIdSuffix = 'element';
+export const ElementIdPrefix = 'element';
 export function getElementId({ state }: { state: CanvasState }): string {
   state.counters.elements += 1;
-  return `${ElementIdSuffix}${state.counters.elements}`;
+  return `${ElementIdPrefix}${state.counters.elements}`;
 }
 
-export const GroupIdSuffix = 'group';
+export const GroupIdPrefix = 'group';
 export function getGroupId({ state }: { state: CanvasState }): string {
   state.counters.groups += 1;
-  return `${GroupIdSuffix}${state.counters.groups}`;
+  return `${GroupIdPrefix}${state.counters.groups}`;
 }
 
-export const CanvasIdSuffix = 'canvas';
+export const CanvasIdPrefix = 'canvas';
 export function getCanvasId({ state }: { state: CanvasState }): string {
   state.counters.canvases += 1;
-  return `${CanvasIdSuffix}${state.counters.canvases}`;
+  return `${CanvasIdPrefix}${state.counters.canvases}`;
 }
 
 export type IdType =
   | ShapeType
-  | typeof TransformationIdSuffix
-  | typeof StyleIdSuffix
-  | typeof ElementIdSuffix
-  | typeof GroupIdSuffix
-  | typeof CanvasIdSuffix;
+  | typeof TransformationIdPrefix
+  | typeof StyleIdPrefix
+  | typeof ElementIdPrefix
+  | typeof GroupIdPrefix
+  | typeof CanvasIdPrefix;
 
 export function getId({ type, state }: { type: IdType; state: CanvasState }): string {
-  if (type === StyleIdSuffix) return getStyleId({ state });
-  if (type === TransformationIdSuffix) return getTransformationId({ state });
-  if (type === ElementIdSuffix) return getElementId({ state });
-  if (type === GroupIdSuffix) return getGroupId({ state });
-  if (type === CanvasIdSuffix) return getCanvasId({ state });
+  if (type === StyleIdPrefix) return getStyleId({ state });
+  if (type === TransformationIdPrefix) return getTransformationId({ state });
+  if (type === ElementIdPrefix) return getElementId({ state });
+  if (type === GroupIdPrefix) return getGroupId({ state });
+  if (type === CanvasIdPrefix) return getCanvasId({ state });
   return getShapeId({ type, state });
 }

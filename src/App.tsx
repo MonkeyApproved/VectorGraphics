@@ -1,8 +1,9 @@
+import React from 'react';
 import './App.css';
-import MainTabs from './components/mainPage/MainTabs';
+import VariableTable from './VariableManager';
 
 function App() {
-  return <MainTabs />;
+  return <VariableTable managerId={'variableManager1'} />;
 }
 
 export default App;

@@ -1,4 +1,3 @@
-import { stringToCellDetails } from '../../../../generalHelpers/stringHelper';
 import { getFunction, MathFunction } from '../functionUtils';
 import { associativity, operators, precedence, CompositionString, TokenType, nArgsNot2 } from './tokenEnums';
 
@@ -12,9 +11,7 @@ import {
   UnknownToken,
   StartToken,
   EndToken,
-  CellRangeToken,
 } from './tokenTypes';
-import { cellRangeToCellList } from './tokenUtils';
 import { MathState } from '../../mathSlice';
 import { internalFunctions } from '../functionUtils/internalFunctions';
 
@@ -83,23 +80,7 @@ export function getCellToken(name: string, row: number, column: number, offset: 
     position: { offset, length: name.length },
     name,
     value: undefined,
-    details: stringToCellDetails({ cellName: name }),
     symbol: name,
-  };
-  return token;
-}
-
-export function getCellRangeToken(from: CellToken, to: CellToken) {
-  const offset = from.position.offset;
-  const length = to.position.offset + to.position.length - offset;
-  const token: CellRangeToken = {
-    type: TokenType.CellRange,
-    position: { offset, length },
-    from,
-    to,
-    cellList: cellRangeToCellList({ from, to }),
-    value: undefined,
-    symbol: `${from.symbol}:${to.symbol}`,
   };
   return token;
 }

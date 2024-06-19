@@ -12,7 +12,7 @@ import { getContentList } from './tabUtils';
 export const getTabAreaType = (state: RootState) => state.ui.tabs.type;
 
 export const getTabAreaContent =
-  (position: TabPosition) =>
+  ({ position }: { position: TabPosition }) =>
   (state: RootState): ContentWithLabel[] => {
     const contentList: Content[] = getContentList({ position, tabs: state.ui.tabs });
     return contentList.map((content) => {

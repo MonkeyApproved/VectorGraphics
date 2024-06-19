@@ -1,4 +1,3 @@
-import { get } from 'http';
 import { BaseContext, Context, Dependencies } from '..';
 import { MathState } from '../mathSlice';
 import { deleteContext } from './contextUtils';

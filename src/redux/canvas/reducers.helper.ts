@@ -1,7 +1,7 @@
 import { CanvasState } from './canvasSlice';
 import { Element } from './element';
 import { Group } from './group';
-import { ElementIdSuffix, GroupIdSuffix } from './id';
+import { ElementIdPrefix, GroupIdPrefix } from './id';
 
 export function applyStyle({ targetId, styleId, state }: { targetId: string; styleId: string; state: CanvasState }) {
   // make sure the style exists
@@ -12,10 +12,10 @@ export function applyStyle({ targetId, styleId, state }: { targetId: string; sty
 
   // find the correct target based on the id
   let target: Group | Element;
-  if (targetId.startsWith(GroupIdSuffix)) {
+  if (targetId.startsWith(GroupIdPrefix)) {
     // target is a group
     target = state.groups[targetId];
-  } else if (targetId.startsWith(ElementIdSuffix)) {
+  } else if (targetId.startsWith(ElementIdPrefix)) {
     // target is an element
     target = state.elements[targetId];
   } else {
@@ -44,9 +44,9 @@ export function applyStyle({ targetId, styleId, state }: { targetId: string; sty
 }
 
 export function getCanvasElement({ id, state }: { id: string; state: CanvasState }): Element | Group | undefined {
-  if (id.startsWith(GroupIdSuffix)) {
+  if (id.startsWith(GroupIdPrefix)) {
     return state.groups[id];
-  } else if (id.startsWith(ElementIdSuffix)) {
+  } else if (id.startsWith(ElementIdPrefix)) {
     return state.elements[id];
   }
   throw new Error(`Unknown canvas element type for id ${id}. Expected group or element.`);

@@ -8,4 +8,10 @@ export interface VariableContext extends BaseContext {
   namespace: typeof VARIABLE_NAMESPACE;
 }
 
-
+export function getVariableContext({ name }: { name: string }): VariableContext {
+  return {
+    type: VARIABLE_CONTEXT_TYPE,
+    namespace: VARIABLE_NAMESPACE,
+    name,
+  };
+}

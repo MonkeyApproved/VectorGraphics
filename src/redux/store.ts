@@ -23,13 +23,13 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     reducer: rootReducer,
     preloadedState,
   })
-  setupListeners(store.dispatch)
-  return store
+  setupListeners(store.dispatch);
+  return store;
 }
 
-export const store = makeStore()
+export const store = makeStore();
 
 export default store;
 
-export type AppStore = typeof store
-export type AppDispatch = AppStore["dispatch"]
+export type AppStore = typeof store;
+export type AppDispatch = AppStore["dispatch"];
