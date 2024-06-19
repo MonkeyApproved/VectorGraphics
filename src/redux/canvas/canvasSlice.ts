@@ -8,6 +8,7 @@ import { Element } from './element';
 import { Group } from './group';
 import { Canvas } from './canvas';
 import { reducers } from './reducers';
+import { getFreshStats } from './utils';
 
 export interface CanvasState {
   globalSettings: SvgSettings;
@@ -20,7 +21,7 @@ export interface CanvasState {
   canvases: { [key: string]: Canvas };
 }
 
-export const initialState: CanvasState = {
+export const initialCanvasState: CanvasState = {
   globalSettings: defaultSvgSettings,
   counters: initialCounterState,
   shapes: {},
@@ -28,7 +29,15 @@ export const initialState: CanvasState = {
   transformations: {},
   elements: {},
   groups: {},
-  canvases: {},
+  canvases: {
+    canvas1: {
+      id: 'canvas1',
+      stats: getFreshStats(),
+      label: 'Canvas',
+      viewBox: '0 0 100 100',
+      elementIds: [],
+    },
+  },
 };
 
 export type CanvasSliceReducer<PayloadType> = (
@@ -38,7 +47,7 @@ export type CanvasSliceReducer<PayloadType> = (
 
 const canvasSlice = createSlice({
   name: 'canvas',
-  initialState,
+  initialState: initialCanvasState,
   reducers: { ...reducers },
 });
 export default canvasSlice;

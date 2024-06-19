@@ -37,7 +37,10 @@
 	padding-left: 10px;
 	padding-right: 10px;
 
+	/* font settings */
 	font-size: 100%;
+	line-height: 3vh;
+	font-family: 'Courier New', Courier, monospace;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

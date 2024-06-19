@@ -21,5 +21,5 @@ export const initialCounterState: ComponentCounter = {
   transformations: 0,
   elements: 0,
   groups: 0,
-  canvases: 0,
+  canvases: 1,
 };

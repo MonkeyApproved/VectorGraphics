@@ -1,6 +1,6 @@
 import { AppStore } from 'src/redux/store';
 import { Context, Equation, Result } from 'src/redux/math';
-import { MathState, addEquation, initialState, updateEquationValue } from '../mathSlice';
+import { MathState, addEquation, initialMathState, updateEquationValue } from '../mathSlice';
 import { getEquation } from '../selectors';
 
 export function getVariableContext(name: string): Context {
@@ -12,7 +12,7 @@ export function getVariableContext(name: string): Context {
 }
 
 export const initialMathStates: { [key: string]: MathState } = {
-  default: initialState,
+  default: initialMathState,
 };
 
 export const equationContext: { [key: string]: Context } = {

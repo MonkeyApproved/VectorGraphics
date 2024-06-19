@@ -20,7 +20,7 @@ export interface MathState {
   functions: { [functionName: string]: MathFunction };
 }
 
-export const initialState: MathState = {
+export const initialMathState: MathState = {
   unknownReferences: {
     [MAIN_UNKNOWN_NAMESPACE]: {},
   },
@@ -38,7 +38,7 @@ export type MathSliceReducer<PayloadType> = (state: MathState, { payload, type }
 
 const mathSlice = createSlice({
   name: 'math',
-  initialState,
+  initialState: initialMathState,
   reducers: { ...reducers },
 });
 export default mathSlice;

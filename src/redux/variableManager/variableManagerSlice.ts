@@ -7,7 +7,7 @@ export interface VariableManagerState {
   managers: { [key: string]: VariableManager };
 }
 
-export const initialState: VariableManagerState = {
+export const initialVariableManagerState: VariableManagerState = {
   managerCounter: 0,
   managers: {
     variableManager1: {
@@ -25,7 +25,7 @@ export type VariableManagerSliceReducer<PayloadType> = (
 
 const variableManagerSlice = createSlice({
   name: 'variableManager',
-  initialState,
+  initialState: initialVariableManagerState,
   reducers: { ...reducers },
 });
 export default variableManagerSlice;
