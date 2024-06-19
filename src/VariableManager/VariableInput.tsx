@@ -13,12 +13,13 @@ export default function VariableInput({ variableName, index }: VariableInputProp
   const [currentValue, setCurrentValue] = useState<string>(equation.input || '');
   const dispatch = useAppDispatch();
 
-  const onNameSubmit = (newName: string) => {
-    console.log(`Variable name changed from ${currentName} to ${newName}`);
+  const onNameSubmit = () => {
+    // eslint-disable-next-line no-console
+    console.log(`Variable name changed from ${equation.context.name} to ${currentName}`);
   };
 
-  const onValueSubmit = (newValue: string) => {
-    dispatch(updateEquationValue({ context: equation.context, value: newValue }));
+  const onValueSubmit = () => {
+    dispatch(updateEquationValue({ context: equation.context, value: currentValue }));
   };
 
   return (
@@ -33,16 +34,16 @@ export default function VariableInput({ variableName, index }: VariableInputProp
           {equation.context.name}
         </div>
         <input
-          id={`variable-name-display-${variableName}}`}
+          id={`variable-name-input-${variableName}}`}
           className={styles.input}
           value={currentName}
           onChange={(e) => setCurrentName(e.target.value)}
-          onBlur={(e) => onNameSubmit(e.target.value)}
+          onBlur={() => onNameSubmit()}
         />
       </div>
       <div
         id={`variable-value-${variableName}}`}
-        key={`variable-value-${index}`}
+        key={`variable-value-${variableName}`}
         className={styles.inputWrapper}
         style={{ gridColumn: 2, gridRow: index + 2 }}
       >
@@ -52,9 +53,9 @@ export default function VariableInput({ variableName, index }: VariableInputProp
         <input
           id={`variable-value-input-${variableName}}`}
           className={styles.input}
-          value={equation.input}
+          value={currentValue}
           onChange={(e) => setCurrentValue(e.target.value)}
-          onBlur={(e) => onValueSubmit(e.target.value)}
+          onBlur={() => onValueSubmit()}
         />
       </div>
     </>

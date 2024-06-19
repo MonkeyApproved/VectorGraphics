@@ -1,7 +1,7 @@
 import { VariableManager } from './manager';
 import { Equation, getExistingEquation } from 'src/redux/math';
 import { RootState } from 'src/redux/store';
-import { getVariableContext } from '.';
+import { getVariableManagerContext } from '.';
 
 export const getVariableManager =
   ({ managerId }: { managerId: string }) =>
@@ -11,6 +11,6 @@ export const getVariableManager =
 export const getVariableManagerEquation =
   ({ variableName }: { variableName: string }) =>
   (state: RootState): Equation => {
-    const variableContext = getVariableContext({ name: variableName });
+    const variableContext = getVariableManagerContext({ name: variableName });
     return getExistingEquation({ context: variableContext, state: state.math });
   };

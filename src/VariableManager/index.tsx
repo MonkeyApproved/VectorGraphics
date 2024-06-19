@@ -2,6 +2,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import styles from './styles.module.css';
 import VariableInput from './VariableInput';
 import { getVariableManager } from 'src/redux';
+import NewVariableInput from './NewVariableInput';
 
 export default function VariableTable({ managerId }: { managerId: string }) {
   const manager = useAppSelector(getVariableManager({ managerId }));
@@ -16,6 +17,7 @@ export default function VariableTable({ managerId }: { managerId: string }) {
       <div className={styles.tableHeader}>NAME</div>
       <div className={styles.tableHeader}>VALUE</div>
       {tableRows}
+      <NewVariableInput managerId={managerId} index={manager.variables.length} />
     </div>
   );
 }

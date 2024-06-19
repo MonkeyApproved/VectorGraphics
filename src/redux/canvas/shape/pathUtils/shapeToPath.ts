@@ -30,25 +30,22 @@ function formatCoordinate({ coordinate }: { coordinate: Coordinate | undefined }
 }
 
 function formatControlPoint({ segment }: { segment: PathSegment }): string {
-  switch (segment.type) {
-    case 'line':
-    case 'move':
-      return '';
-    case 'quadraticCurve':
-      if (segment.smooth) return '';
-      const cp = formatCoordinate({ coordinate: segment.cp });
-      return ` ${cp}`;
-    case 'cubicCurve': {
-      const cp2 = formatCoordinate({ coordinate: segment.cp2 });
-      if (segment.smooth) return ` ${cp2}`;
-      const cp1 = formatCoordinate({ coordinate: segment.cp1 });
-      return ` ${cp1} ${cp2}`;
-    }
-    case 'arc': {
-      const radius = `${segment.radiusX} ${segment.radiusY}`;
-      const rot = segment.rotation;
-      const flags = `${Number(segment.largeFlag)} ${Number(segment.sweepFlag)}`;
-      return ` ${radius} ${rot} ${flags}`;
-    }
+  if (segment.type === 'line' || segment.type === 'move') {
+    return '';
+  } else if (segment.type === 'quadraticCurve') {
+    if (segment.smooth) return '';
+    const cp = formatCoordinate({ coordinate: segment.cp });
+    return ` ${cp}`;
+  } else if (segment.type === 'cubicCurve') {
+    const cp2 = formatCoordinate({ coordinate: segment.cp2 });
+    if (segment.smooth) return ` ${cp2}`;
+    const cp1 = formatCoordinate({ coordinate: segment.cp1 });
+    return ` ${cp1} ${cp2}`;
+  } else if (segment.type === 'arc') {
+    const radius = `${segment.radiusX} ${segment.radiusY}`;
+    const rot = segment.rotation;
+    const flags = `${Number(segment.largeFlag)} ${Number(segment.sweepFlag)}`;
+    return ` ${radius} ${rot} ${flags}`;
   }
+  throw new Error(`Invalid segment type ${segment.type}`);
 }
