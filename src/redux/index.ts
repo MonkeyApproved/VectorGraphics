@@ -15,4 +15,11 @@ export type { Equation } from './math';
 // canvas slice
 export * from './canvas/canvasSlice';
 export * from './canvas/selectors';
-export type { Canvas } from './canvas';
+export type { Canvas, UserAction, Shape, ShapeType } from './canvas';
+
+// userInterface slice
+export * from './userInterface/uiSlice';
+export * from './userInterface/selectors';
+
+// spreadsheet slice
+export * from './spreadsheet/spreadsheetSlice';

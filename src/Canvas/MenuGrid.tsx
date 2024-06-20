@@ -2,6 +2,8 @@ import { Canvas } from 'src/redux';
 import styles from './styles.module.css';
 
 export default function MenuGrid({ canvas }: { canvas: Canvas }) {
+  const drawShape = ({ shape }: { shape: string }) => {
+
   return (
     <div className={styles.menuGrid}>
       <div className={styles.topMenuGrid}>

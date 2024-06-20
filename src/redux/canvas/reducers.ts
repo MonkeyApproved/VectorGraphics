@@ -3,7 +3,7 @@ import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
 import { applyStyle, getExistingCanvasElement } from './reducers.helper';
 import { Shape } from './shape';
 import { Style } from './style';
-import { getEmptyCanvas } from './canvas';
+import { UserAction, getEmptyCanvas } from './canvas';
 import { getFreshStats } from './utils';
 
 type NewShape = Omit<Shape, 'id' | 'stats'>;
@@ -31,6 +31,14 @@ const removeCanvas: CanvasSliceReducer<{ canvasId: string }> = (state, { payload
 
   // remove the canvas
   delete state.canvases[payload.canvasId];
+};
+
+const setUserAction: CanvasSliceReducer<{ canvasId: string; userAction: UserAction }> = (state, { payload }) => {
+  const canvas = state.canvases[payload.canvasId];
+  if (!canvas) {
+    throw new Error(`Canvas with id ${payload.canvasId} not found`);
+  }
+  canvas.currentUserAction = payload.userAction;
 };
 
 const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; elementId: string }> = (state, { payload }) => {
@@ -124,6 +132,7 @@ export const reducers = {
   // canvas reducers
   addCanvas,
   removeCanvas,
+  setUserAction,
   addElementToCanvas,
   // element/shape reducers
   addElement,

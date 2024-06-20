@@ -1,4 +1,4 @@
-import { BaseEntity, ElementSelection, Stats } from '../types';
+import { BaseEntity, ElementSelection } from '../types';
 import { Circle, getCircleParams } from './circle';
 import { Ellipse, getEllipseParams } from './ellipse';
 import { Line, getLineParams } from './line';

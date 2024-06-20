@@ -1,26 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reducers } from './reducers';
-import { Spreadsheet } from './types';
+import { getEmptySpreadsheet, Spreadsheet } from './spreadsheet';
 
 export interface SpreadsheetState {
+  sheetCounter: number;
   sheets: { [key: string]: Spreadsheet };
 }
 
-export const initialState: SpreadsheetState = {
+export const initialSpreadsheetState: SpreadsheetState = {
+  sheetCounter: 1,
   sheets: {
     sheet1: {
       id: 'sheet1',
-      label: 'Sheet 1',
-      columns: [
-        { id: 'column0', label: 'A', width: 100 },
-        { id: 'column1', label: 'B', width: 100 },
-        { id: 'column2', label: 'C', width: 100 },
-      ],
-      rows: [
-        { id: 'row0', label: '1', height: 30 },
-        { id: 'row1', label: '2', height: 30 },
-        { id: 'row2', label: '3', height: 30 },
-      ],
+      ...getEmptySpreadsheet({ label: 'Sheet1' }),
     },
   },
 };
@@ -32,8 +24,8 @@ export type SpreadsheetSliceReducer<PayloadType> = (
 
 const spreadsheetSlice = createSlice({
   name: 'spreadsheet',
-  initialState,
+  initialState: initialSpreadsheetState,
   reducers: { ...reducers },
 });
 export default spreadsheetSlice;
-export const {} = spreadsheetSlice.actions;
+export const { addSpreadsheet, removeSpreadsheet } = spreadsheetSlice.actions;
