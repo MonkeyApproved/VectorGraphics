@@ -1,5 +1,6 @@
+import { getAreaContainingCoordinates } from '../coordinateMath';
 import { Area, Length } from '../types';
-import { BaseShape, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetSvgParams } from './shape';
 
 export interface Rect extends Area, BaseShape {
   type: 'rect';
@@ -15,5 +16,12 @@ export const getRectParams: GetSvgParams<Rect> = ({ shape }) => {
     height: shape.size.height,
     rx: shape.cornerRadiusX,
     ry: shape.cornerRadiusY,
+  };
+};
+
+export const getNewRect: GetNewShape<Rect> = ({ start, end }) => {
+  return {
+    type: 'rect',
+    ...getAreaContainingCoordinates({ coordinateList: [start, end] }),
   };
 };

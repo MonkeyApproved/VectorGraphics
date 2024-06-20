@@ -1,4 +1,4 @@
-import { Coordinate, Offset } from '../types';
+import { Coordinate } from '../types';
 import { BaseTransformation } from './transformation';
 
 export interface Skew extends BaseTransformation {

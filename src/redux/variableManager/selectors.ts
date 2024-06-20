@@ -1,7 +1,8 @@
 import { VariableManager } from './manager';
-import { Equation, getExistingEquation } from 'src/redux/math';
+import { Equation, getExistingEquation, getEquation } from 'src/redux/math';
 import { RootState } from 'src/redux/store';
 import { getVariableManagerContext } from '.';
+import {} from '../math/equationParsing/getEquation';
 
 export const getVariableManager =
   ({ managerId }: { managerId: string }) =>
@@ -13,4 +14,12 @@ export const getVariableManagerEquation =
   (state: RootState): Equation => {
     const variableContext = getVariableManagerContext({ name: variableName });
     return getExistingEquation({ context: variableContext, state: state.math });
+  };
+
+export const doesVariableNameAlreadyExist =
+  ({ variableName }: { variableName: string }) =>
+  (state: RootState): boolean => {
+    const variableContext = getVariableManagerContext({ name: variableName });
+    const equation = getEquation({ context: variableContext, state: state.math });
+    return equation !== undefined;
   };

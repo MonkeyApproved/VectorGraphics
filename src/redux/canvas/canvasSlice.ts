@@ -6,9 +6,8 @@ import { Style } from './style';
 import { Transformation } from './transformation';
 import { Element } from './element';
 import { Group } from './group';
-import { Canvas } from './canvas';
+import { Canvas, getEmptyCanvas } from './canvas';
 import { reducers } from './reducers';
-import { getFreshStats } from './utils';
 
 export interface CanvasState {
   globalSettings: SvgSettings;
@@ -32,10 +31,7 @@ export const initialCanvasState: CanvasState = {
   canvases: {
     canvas1: {
       id: 'canvas1',
-      stats: getFreshStats(),
-      label: 'Canvas',
-      viewBox: '0 0 100 100',
-      elementIds: [],
+      ...getEmptyCanvas({ label: 'Canvas' }),
     },
   },
 };
@@ -55,6 +51,7 @@ export const {
   // canvas reducers
   addCanvas,
   removeCanvas,
+  setUserAction,
   addElementToCanvas,
   // element/shape reducers
   addElement,

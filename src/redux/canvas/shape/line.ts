@@ -1,5 +1,5 @@
 import { Coordinate } from '../types';
-import { BaseShape, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetSvgParams } from './shape';
 
 export interface Line extends BaseShape {
   type: 'line';
@@ -13,5 +13,13 @@ export const getLineParams: GetSvgParams<Line> = ({ shape }) => {
     y1: shape.start.y,
     x2: shape.end.x,
     y2: shape.end.y,
+  };
+};
+
+export const getNewLine: GetNewShape<Line> = ({ start, end }) => {
+  return {
+    type: 'line',
+    start,
+    end,
   };
 };

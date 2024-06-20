@@ -1,5 +1,5 @@
 import { Coordinate } from '../types';
-import { BaseShape, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetSvgParams } from './shape';
 
 export interface Polygon extends BaseShape {
   type: 'polygon';
@@ -9,5 +9,12 @@ export interface Polygon extends BaseShape {
 export const getPolygonParams: GetSvgParams<Polygon> = ({ shape }) => {
   return {
     points: shape.points.map(({ x, y }) => `${x},${y}`).join(' '),
+  };
+};
+
+export const getNewPolygon: GetNewShape<Polygon> = ({ start, end }) => {
+  return {
+    type: 'polygon',
+    points: [start, end],
   };
 };

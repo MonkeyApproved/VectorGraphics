@@ -1,8 +1,9 @@
+import { AnyShapeGeneric } from '..';
 import { Coordinate } from '../../types';
 import { Path } from '../path';
 import { PathSegment } from './segmentTypes';
 
-export function shapeToPath({ shape }: { shape: Path }): string {
+export function shapeToPath({ shape }: { shape: AnyShapeGeneric<Path> }): string {
   const segments = shape.segments.map((segment) => getSegmentString({ segment }));
   if (shape.closed) {
     segments.push('Z');

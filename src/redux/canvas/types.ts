@@ -55,8 +55,6 @@ export interface Area {
   size: Size;
 }
 
-export type ElementSelection = d3.Selection<d3.BaseType, unknown, HTMLElement, undefined>;
-
 export interface Stats {
   usages: number;
   version: number;

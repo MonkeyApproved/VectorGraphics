@@ -1,5 +1,5 @@
 import { Coordinate } from '../types';
-import { BaseShape, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetSvgParams } from './shape';
 
 export interface Polyline extends BaseShape {
   type: 'polyline';
@@ -9,5 +9,12 @@ export interface Polyline extends BaseShape {
 export const getPolylineParams: GetSvgParams<Polyline> = ({ shape }) => {
   return {
     points: shape.points.map(({ x, y }) => `${x},${y}`).join(' '),
+  };
+};
+
+export const getNewPolyline: GetNewShape<Polyline> = ({ start, end }) => {
+  return {
+    type: 'polyline',
+    points: [start, end],
   };
 };

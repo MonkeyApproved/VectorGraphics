@@ -1,4 +1,4 @@
-import { Path, PathSegment, PathSegmentTypes, getSvgParams, pathToShape } from '../shape';
+import { Path, PathSegment, PathSegmentTypes, getSvgShapeParams, pathToShape } from '../shape';
 import { Coordinate } from '../types';
 
 const l: PathSegmentTypes = 'line';
@@ -176,7 +176,7 @@ describe.each<SingleSegmentTest>(singleSegmentTestCases)(
     });
 
     it('correctly reconstructs the original path definition "d"', () => {
-      const shapeAttr = getSvgParams({ shape });
+      const shapeAttr = getSvgShapeParams({ shape });
       expect(shapeAttr).toHaveProperty('d');
       expect(shapeAttr['d']).toStrictEqual(dFinal || d);
     });
@@ -218,7 +218,7 @@ describe.each<ComplexPathTest>(complexPathTestCases)(
     });
 
     it('correctly reconstructs the original path definition "d"', () => {
-      const shapeAttr = getSvgParams({ shape });
+      const shapeAttr = getSvgShapeParams({ shape });
       expect(shapeAttr).toHaveProperty('d');
       if (onlyAbsolute) {
         expect(shapeAttr['d']).toStrictEqual(d);

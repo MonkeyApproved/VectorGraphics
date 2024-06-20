@@ -1,4 +1,3 @@
-import { line } from 'd3';
 import { Percentage } from '../types';
 import { Color } from './color';
 

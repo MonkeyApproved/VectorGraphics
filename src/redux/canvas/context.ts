@@ -1,5 +1,5 @@
 import { BaseContext } from 'src/redux/math';
-import { Coordinate } from './coordinate';
+import { Coordinate } from './types';
 
 export interface SvgBaseContext extends BaseContext {
   type: 'svg';

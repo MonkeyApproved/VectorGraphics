@@ -1,6 +1,6 @@
 import { Coordinate, Length } from '../../types';
 import { getFreshStats } from '../../utils';
-import { addCoordinates } from '../coordinateUtils';
+import { addCoordinates } from '../../coordinateMath';
 import { Path } from '../path';
 import { CubicCurveSegment, LineSegment, PathSegment, QuadraticCurveSegment } from './segmentTypes';
 

@@ -15,7 +15,9 @@ export type { Equation } from './math';
 // canvas slice
 export * from './canvas/canvasSlice';
 export * from './canvas/selectors';
-export type { Canvas, UserAction, Shape, ShapeType } from './canvas';
+export * from './canvas/coordinateMath';
+export type { Canvas, UserAction, Shape, ShapeType, SvgCanvasIds, Coordinate } from './canvas';
+export { getSvgCanvasIds, getSvgParams } from './canvas';
 
 // userInterface slice
 export * from './userInterface/uiSlice';

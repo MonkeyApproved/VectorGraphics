@@ -5,7 +5,7 @@ export interface BaseUserAction {
 }
 
 export interface DrawAction extends BaseUserAction {
-  type: 'draw';
+  type: 'drawShape';
   shapeType: ShapeType;
 }
 
@@ -14,3 +14,7 @@ export interface SelectAction extends BaseUserAction {
 }
 
 export type UserAction = DrawAction | SelectAction;
+
+export const getInitialUserAction = (): UserAction => ({
+  type: 'select',
+});

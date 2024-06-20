@@ -1,5 +1,6 @@
+import { getAreaCenter, getAreaContainingCoordinates } from '../coordinateMath';
 import { Coordinate, Length } from '../types';
-import { BaseShape, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetSvgParams } from './shape';
 
 export interface Circle extends BaseShape {
   type: 'circle';
@@ -12,5 +13,14 @@ export const getCircleParams: GetSvgParams<Circle> = ({ shape }) => {
     cx: shape.center.x,
     cy: shape.center.y,
     r: shape.radius,
+  };
+};
+
+export const getNewCircle: GetNewShape<Circle> = ({ start, end }) => {
+  const area = getAreaContainingCoordinates({ coordinateList: [start, end] });
+  return {
+    type: 'circle',
+    center: getAreaCenter({ area }),
+    radius: Math.min(area.size.width, area.size.height) / 2,
   };
 };

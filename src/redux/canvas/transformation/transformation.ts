@@ -1,4 +1,4 @@
-import { BaseEntity, Stats } from '../types';
+import { BaseEntity } from '../types';
 import { Rotation } from './rotation';
 import { Scale } from './scale';
 import { Skew } from './skew';
