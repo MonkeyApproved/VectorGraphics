@@ -1,14 +1,10 @@
 import { MathState } from '../mathSlice';
-import getTokens from './01_parseEquation';
-import fixTokens from './02_fixTokens';
-import getRPN from './03_reversePolishNotation';
-import computeAllResults from './06_computeResult';
-import updateDependencies from './04_updateDependencies';
+import computeAllResults from './07_computeResult';
 import { getExistingEquation } from './getEquation';
-import { setEquationResult } from './setResult';
 import { Equation } from './types';
 import { Context } from '../context';
-import getDependencyMap, { getAffectedEquation, markCyclicDependency } from './05_dependencyMap';
+import getDependencyMap, { getAffectedEquation, markCyclicDependency } from './06_dependencyMap';
+import parseEquationInput from './01_parseEquationInput';
 
 function resetEquationEvaluation({ equation }: { equation: Equation }) {
   equation.errorMessage = undefined;
@@ -28,22 +24,8 @@ export default function updateExistingEquation({
   const equation: Equation = getExistingEquation({ context, state });
   resetEquationEvaluation({ equation });
 
-  if (typeof value == 'number') {
-    // a number, not an equation (string) was passed -> no need to evaluate result
-    setEquationResult({ equation, result: value });
-    equation.dependencies.parents = [];
-  } else {
-    // if a real equation is passed, we evaluate it
-    equation.input = value;
-
-    // parse equation
-    getTokens({ equation, state });
-    fixTokens({ equation });
-    getRPN({ equation });
-  }
-
-  // check for new or deprecated parents
-  updateDependencies({ equation, state });
+  // parse the input and update tokens, rpn and dependencies
+  parseEquationInput({ equation, value, state });
 
   // get a map of all affected dependencies
   const dependencyMap = getDependencyMap({ dependencyMap: [], context, state });

@@ -3,13 +3,13 @@ import { computeMathFunctionResult } from './functionUtils/utils';
 import { TokenType } from './tokenUtils/tokenEnums';
 import { RpnToken } from './tokenUtils/tokenTypes';
 import { isValue } from './tokenUtils/tokenUtils';
-import { DependencyMap, markCyclicDependency, removeContextFromDependencyMap } from './05_dependencyMap';
-import { setEquationResult } from './setResult';
+import { DependencyMap, markCyclicDependency, removeContextFromDependencyMap } from './06_dependencyMap';
+import { setEquationResult } from './result';
 import { MathState } from '../mathSlice';
 import { Equation } from './types';
 import { Context } from '../context';
 import { getEquation } from './getEquation';
-import resolveDependencies from './07_resolveDependencies';
+import resolveDependencies from './08_resolveDependencies';
 import { equationError, setEquationError } from './errors';
 
 export default function computeAllResults({

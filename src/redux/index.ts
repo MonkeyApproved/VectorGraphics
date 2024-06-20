@@ -23,3 +23,4 @@ export * from './userInterface/selectors';
 
 // spreadsheet slice
 export * from './spreadsheet/spreadsheetSlice';
+export * from './spreadsheet/selectors';

@@ -2,7 +2,7 @@ import { Context } from '..';
 import { MathState } from '../mathSlice';
 import { deleteContext, findMatchingContext } from './contextUtils';
 import { equationError, setEquationError } from './errors';
-import { getEquationById, getEquation } from './getEquation';
+import { getEquation } from './getEquation';
 
 export interface AffectedEquation {
   context: Context;
@@ -86,6 +86,20 @@ export function getAffectedEquation({
   return dependencyMap.find(
     (entry) => entry.context.name === child.name && entry.context.namespace === child.namespace,
   );
+}
+
+export function removeAffectedEquation({
+  child,
+  dependencyMap,
+}: {
+  child: Context;
+  dependencyMap: DependencyMap;
+}): void {
+  const index = dependencyMap.findIndex(
+    (entry) => entry.context.name === child.name && entry.context.namespace === child.namespace,
+  );
+  if (index === -1) return; // no such child in the dependency map
+  dependencyMap.splice(index, 1);
 }
 
 /**

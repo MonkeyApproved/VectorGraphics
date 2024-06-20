@@ -55,5 +55,5 @@ export function getDependencyContext({
   }
 
   // this dependency is not yet defined -> return an undefined context
-  return addUnknownReference({ reference: name, child: equationContext, state });
+  return addUnknownReference({ reference: name, children: [equationContext], state });
 }

@@ -1,5 +1,5 @@
 import { EquationDict, MathState } from '../mathSlice';
-import updateExistingEquation from './00_setEquationInput';
+import updateExistingEquation from './00A_updateEquationInput';
 import { Equation } from './types';
 import { Context } from '../context';
 import { retrieveExistingDependencies } from './unknownReference';

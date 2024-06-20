@@ -46,4 +46,6 @@ export const {
   // equation reducers
   updateEquationValue,
   addEquation,
+  renameEquation,
+  removeEquation,
 } = mathSlice.actions;

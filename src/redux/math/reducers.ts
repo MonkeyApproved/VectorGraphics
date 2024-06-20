@@ -1,5 +1,10 @@
 import { Context } from './context';
-import { getNewEquation, renameExistingEquation, updateExistingEquation } from './equationParsing';
+import {
+  getNewEquation,
+  changeEquationContext,
+  updateExistingEquation,
+  removeExistingEquation,
+} from './equationParsing';
 import { MathSliceReducer } from './mathSlice';
 
 const updateEquationValue: MathSliceReducer<{ context: Context; value: string }> = (state, { payload }) => {
@@ -10,8 +15,12 @@ const addEquation: MathSliceReducer<{ context: Context; value: string }> = (stat
   getNewEquation({ context: payload.context, value: payload.value, state });
 };
 
-const renameEquation: MathSliceReducer<{ oldContext: Context; newContext: Context }> = (state, { payload }) => {
-  renameExistingEquation({ oldContext: payload.oldContext, newContext: payload.newContext, state });
+const renameEquation: MathSliceReducer<{ oldContext: Context; newName: string }> = (state, { payload }) => {
+  changeEquationContext({ oldContext: payload.oldContext, newName: payload.newName, state });
 };
 
-export const reducers = { updateEquationValue, addEquation, renameEquation };
+const removeEquation: MathSliceReducer<{ context: Context }> = (state, { payload }) => {
+  removeExistingEquation({ context: payload.context, state });
+};
+
+export const reducers = { updateEquationValue, addEquation, renameEquation, removeEquation };

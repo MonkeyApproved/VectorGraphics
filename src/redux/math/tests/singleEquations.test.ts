@@ -1,7 +1,5 @@
 import { AppStore, makeStore } from '../../store';
-import { addEquationToStore, equationContext, initialMathStates } from './test.helper';
-import { addEquation } from '../mathSlice';
-import { getEquation } from '../selectors';
+import { addEquationToStore, initialMathStates } from './test.helper';
 import { Equation } from '..';
 import { TokenType } from '../equationParsing/tokenUtils';
 import { compareResults } from './test.helper';
@@ -56,8 +54,8 @@ const testEquations: EquationParsingParams[] = [
   { input: '1,2,3', tokenTypes: array3, result: [1, 2, 3] },
   { input: '1,2*21,3', tokenTypes: [f, c, ...ncnoncn, c], result: [1, 42, 3] },
   // minus/plus as sign
-  { input: '-1', tokenTypes: [o, n], result: -1 },
-  { input: '+1', tokenTypes: [n], result: 1 },
+  { input: '-1', tokenTypes: [n], result: -1 }, // this is directly parsed as a number (see 01_parseEquationInput)
+  { input: '+1', tokenTypes: [n], result: 1 }, // this is directly parsed as a number (see 01_parseEquationInput)
   { input: '-1+1', tokenTypes: [o, ...non], result: 0 },
   { input: '-(-1)', tokenTypes: [o, c, o, n, c], result: 1 },
   { input: '3*(-10+5)', tokenTypes: nocononc, result: -15 },

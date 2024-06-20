@@ -3,11 +3,14 @@ import {
   addEquationToStore,
   compareResults,
   getEquationFromStore,
+  getVariableContext,
   initialMathStates,
   updateEquationInStore,
 } from './test.helper';
 import { Equation } from '..';
 import { equationError } from '../equationParsing/errors';
+import { removeEquation, renameEquation } from '../mathSlice';
+import { getEquation } from '../equationParsing/getEquation';
 
 function checkForCyclicDependency({ equation }: { equation: Equation }) {
   expect(equation.errorMessage).toBeDefined();
@@ -117,5 +120,106 @@ describe('Changing variable dependencies', () => {
       const equation = getEquationFromStore({ store, name: chain[i] });
       compareResults({ result1: equation.result, result2: 42 });
     }
+  });
+});
+
+describe('Removing equations', () => {
+  let store: AppStore;
+
+  beforeEach(() => {
+    store = makeStore({ math: initialMathStates.default });
+  });
+
+  it(`correctly removes equation with no dependencies`, () => {
+    const context = getVariableContext('A');
+    addEquationToStore({ store, name: 'A', value: '1+1' });
+
+    // check that A is gone
+    store.dispatch(removeEquation({ context }));
+    const equation = getEquation({ context, state: store.getState().math });
+    expect(equation).toBeUndefined();
+  });
+
+  it(`correctly removes equation with existing children`, () => {
+    const context = getVariableContext('A');
+    addEquationToStore({ store, name: 'A', value: '1+1' }); // equation to be removed
+    addEquationToStore({ store, name: 'B', value: 'A+1' }); // direct dependency
+    addEquationToStore({ store, name: 'C', value: 'B+1' }); // indirect dependency
+
+    // check that A is gone
+    store.dispatch(removeEquation({ context }));
+    const equationA = getEquation({ context, state: store.getState().math });
+    expect(equationA).toBeUndefined();
+
+    // check that B & C have been updated to reflect the now missing dependency
+    // B should now have an undefined variable A
+    const equationB = getEquationFromStore({ store, name: 'B' });
+    expect(equationB.errorMessage).toBeDefined();
+    expect(equationB.errorMessage).toEqual(equationError.unknownVariables({ unknownVariables: ['A'] }));
+    // C should now have an undefined variable B (as B will b undefined)
+    const equationC = getEquationFromStore({ store, name: 'C' });
+    expect(equationC.errorMessage).toBeDefined();
+    expect(equationC.errorMessage).toEqual(equationError.undefinedVariables({ undefinedVariables: ['B'] }));
+  });
+});
+
+describe('Rename equations', () => {
+  let store: AppStore;
+
+  beforeEach(() => {
+    store = makeStore({ math: initialMathStates.default });
+  });
+
+  it(`correctly renames equation with no dependencies`, () => {
+    const oldContext = getVariableContext('oldA');
+    const newContext = getVariableContext('newA');
+    addEquationToStore({ store, name: oldContext.name, value: '1+1' });
+
+    // check that A is gone
+    store.dispatch(renameEquation({ oldContext, newName: newContext.name }));
+
+    // check that old context is gone
+    const equationOld = getEquation({ context: oldContext, state: store.getState().math });
+    expect(equationOld).toBeUndefined();
+
+    // check that new context is there and has the correct equation associated
+    const equationNew = getEquation({ context: newContext, state: store.getState().math });
+    expect(equationNew).toBeDefined();
+    expect(equationNew?.errorMessage).toBeUndefined();
+    compareResults({ result1: equationNew?.result, result2: 2 });
+  });
+
+  it(`correctly renames equation with existing children`, () => {
+    // equation to be renamed
+    const oldContext = getVariableContext('oldA');
+    const newContext = getVariableContext('newA');
+    addEquationToStore({ store, name: oldContext.name, value: '1+1' });
+
+    // equations referencing the old name (should initially be defined and then become undefined)
+    const initialB = addEquationToStore({ store, name: 'B', value: 'oldA+1' }); // direct dependency oldA
+    const initialC = addEquationToStore({ store, name: 'C', value: 'B+1' }); // indirect dependency oldA
+
+    // equations referencing the new name (should initially be undefined and then become defined)
+    const initialD = addEquationToStore({ store, name: 'D', value: 'newA+3' }); // direct dependency newA
+    const initialE = addEquationToStore({ store, name: 'E', value: 'D+3' }); // indirect dependency newA
+
+    // check initial state
+    compareResults({ result1: initialB.result, result2: 3 });
+    compareResults({ result1: initialC.result, result2: 4 });
+    expect(initialD.errorMessage).toEqual(equationError.unknownVariables({ unknownVariables: ['newA'] }));
+    expect(initialE.errorMessage).toEqual(equationError.undefinedVariables({ undefinedVariables: ['D'] }));
+
+    // rename the equation and get all the updated children
+    store.dispatch(renameEquation({ oldContext, newName: newContext.name }));
+    const finalB = getEquationFromStore({ store, name: 'B' }); // direct dependency oldA
+    const finalC = getEquationFromStore({ store, name: 'C' }); // indirect dependency oldA
+    const finalD = getEquationFromStore({ store, name: 'D' }); // direct dependency newA
+    const finalE = getEquationFromStore({ store, name: 'E' }); // indirect dependency newA
+
+    // check final state
+    expect(finalB.errorMessage).toEqual(equationError.unknownVariables({ unknownVariables: ['oldA'] }));
+    expect(finalC.errorMessage).toEqual(equationError.undefinedVariables({ undefinedVariables: ['B'] }));
+    compareResults({ result1: finalD.result, result2: 5 });
+    compareResults({ result1: finalE.result, result2: 8 });
   });
 });

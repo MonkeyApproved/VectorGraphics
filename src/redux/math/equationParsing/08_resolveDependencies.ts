@@ -1,6 +1,5 @@
-import { Context, Equation, Result } from '..';
+import { Equation } from '..';
 import { MathState } from '../mathSlice';
-import { getDependencyContext } from './contextUtils';
 import { getEquation } from './getEquation';
 import { TokenType } from './tokenUtils';
 import { UNKNOWN_CONTEXT_TYPE } from './unknownReference';
@@ -23,8 +22,11 @@ export default function resolveDependencies({
 
   equation.rpn.forEach((token) => {
     if (token.type === TokenType.Variable || token.type === TokenType.Cell) {
-      const parentContext = getDependencyContext({ name: token.name, equationContext: equation.context, state });
-      if (parentContext.type === UNKNOWN_CONTEXT_TYPE) {
+      const parentContext = equation.dependencies.parents.find((parent) => parent.name === token.name);
+      if (!parentContext) {
+        // this should not happen, as the parents should have been updated in 05_updateDependencies
+        throw new Error(`Parent dependencies seem to be out-of-date, context of ${token.name} not found`);
+      } else if (parentContext.type === UNKNOWN_CONTEXT_TYPE) {
         // this variable is unknown, the equation result cannot be calculated
         errors.unknownReferences.push(parentContext.name);
       } else {
