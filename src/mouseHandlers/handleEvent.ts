@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { BaseSyntheticEvent } from 'react';
 import { Coordinate } from 'src/redux/types';
-import { MouseEventTracker } from './types';
+import { CanvasMouseEvent, MouseEventTracker } from './types';
 
 export enum TokenType {
   MouseDown = 'mousedown',
@@ -17,7 +17,7 @@ export function getMousePosition({ event }: { event: BaseSyntheticEvent }): Coor
 
 interface MouseEventHandlerProps {
   eventTracker: MouseEventTracker;
-  currentEvent: BaseSyntheticEvent;
+  currentEvent: CanvasMouseEvent;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,6 +42,8 @@ function handleMouseDown({ eventTracker, currentEvent }: MouseEventHandlerProps)
     // it seems like the last event was not finished properly
     console.warn(`Got mouse down while canvas tracker was still ${eventTracker.type}`);
   }
+  console.warn(currentEvent.nativeEvent.button);
+  currentEvent.preventDefault();
   // start a new mouse event
   return {
     type: 'mouseDown',

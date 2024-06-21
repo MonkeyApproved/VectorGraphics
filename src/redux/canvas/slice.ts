@@ -54,7 +54,6 @@ export const {
   setUserAction,
   addElementToCanvas,
   // element/shape reducers
-  addElement,
   duplicateElement,
   removeElement,
   updateShape,

@@ -1,26 +1,25 @@
-import { Fill } from './style/fill';
-import { Stroke } from './style/stroke';
+import { Style } from './style';
+import { getFreshStats } from './utils';
 
 export type SvgTool = 'select' | 'addLine' | 'addRect' | 'addEllipse';
 
-export interface SvgStyle {
-  stroke: Stroke;
-  fill: Fill;
-}
-
 export interface SvgSettings {
   activeTool: SvgTool;
-  defaultElementStyle: SvgStyle;
-  selectionBoxStyle: SvgStyle;
+  defaultElementStyle: Style;
+  selectionBoxStyle: Style;
 }
 
 export const defaultSvgSettings: SvgSettings = {
   activeTool: 'select',
   defaultElementStyle: {
+    id: 'canvasElementDefault',
+    stats: getFreshStats(),
     stroke: { color: 'black', width: 1 },
     fill: { color: 'black', opacity: 0.5 },
   },
   selectionBoxStyle: {
+    id: 'canvasSelectionDefault',
+    stats: getFreshStats(),
     stroke: { color: '#55BBEE', width: 0.2 },
     fill: { color: '#55bbEE', opacity: 0.2 },
   },

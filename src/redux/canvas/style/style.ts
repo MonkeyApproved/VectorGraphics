@@ -1,3 +1,4 @@
+import { Canvas } from '../canvas';
 import { BaseEntity } from '../types';
 import { getFreshStats } from '../utils';
 import { Fill, defaultFillStyle } from './fill';
@@ -26,4 +27,11 @@ export function getSvgStyleParams({ style = defaultStyle }: { style?: Style }): 
     strokeOpacity: style.stroke?.opacity,
     strokeDashoffset: style.stroke?.dashOffset,
   };
+}
+
+export function getDefaultElementStyle({ canvas }: { canvas: Canvas }) {
+  if (canvas.localSettings?.defaultElementStyle) {
+    return canvas.localSettings.defaultElementStyle;
+  }
+  return defaultStyle;
 }

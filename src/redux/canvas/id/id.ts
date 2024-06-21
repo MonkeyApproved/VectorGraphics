@@ -2,7 +2,7 @@ import { CanvasState } from '../slice';
 import { ShapeType } from '../shape';
 
 export function getShapeId({ type, state }: { type: ShapeType; state: CanvasState }): string {
-  if (!state.counters.shapes[type]) {
+  if (state.counters.shapes[type] === undefined) {
     throw new Error(`Unknown shape type ${type}`);
   }
   state.counters.shapes[type] += 1;

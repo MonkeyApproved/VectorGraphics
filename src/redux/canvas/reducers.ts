@@ -1,12 +1,13 @@
 import { CanvasSliceReducer } from './slice';
 import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
 import { applyStyle, getExistingCanvasElement } from './reducers.helper';
-import { Shape } from './shape';
-import { Style } from './style';
-import { UserAction, getEmptyCanvas } from './canvas';
+import { Shape, NewShape } from './shape';
+import { Style, getDefaultElementStyle } from './style';
+import { getEmptyCanvas } from './canvas';
 import { getFreshStats } from './utils';
+import { UserAction, appendElementToCanvas } from './userActions';
+import { Element } from './element';
 
-type NewShape = Omit<Shape, 'id' | 'stats'>;
 type NewStyle = Omit<Style, 'id' | 'stats'>;
 type ExistingShape = Omit<Shape, 'stats'>;
 type ExistingStyle = Omit<Style, 'stats'>;
@@ -41,32 +42,30 @@ const setUserAction: CanvasSliceReducer<{ canvasId: string; userAction: UserActi
   canvas.currentUserAction = payload.userAction;
 };
 
-const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; elementId: string }> = (state, { payload }) => {
+const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; shape: NewShape }> = (state, { payload }) => {
   // get the canvas to add the element to
   const canvas = state.canvases[payload.canvasId];
   if (!canvas) {
     throw new Error(`Canvas with id ${payload.canvasId} not found`);
   }
 
-  // get the element to add to the canvas
-  const element = state.elements[payload.elementId];
-  if (!element) {
-    throw new Error(`Element with id ${payload.elementId} not found`);
-  }
-
-  // add the element to the canvas
-  canvas.elementIds.push(payload.elementId);
-  element.stats.usages++;
-};
-
-const addElement: CanvasSliceReducer<{ shape: NewShape }> = (state, { payload }) => {
   // add shape to store
   const shapeId = getShapeId({ type: payload.shape.type, state });
-  state.shapes[shapeId] = { ...payload.shape, id: shapeId, stats: getFreshStats() } as Shape;
+  const shape: Shape = { ...payload.shape, id: shapeId, stats: getFreshStats() };
+  state.shapes[shapeId] = shape;
 
   // add element to store, referencing the new shape
   const elementId = getElementId({ state });
-  state.elements[elementId] = { id: elementId, stats: getFreshStats(), shapeId };
+  const element: Element = { id: elementId, stats: getFreshStats(), shapeId };
+  state.elements[elementId] = element;
+
+  // add the element to the canvas
+  canvas.elementIds.push(elementId);
+  element.stats.usages++;
+
+  // lastly, we have to add the new shape to the actual SVG canvas
+  const style = getDefaultElementStyle({ canvas });
+  appendElementToCanvas({ canvas, shape, style });
 };
 
 const duplicateElement: CanvasSliceReducer<{ elementId: string }> = (state, { payload }) => {
@@ -135,7 +134,6 @@ export const reducers = {
   setUserAction,
   addElementToCanvas,
   // element/shape reducers
-  addElement,
   duplicateElement,
   removeElement,
   updateShape,

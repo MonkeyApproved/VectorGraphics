@@ -4,6 +4,7 @@ export { getExistingEquation, getEquation } from './math/equationParsing';
 
 // canvas slice
 export { getSvgCanvasIds } from './canvas/canvas';
+export { removeTempShapeFromCanvas } from './canvas/userActions';
 export * from './canvas/coordinateMath';
 
 // variableManager slice

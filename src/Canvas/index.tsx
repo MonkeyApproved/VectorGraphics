@@ -1,17 +1,33 @@
 import styles from './styles.module.css';
 import MenuGrid from './MenuGrid';
-import { MouseEvent, useState } from 'react';
-import { MouseEventTracker, updateMouseEvent } from 'src/mouseHandlers';
-import { getCanvas, updateCanvasOnMouseAction, useAppSelector } from 'src/redux/selectors';
+import { useEffect, useState } from 'react';
+import { CanvasMouseEvent, MouseEventTracker, updateMouseEvent } from 'src/mouseHandlers';
+import { getCanvas, getUIResponse, useAppSelector } from 'src/redux/selectors';
 import { getSvgCanvasIds } from 'src/redux/utils';
+import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
 
 export default function Canvas({ canvasId }: { canvasId: string }) {
   const [mouseEventTracker, setMouseEventTracker] = useState<MouseEventTracker>({ type: 'idle' });
+  const dispatch = useAppDispatch();
   const canvas = useAppSelector(getCanvas({ canvasId }));
   const svgIds = getSvgCanvasIds({ canvasId: canvas.id });
-  const status = useAppSelector(updateCanvasOnMouseAction({ mouseTracker: mouseEventTracker, canvasId: canvas.id }));
+  const uiResponse = useAppSelector(getUIResponse({ mouseTracker: mouseEventTracker, canvasId: canvas.id }), {
+    devModeChecks: { stabilityCheck: 'never' },
+  });
 
-  const updateMouseEventTracker = (event: MouseEvent<SVGSVGElement>) => {
+  useEffect(() => {
+    if (uiResponse.type === 'drawShape' && uiResponse.completed) {
+      // the user finished drawing the new shape, so we can submit it to the store
+      dispatch(addElementToCanvas({ canvasId, shape: uiResponse.tempShape }));
+    }
+
+    // for mouse events, that finish an action, the response will set the tracker back to idle
+    if (uiResponse.mouseTrackerUpdate) {
+      setMouseEventTracker(uiResponse.mouseTrackerUpdate);
+    }
+  }, [dispatch, uiResponse.type, uiResponse.completed]);
+
+  const updateMouseEventTracker = (event: CanvasMouseEvent) => {
     const updatedTracker = updateMouseEvent({ eventTracker: mouseEventTracker, currentEvent: event });
     setMouseEventTracker(updatedTracker);
   };
@@ -31,7 +47,7 @@ export default function Canvas({ canvasId }: { canvasId: string }) {
         />
         <svg className={styles.topCanvas} id={svgIds.topId} viewBox={canvas.viewBox} />
       </div>
-      <MenuGrid canvas={canvas} status={status} />
+      <MenuGrid canvas={canvas} status={uiResponse.statusMessage} />
     </>
   );
 }

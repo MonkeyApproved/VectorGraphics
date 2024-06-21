@@ -1,6 +1,6 @@
-import { ElementSelection } from './selection';
-import { AnyShape, getSvgShapeParams } from '../shape';
-import { Style, getSvgStyleParams } from '../style';
+import { ElementSelection } from './selectElement';
+import { AnyShape, getSvgShapeParams } from '../../shape';
+import { Style, getSvgStyleParams } from '../../style';
 
 export function setShapeAttributes({ shape, selection }: { shape: AnyShape; selection: ElementSelection }) {
   const params = getSvgShapeParams({ shape });

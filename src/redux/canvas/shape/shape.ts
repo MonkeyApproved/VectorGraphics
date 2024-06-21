@@ -15,8 +15,9 @@ export interface BaseShape extends BaseEntity {
 }
 
 export type Shape = Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;
-export type TempShape = DistributiveOmit<Shape, 'id' | 'stats'>;
-export type AnyShape = TempShape | Shape;
+export type NewShape = DistributiveOmit<Shape, 'id' | 'stats'>;
+export type TempShareGeneric<T extends BaseShape> = Omit<T, 'id' | 'stats'>;
+export type AnyShape = NewShape | Shape;
 export type AnyShapeGeneric<T extends BaseShape> = T | Omit<T, 'id' | 'stats'>;
 
 export type GetSvgParams<S extends BaseShape> = ({ shape }: { shape: AnyShapeGeneric<S> }) => {
@@ -44,7 +45,7 @@ export function getNewShape({
   shapeType: ShapeType;
   start: Coordinate;
   end: Coordinate;
-}): TempShape {
+}): NewShape {
   if (shapeType === 'line') return getNewLine({ start, end });
   if (shapeType === 'rect') return getNewRect({ start, end });
   if (shapeType === 'circle') return getNewCircle({ start, end });

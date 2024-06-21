@@ -4,13 +4,15 @@ export interface BaseUserAction {
   type: string;
 }
 
+export const DRAW_ACTION_TYPE = 'drawShape';
 export interface DrawAction extends BaseUserAction {
-  type: 'drawShape';
+  type: typeof DRAW_ACTION_TYPE;
   shapeType: ShapeType;
 }
 
+export const SELECT_ACTION_TYPE = 'select';
 export interface SelectAction extends BaseUserAction {
-  type: 'select';
+  type: typeof SELECT_ACTION_TYPE;
 }
 
 export type UserAction = DrawAction | SelectAction;
