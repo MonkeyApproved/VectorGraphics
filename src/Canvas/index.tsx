@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 import MenuGrid from './MenuGrid';
 import { useEffect, useState } from 'react';
-import { CanvasMouseEvent, MouseEventTracker, updateMouseEvent } from 'src/mouseHandlers';
+import { CanvasMouseEvent, MouseEventTracker, updateMouseEvent } from 'src/eventHandlers';
 import { getCanvas, getUIResponse, useAppSelector } from 'src/redux/selectors';
 import { getSvgCanvasIds } from 'src/redux/utils';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
@@ -20,15 +20,25 @@ export default function Canvas({ canvasId }: { canvasId: string }) {
       // the user finished drawing the new shape, so we can submit it to the store
       dispatch(addElementToCanvas({ canvasId, shape: uiResponse.tempShape }));
     }
+  }, [dispatch, uiResponse.type, uiResponse.completed]);
 
-    // for mouse events, that finish an action, the response will set the tracker back to idle
+  useEffect(() => {
+    // in some cases, the mouse tracker needs to be adjusted, based on the UI response
     if (uiResponse.mouseTrackerUpdate) {
       setMouseEventTracker(uiResponse.mouseTrackerUpdate);
     }
-  }, [dispatch, uiResponse.type, uiResponse.completed]);
+  }, [uiResponse.mouseTrackerUpdate?.type]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    document.addEventListener('keydown', (event) => console.log(event.key));
+  }, []);
 
   const updateMouseEventTracker = (event: CanvasMouseEvent) => {
     const updatedTracker = updateMouseEvent({ eventTracker: mouseEventTracker, currentEvent: event });
+    if (updatedTracker.type !== 'idle' && mouseEventTracker.type !== 'idle') {
+      updatedTracker.finishedSegments = mouseEventTracker.finishedSegments;
+    }
     setMouseEventTracker(updatedTracker);
   };
 

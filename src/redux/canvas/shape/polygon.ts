@@ -12,9 +12,9 @@ export const getPolygonParams: GetSvgParams<Polygon> = ({ shape }) => {
   };
 };
 
-export const getNewPolygon: GetNewShape<Polygon> = ({ start, end }) => {
+export const getNewPolygon: GetNewShape<Polygon> = ({ start }) => {
   return {
     type: 'polygon',
-    points: [start, end],
+    points: [start],
   };
 };

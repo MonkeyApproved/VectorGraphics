@@ -12,9 +12,9 @@ export const getPolylineParams: GetSvgParams<Polyline> = ({ shape }) => {
   };
 };
 
-export const getNewPolyline: GetNewShape<Polyline> = ({ start, end }) => {
+export const getNewPolyline: GetNewShape<Polyline> = ({ start }) => {
   return {
     type: 'polyline',
-    points: [start, end],
+    points: [start],
   };
 };

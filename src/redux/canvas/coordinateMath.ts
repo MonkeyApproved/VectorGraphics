@@ -34,3 +34,7 @@ export function getAreaCenter({ area }: { area: Area }): Coordinate {
     y: area.position.y + area.size.height / 2,
   };
 }
+
+export function pointDistance({ leftArg, rightArg }: CoordinateMathProps): number {
+  return Math.sqrt((leftArg.x - rightArg.x) ** 2 + (leftArg.y - rightArg.y) ** 2);
+}

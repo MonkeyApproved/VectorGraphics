@@ -2,7 +2,7 @@
 export type { Equation, Result } from './math/equationParsing';
 
 // canvas slice
-export type { Shape, ShapeType, Line, Rect, Circle, Ellipse, Polygon, Polyline } from './canvas/shape';
+export type { Shape, ShapeType, Line, Rect, Circle, Ellipse, Polygon, Polyline, NewShape } from './canvas/shape';
 export type { Fill, Color, Stroke } from './canvas/style';
 export type { Transformation, Translation, Rotation, Scale, Skew } from './canvas/transformation';
 export type { Canvas, SvgCanvasIds } from './canvas/canvas';

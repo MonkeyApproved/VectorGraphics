@@ -3,6 +3,8 @@ import { Canvas, getTopCanvasId } from '../../canvas';
 import { ElementSelection, selectElementById } from '../svgStateManagement/selectElement';
 import { setStyleAttributes } from '../svgStateManagement/updateShape';
 import { appendElement } from '../svgStateManagement/appendElement';
+import { NewShape } from '../../shape';
+import { Coordinate } from '../../types';
 
 export const NEW_SHAPE_ID = 'newShapeTemp';
 
@@ -34,4 +36,27 @@ export function removeTempShapeFromCanvas(): void {
   if (tempShape) {
     tempShape.remove();
   }
+}
+
+export function appendFinishedSegments({
+  finishedSegments,
+  current,
+}: {
+  finishedSegments: NewShape;
+  current: Coordinate;
+}): NewShape {
+  if (finishedSegments.type === 'polygon' || finishedSegments.type === 'polyline') {
+    // add the current coordinate as the next point
+    return {
+      ...finishedSegments,
+      points: [...finishedSegments.points, current],
+    };
+  } else if (finishedSegments.type === 'path') {
+    // extend by drawing a line to the current coordinate
+    return {
+      ...finishedSegments,
+      segments: [...finishedSegments.segments, { type: 'line', endPoint: current }],
+    };
+  }
+  return finishedSegments;
 }

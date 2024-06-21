@@ -1,4 +1,4 @@
-import { MouseEventTracker } from 'src/mouseHandlers';
+import { MouseEventTracker } from 'src/eventHandlers';
 import { DRAW_ACTION_TYPE, SELECT_ACTION_TYPE } from '.';
 import { Rect, NewShape, TempShareGeneric } from '../shape';
 
@@ -23,7 +23,6 @@ export interface SelectResponse extends BaseUIResponse {
   type: typeof SELECT_ACTION_TYPE;
   selectionRect: TempShareGeneric<Rect>;
   selectedElementIds: string[];
-  completed: boolean;
 }
 
 export type UIResponse = IdleResponse | DrawResponse | SelectResponse;

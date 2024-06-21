@@ -1,2 +1,2 @@
-export { default as drawNewShape } from './drawNewShape';
+export { default as drawNewShape } from './drawShape';
 export { removeTempShapeFromCanvas } from './tempShape';

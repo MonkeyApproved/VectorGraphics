@@ -49,6 +49,7 @@ function handleMouseDown({ eventTracker, currentEvent }: MouseEventHandlerProps)
     type: 'mouseDown',
     target: currentEvent.target.id,
     start: getMousePosition({ event: currentEvent }),
+    eventSteam: eventTracker.type !== 'idle' ? eventTracker.eventSteam : [],
   };
 }
 
@@ -60,6 +61,7 @@ function handleMouseMove({ eventTracker, currentEvent }: MouseEventHandlerProps)
       target: eventTracker.target,
       start: eventTracker.start,
       current: getMousePosition({ event: currentEvent }),
+      eventSteam: eventTracker.eventSteam,
     };
   }
   return eventTracker;
@@ -68,11 +70,13 @@ function handleMouseMove({ eventTracker, currentEvent }: MouseEventHandlerProps)
 function handleMouseUp({ eventTracker, currentEvent }: MouseEventHandlerProps): MouseEventTracker {
   if (eventTracker.type === 'mouseMoveActive') {
     // this is the first time the mouse moves after a mouse down
+    const end = getMousePosition({ event: currentEvent });
     return {
       type: 'mouseMoveFinished',
       target: eventTracker.target,
       start: eventTracker.start,
-      end: getMousePosition({ event: currentEvent }),
+      end,
+      eventSteam: [...eventTracker.eventSteam, { position: end, time: Date.now() }],
     };
   } else if (eventTracker.type === 'mouseDown') {
     // this is the first time the mouse moves after a mouse down
@@ -80,6 +84,7 @@ function handleMouseUp({ eventTracker, currentEvent }: MouseEventHandlerProps): 
       type: 'mouseClick',
       target: eventTracker.target,
       start: eventTracker.start,
+      eventSteam: [...eventTracker.eventSteam, { position: eventTracker.start, time: Date.now() }],
     };
   }
   // it seems like the last event was not finished properly

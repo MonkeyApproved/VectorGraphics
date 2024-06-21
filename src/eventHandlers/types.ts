@@ -1,13 +1,24 @@
 import { BaseSyntheticEvent } from 'react';
-import { Coordinate } from 'src/redux/types';
+import { Coordinate, NewShape } from 'src/redux/types';
 
 export interface BaseEvent {
   type: string;
 }
 
+export interface ClickEvent {
+  position: Coordinate;
+  time: number;
+}
+
+export interface KeyBoardEvent extends BaseEvent {
+  key: string | undefined;
+}
+
 export interface BaseMouseEvent extends BaseEvent {
   target: string;
   start: Coordinate;
+  eventSteam: ClickEvent[];
+  finishedSegments?: NewShape;
 }
 
 export const MOUSE_IDLE_EVENT_TYPE = 'idle';

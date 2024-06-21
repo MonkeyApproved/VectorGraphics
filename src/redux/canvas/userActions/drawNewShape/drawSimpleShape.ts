@@ -11,7 +11,7 @@ import {
   MOUSE_MOVE_FINISHED_EVENT_TYPE,
   MOUSE_CLICK_EVENT_TYPE,
   MouseClick,
-} from 'src/mouseHandlers';
+} from 'src/eventHandlers';
 import { Canvas } from '../../canvas';
 import { getNewShape } from '../../shape';
 import { setShapeAttributes } from '../svgStateManagement/updateShape';
@@ -24,7 +24,7 @@ export interface DrawTempShapeProps<T extends BaseEvent> {
   canvas: Canvas<DrawAction>;
 }
 
-export default function drawNewShape({ canvas, mouseTracker }: DrawTempShapeProps<MouseEventTracker>): UIResponse {
+export default function drawSimpleShape({ canvas, mouseTracker }: DrawTempShapeProps<MouseEventTracker>): UIResponse {
   if (mouseTracker.type === MOUSE_IDLE_EVENT_TYPE) {
     // nothing to do
     return handleMouseIdle({ mouseTracker, canvas });
@@ -80,7 +80,7 @@ function handleMouseDragFinished({ mouseTracker, canvas }: DrawTempShapeProps<Mo
   removeTempShapeFromCanvas();
   return {
     type: DRAW_ACTION_TYPE,
-    statusMessage: `drawing ${canvas.currentUserAction.shapeType}...`,
+    statusMessage: `Drawing ${shapeType}...`,
     tempShape,
     completed: true,
     mouseTrackerUpdate: { type: MOUSE_IDLE_EVENT_TYPE },

@@ -14,13 +14,10 @@ export const getPathParams: GetSvgParams<Path> = ({ shape }) => {
   };
 };
 
-export const getNewPath: GetNewShape<Path> = ({ start, end }) => {
+export const getNewPath: GetNewShape<Path> = ({ start }) => {
   return {
     type: 'path',
-    segments: [
-      { type: 'move', endPoint: start },
-      { type: 'line', endPoint: end },
-    ],
+    segments: [{ type: 'move', endPoint: start }],
     closed: false,
   };
 };
