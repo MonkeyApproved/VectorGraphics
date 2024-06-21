@@ -1,4 +1,4 @@
-import { SpreadsheetState } from './spreadsheetSlice';
+import { SpreadsheetState } from './slice';
 
 export const SpreadsheetIdPrefix = 'spreadsheet';
 export function getSpreadsheetId({ state }: { state: SpreadsheetState }): string {

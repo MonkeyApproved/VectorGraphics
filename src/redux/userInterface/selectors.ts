@@ -1,13 +1,7 @@
-import {
-  AllAvailableContent,
-  Content,
-  ContentWithLabel,
-  TabPosition,
-  getAllAvailableContent,
-  getAvailableContent,
-} from '.';
-import { RootState } from '../store';
+import { AllAvailableContent, Content, ContentWithLabel, getAllAvailableContent, getAvailableContent } from './content';
+import { RootState } from 'src/redux/store';
 import { getContentList } from './tabUtils';
+import { TabPosition } from './types';
 
 export const getTabAreaType = (state: RootState) => state.ui.tabs.type;
 

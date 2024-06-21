@@ -5,3 +5,4 @@ export { default as getNewEquation, getExistingEquation, getEquation } from './g
 export * from './result';
 export * from './types';
 export * from './functionUtils';
+export * from './tokenUtils';

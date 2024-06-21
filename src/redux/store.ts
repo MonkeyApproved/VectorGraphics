@@ -1,12 +1,12 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { mathSlice } from './math';
-import { userInterfaceSlice } from './userInterface';
-import { canvasSlice } from './canvas';
-import { spreadsheetSlice } from './spreadsheet';
-import { dataExplorerSlice } from './dataExplorer';
-import { variableManagerSlice } from './variableManager';
+import mathSlice from './math/slice';
+import userInterfaceSlice from './userInterface/slice';
+import canvasSlice from './canvas/slice';
+import spreadsheetSlice from './spreadsheet/slice';
+import dataExplorerSlice from './dataExplorer/slice';
+import variableManagerSlice from './variableManager/slice';
 
 const rootReducer = combineSlices(
   mathSlice,

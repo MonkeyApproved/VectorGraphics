@@ -1,5 +1,5 @@
-import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/userInterface';
-import { CanvasState } from './canvasSlice';
+import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/content';
+import { CanvasState } from './slice';
 
 export const CANVAS_CONTENT_TYPE = 'canvas';
 

@@ -1,4 +1,4 @@
-import { VariableManagerState } from './variableManagerSlice';
+import { VariableManagerState } from './slice';
 
 export const VariableManagerIdPrefix = 'variableManager';
 export function getVariableManagerId({ state }: { state: VariableManagerState }): string {

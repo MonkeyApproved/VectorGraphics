@@ -1,5 +1,6 @@
-import { BaseContext, Context, Dependencies, Equation } from '..';
-import { MathState } from '../mathSlice';
+import { Dependencies, Equation } from './types';
+import { BaseContext, Context } from '../context';
+import { MathState } from '../slice';
 import { deleteContext } from './contextUtils';
 import { getEquation } from './getEquation';
 

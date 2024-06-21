@@ -1,5 +1,5 @@
-import { Content } from '..';
-import { UiState } from '../uiSlice';
+import { Content } from '../content';
+import { UiState } from '../slice';
 
 export const mockContent: { [key: string]: Content } = {
   var1: {

@@ -1,4 +1,4 @@
-import { CanvasSliceReducer } from './canvasSlice';
+import { CanvasSliceReducer } from './slice';
 import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
 import { applyStyle, getExistingCanvasElement } from './reducers.helper';
 import { Shape } from './shape';

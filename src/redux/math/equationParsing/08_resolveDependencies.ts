@@ -1,5 +1,5 @@
-import { Equation } from '..';
-import { MathState } from '../mathSlice';
+import { Equation } from './types';
+import { MathState } from '../slice';
 import { getEquation } from './getEquation';
 import { TokenType } from './tokenUtils';
 import { UNKNOWN_CONTEXT_TYPE } from './unknownReference';

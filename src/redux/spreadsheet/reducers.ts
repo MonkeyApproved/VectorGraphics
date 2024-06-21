@@ -1,6 +1,6 @@
 import { getSpreadsheetId } from './id';
 import { getEmptySpreadsheet } from './spreadsheet';
-import { SpreadsheetSliceReducer } from './spreadsheetSlice';
+import { SpreadsheetSliceReducer } from './slice';
 
 const addSpreadsheet: SpreadsheetSliceReducer<{ label?: string; nRows?: number; nColumns?: number }> = (
   state,

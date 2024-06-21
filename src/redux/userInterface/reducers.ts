@@ -1,6 +1,6 @@
 import { TabAreaType, TabPosition } from './types';
 import { Content, ContentType } from './content';
-import { UiSliceReducer } from './uiSlice';
+import { UiSliceReducer } from './slice';
 import { getAllContent, getEmptyTabs, moveContent, placeContent, removeContent } from './tabUtils';
 import { getTabId } from './id';
 

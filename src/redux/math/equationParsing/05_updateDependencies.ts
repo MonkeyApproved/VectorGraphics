@@ -1,4 +1,4 @@
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import { getEquation } from './getEquation';
 import { TokenType } from './tokenUtils/tokenEnums';
 import { Equation } from './types';

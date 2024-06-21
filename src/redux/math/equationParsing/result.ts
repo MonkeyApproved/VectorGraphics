@@ -1,5 +1,5 @@
 import { Equation, Result } from './types';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import { getExistingEquation } from './getEquation';
 import { Context } from '../context';
 

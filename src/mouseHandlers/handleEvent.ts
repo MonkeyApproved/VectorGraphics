@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { BaseSyntheticEvent } from 'react';
-import { Coordinate } from 'src/redux';
+import { Coordinate } from 'src/redux/types';
 import { MouseEventTracker } from './types';
 
 export enum TokenType {

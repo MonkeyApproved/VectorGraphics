@@ -1,4 +1,4 @@
-import { Equation } from '..';
+import { Equation } from './types';
 import { FunctionToken, OperatorToken } from './tokenUtils';
 
 /**

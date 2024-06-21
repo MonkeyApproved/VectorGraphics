@@ -1,7 +1,6 @@
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppSelector, getVariableManager } from 'src/redux/selectors';
 import styles from './styles.module.css';
 import VariableInput from './VariableInput';
-import { getVariableManager } from 'src/redux';
 import NewVariableInput from './NewVariableInput';
 
 export default function VariableTable({ managerId }: { managerId: string }) {

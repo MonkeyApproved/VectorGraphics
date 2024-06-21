@@ -1,7 +1,8 @@
 import { AppStore } from 'src/redux/store';
-import { Context, Equation, Result } from 'src/redux/math';
-import { MathState, addEquation, initialMathState, updateEquationValue } from '../mathSlice';
+import { Equation, Result } from 'src/redux/types';
+import { MathState, addEquation, initialMathState, updateEquationValue } from '../slice';
 import { getEquation } from '../selectors';
+import { Context } from 'src/redux/context';
 
 export function getVariableContext(name: string): Context {
   return {

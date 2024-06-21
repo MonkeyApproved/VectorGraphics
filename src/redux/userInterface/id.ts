@@ -1,4 +1,4 @@
-import { UiState } from './uiSlice';
+import { UiState } from './slice';
 
 export const TabIdPrefix = 'tab';
 export function getTabId({ state }: { state: UiState }): string {

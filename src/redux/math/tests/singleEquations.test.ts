@@ -1,7 +1,6 @@
 import { AppStore, makeStore } from '../../store';
 import { addEquationToStore, initialMathStates } from './test.helper';
-import { Equation } from '..';
-import { TokenType } from '../equationParsing/tokenUtils';
+import { Equation, TokenType } from '../equationParsing';
 import { compareResults } from './test.helper';
 
 interface EquationParsingParams {

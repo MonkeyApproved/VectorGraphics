@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
-import { Canvas, DrawAction, getTopCanvasId } from '../canvas';
-import { appendElement } from './append';
-import { setStyleAttributes } from './updateShape';
+import { Canvas, DrawAction } from '../canvas';
+import { addTempShapeToCanvas } from './append';
 
 export type ElementSelection = d3.Selection<d3.BaseType, unknown, HTMLElement, undefined>;
 
@@ -24,16 +23,4 @@ export function selectTempShape({ canvas }: { canvas: Canvas<DrawAction> }): Ele
 
   // if the shape does not exist, we add it to the top canvas
   return addTempShapeToCanvas({ canvas });
-}
-
-export function addTempShapeToCanvas({ canvas }: { canvas: Canvas<DrawAction> }): ElementSelection {
-  const topCanvasId = getTopCanvasId({ canvasId: canvas.id });
-  const canvasSelection = selectElementById({ elementId: topCanvasId });
-  if (!canvasSelection) {
-    throw new Error(`Canvas with id ${topCanvasId} not found`);
-  }
-  const tempShape = appendElement({ parent: canvasSelection, elementType: canvas.currentUserAction.shapeType });
-  tempShape.attr('id', NEW_SHAPE_ID);
-  setStyleAttributes({ selection: tempShape });
-  return tempShape;
 }

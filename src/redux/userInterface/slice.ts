@@ -7,7 +7,7 @@ export interface UiState {
   tabs: Tabs;
 }
 
-export const initialState: UiState = {
+export const initialUserInterfaceState: UiState = {
   tabCounter: 0,
   tabs: { type: 'single', tabs: [] },
 };
@@ -16,7 +16,7 @@ export type UiSliceReducer<PayloadType> = (state: UiState, { payload, type }: Pa
 
 const uiSlice = createSlice({
   name: 'ui',
-  initialState,
+  initialState: initialUserInterfaceState,
   reducers: { ...reducers },
 });
 export default uiSlice;

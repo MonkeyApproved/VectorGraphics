@@ -5,7 +5,7 @@ import { RpnToken } from './tokenUtils/tokenTypes';
 import { isValue } from './tokenUtils/tokenUtils';
 import { DependencyMap, markCyclicDependency, removeContextFromDependencyMap } from './06_dependencyMap';
 import { setEquationResult } from './result';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import { Equation } from './types';
 import { Context } from '../context';
 import { getEquation } from './getEquation';

@@ -1,5 +1,5 @@
-import { Context } from '..';
-import { MathState } from '../mathSlice';
+import { Context } from '../context';
+import { MathState } from '../slice';
 import { deleteContext, findMatchingContext } from './contextUtils';
 import { equationError, setEquationError } from './errors';
 import { getEquation } from './getEquation';

@@ -4,7 +4,7 @@ import fixTokens from './03_fixTokens';
 import getRPN from './04_reversePolishNotation';
 import updateDependencies from './05_updateDependencies';
 import { directlyParseResultFromInput, setEquationResult } from './result';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import { getEndToken, getNumberToken, getStartToken } from './tokenUtils';
 
 function formatInputAsString(input: string | number): string {

@@ -1,8 +1,8 @@
 import { AppStore, makeStore } from '../../store';
 import { equationContext, initialMathStates } from './test.helper';
-import { addEquation } from '../mathSlice';
+import { addEquation } from '../slice';
 import { getEquation } from '../selectors';
-import { Equation, MathFunction } from '..';
+import { Equation, MathFunction } from '../equationParsing';
 import { equationError, tokenError } from '../equationParsing/errors';
 import { FunctionToken, getFunctionToken } from '../equationParsing/tokenUtils';
 

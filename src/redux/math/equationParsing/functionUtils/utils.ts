@@ -1,6 +1,6 @@
 import { oneArgFunctionDict, twoArgFunctionDict, nArgFunctionDict } from './defaultFunctions';
 import { Arg, MathFunction } from './functionTypes';
-import { MathState } from '../../mathSlice';
+import { MathState } from '../../slice';
 import { internalNArgFunctionDict, internalOneArgFunctionDict, internalTwoArgFunctionDict } from './internalFunctions';
 
 export function getFunction({ name, state }: { name: string; state: MathState }): MathFunction | undefined {

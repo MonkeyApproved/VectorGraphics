@@ -1,4 +1,4 @@
-import { BaseContext } from 'src/redux/math';
+import { BaseContext } from 'src/redux/context';
 
 export const DATA_CONTEXT_TYPE = 'data';
 

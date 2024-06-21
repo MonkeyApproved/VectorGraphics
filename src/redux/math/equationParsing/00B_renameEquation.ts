@@ -1,6 +1,6 @@
 import { Equation } from '.';
 import { Context } from '../context';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import { removeEquationContextFromChildren } from './00C_removeEquation';
 import getDependencyMap from './06_dependencyMap';
 import computeAllResults from './07_computeResult';

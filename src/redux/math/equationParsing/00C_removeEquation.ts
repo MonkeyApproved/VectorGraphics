@@ -1,6 +1,6 @@
 import { Equation } from '.';
 import { Context } from '../context';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import getDependencyMap, {
   markCyclicDependency,
   removeAffectedEquation,

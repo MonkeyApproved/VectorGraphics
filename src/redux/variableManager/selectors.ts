@@ -1,8 +1,8 @@
 import { VariableManager } from './manager';
-import { Equation, getExistingEquation, getEquation } from 'src/redux/math';
+import { Equation } from 'src/redux/types';
 import { RootState } from 'src/redux/store';
-import { getVariableManagerContext } from '.';
-import {} from '../math/equationParsing/getEquation';
+import { getVariableManagerContext } from './context';
+import { getExistingEquation, getEquation } from 'src/redux/utils';
 
 export const getVariableManager =
   ({ managerId }: { managerId: string }) =>

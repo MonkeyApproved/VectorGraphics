@@ -1,6 +1,8 @@
+import { Equation } from 'src/redux/types';
 import styles from './styles.module.css';
 import { useState } from 'react';
-import { Equation, useAppDispatch, useAppSelector, getVariableManagerEquation, updateEquationValue } from 'src/redux';
+import { getVariableManagerEquation, useAppSelector } from 'src/redux/selectors';
+import { updateEquationValue, useAppDispatch } from 'src/redux/reducers';
 
 export interface VariableInputProps {
   variableName: string;

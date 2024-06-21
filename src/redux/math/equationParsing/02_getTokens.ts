@@ -1,4 +1,4 @@
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import {
   getNumberToken,
   getOperatorToken,

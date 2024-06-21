@@ -1,7 +1,7 @@
 import { VARIABLE_NAMESPACE } from 'src/redux/variableManager/context';
-import { Context } from '..';
+import { Context } from '../context';
 import { addUnknownReference } from './unknownReference';
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 
 export function findMatchingContext({ context, contextList }: { context: Context; contextList: Context[] }) {
   return contextList.find((c) => context.name === c.name && context.namespace === c.namespace);

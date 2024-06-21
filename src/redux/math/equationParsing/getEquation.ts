@@ -1,4 +1,4 @@
-import { EquationDict, MathState } from '../mathSlice';
+import { EquationDict, MathState } from '../slice';
 import updateExistingEquation from './00A_updateEquationInput';
 import { Equation } from './types';
 import { Context } from '../context';
@@ -49,31 +49,4 @@ export function getExistingEquation({ context, state }: { context: Context; stat
     throw new Error(`Equation with id ${context.name} does not exist in namespace ${context.namespace}`);
   }
   return equationDict[context.name];
-}
-
-export function getEquationById({ equationId, state }: { equationId: string; state: MathState }): Equation | undefined {
-  for (const namespace in state.variables) {
-    if (equationId in state.variables[namespace].equations) {
-      return state.variables[namespace].equations[equationId];
-    }
-  }
-  return undefined;
-}
-
-export function getExistingEquationById({ equationId, state }: { equationId: string; state: MathState }): Equation {
-  const equation = getEquationById({ equationId, state });
-  if (equation) {
-    return equation;
-  }
-  throw new Error(`Equation with id ${equationId} does not exist in any namespace`);
-}
-
-export function getAllEquationIds({ state }: { state: MathState }): Set<string> {
-  const ids: Set<string> = new Set();
-  for (const namespace in state.variables) {
-    for (const equationId in state.variables[namespace].equations) {
-      ids.add(equationId);
-    }
-  }
-  return ids;
 }

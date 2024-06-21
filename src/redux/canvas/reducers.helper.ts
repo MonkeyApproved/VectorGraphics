@@ -1,4 +1,4 @@
-import { CanvasState } from './canvasSlice';
+import { CanvasState } from './slice';
 import { Element } from './element';
 import { Group } from './group';
 import { ElementIdPrefix, GroupIdPrefix } from './id';

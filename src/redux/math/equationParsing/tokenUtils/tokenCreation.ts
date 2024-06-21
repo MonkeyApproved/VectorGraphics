@@ -12,7 +12,7 @@ import {
   StartToken,
   EndToken,
 } from './tokenTypes';
-import { MathState } from '../../mathSlice';
+import { MathState } from '../../slice';
 import { internalFunctions } from '../functionUtils/internalFunctions';
 
 export function getOperatorToken(symbol: string, offset: number) {

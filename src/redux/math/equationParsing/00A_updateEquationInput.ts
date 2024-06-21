@@ -1,4 +1,4 @@
-import { MathState } from '../mathSlice';
+import { MathState } from '../slice';
 import computeAllResults from './07_computeResult';
 import { getExistingEquation } from './getEquation';
 import { Equation } from './types';

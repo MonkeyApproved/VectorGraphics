@@ -1,4 +1,4 @@
-import { Coordinate } from 'src/redux';
+import { Coordinate } from 'src/redux/types';
 
 interface BaseEvent {
   type: string;

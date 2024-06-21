@@ -1,5 +1,5 @@
-import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/userInterface';
-import { VariableManagerState } from './variableManagerSlice';
+import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/content';
+import { VariableManagerState } from './slice';
 
 export const VARIABLE_MANAGER_CONTENT_TYPE = 'variableManager';
 

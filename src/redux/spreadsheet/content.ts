@@ -1,5 +1,5 @@
-import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/userInterface';
-import { SpreadsheetState } from './spreadsheetSlice';
+import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/content';
+import { SpreadsheetState } from './slice';
 
 export const SPREADSHEET_CONTENT_TYPE = 'spreadsheet';
 

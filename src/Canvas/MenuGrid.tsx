@@ -1,5 +1,6 @@
-import { Canvas, ShapeType, setUserAction, useAppDispatch } from 'src/redux';
+import { Canvas, ShapeType } from 'src/redux/types';
 import styles from './styles.module.css';
+import { setUserAction, useAppDispatch } from 'src/redux/reducers';
 
 export default function MenuGrid({ canvas, status }: { canvas: Canvas; status: string }) {
   const dispatch = useAppDispatch();

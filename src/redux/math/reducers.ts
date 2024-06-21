@@ -5,7 +5,7 @@ import {
   updateExistingEquation,
   removeExistingEquation,
 } from './equationParsing';
-import { MathSliceReducer } from './mathSlice';
+import { MathSliceReducer } from './slice';
 
 const updateEquationValue: MathSliceReducer<{ context: Context; value: string }> = (state, { payload }) => {
   updateExistingEquation({ context: payload.context, value: payload.value, state });

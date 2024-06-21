@@ -1,7 +1,7 @@
 import { AppStore, makeStore } from 'src/redux/store';
 import { initialUiStates } from './test.helper';
-import { changeTabAreaType } from '../uiSlice';
-import { QuadrantTabAreas, TwoHorizontalTabAreas, TwoVerticalTabAreas } from '..';
+import { changeTabAreaType } from '../slice';
+import { QuadrantTabAreas, TwoHorizontalTabAreas, TwoVerticalTabAreas } from '../types';
 
 describe('Changing tab area type', () => {
   let store: AppStore;

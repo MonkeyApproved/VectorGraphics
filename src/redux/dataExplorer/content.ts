@@ -1,5 +1,5 @@
-import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/userInterface';
-import { DataExplorerState } from './dataExplorerSlice';
+import { BaseContent, GetAvailableContent, GetContent } from 'src/redux/content';
+import { DataExplorerState } from './slice';
 
 export const DATA_EXPLORER_CONTENT_TYPE = 'dataExplorer';
 

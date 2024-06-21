@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import * as path from 'path';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';

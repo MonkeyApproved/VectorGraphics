@@ -1,4 +1,4 @@
-import { BaseContext } from 'src/redux/math';
+import { BaseContext } from 'src/redux/context';
 
 export const SPREADSHEET_CONTEXT_TYPE = 'spreadsheet';
 

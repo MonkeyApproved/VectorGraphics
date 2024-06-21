@@ -1,7 +1,8 @@
 import styles from './styles.module.css';
 import { useState } from 'react';
-import { useAppDispatch, addEquation, getVariableManagerContext } from 'src/redux';
-import { addVariableToVariableManager } from 'src/redux/variableManager/variableManagerSlice';
+import { addEquation, useAppDispatch } from 'src/redux/reducers';
+import { getVariableManagerContext } from 'src/redux/utils';
+import { addVariableToVariableManager } from 'src/redux/variableManager/slice';
 
 export default function NewVariableInput({ managerId, index }: { managerId: string; index: number }) {
   const [currentName, setCurrentName] = useState<string>('');

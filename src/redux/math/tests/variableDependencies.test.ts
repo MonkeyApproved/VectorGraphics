@@ -1,4 +1,4 @@
-import { AppStore, makeStore } from '../../store';
+import { AppStore, makeStore } from 'src/redux/store';
 import {
   addEquationToStore,
   compareResults,
@@ -7,9 +7,9 @@ import {
   initialMathStates,
   updateEquationInStore,
 } from './test.helper';
-import { Equation } from '..';
+import { Equation } from '../equationParsing';
 import { equationError } from '../equationParsing/errors';
-import { removeEquation, renameEquation } from '../mathSlice';
+import { removeEquation, renameEquation } from '../slice';
 import { getEquation } from '../equationParsing/getEquation';
 
 function checkForCyclicDependency({ equation }: { equation: Equation }) {

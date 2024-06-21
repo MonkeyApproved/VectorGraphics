@@ -1,6 +1,6 @@
 import { getVariableManagerId } from './id';
 import { getEmptyManager } from './manager';
-import { VariableManagerSliceReducer } from './variableManagerSlice';
+import { VariableManagerSliceReducer } from './slice';
 
 const addVariableManager: VariableManagerSliceReducer<{ label?: string }> = (state, { payload }) => {
   const managerId = getVariableManagerId({ state });

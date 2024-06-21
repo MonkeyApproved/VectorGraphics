@@ -1,4 +1,4 @@
-import { BaseContext } from 'src/redux/math';
+import { BaseContext } from 'src/redux/context';
 import { Coordinate } from './types';
 
 export interface SvgBaseContext extends BaseContext {

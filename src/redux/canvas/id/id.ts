@@ -1,4 +1,4 @@
-import { CanvasState } from '../canvasSlice';
+import { CanvasState } from '../slice';
 import { ShapeType } from '../shape';
 
 export function getShapeId({ type, state }: { type: ShapeType; state: CanvasState }): string {
