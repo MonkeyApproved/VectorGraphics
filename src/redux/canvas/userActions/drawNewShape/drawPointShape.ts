@@ -7,8 +7,8 @@ import {
   MouseDown,
   MOUSE_IDLE_EVENT_TYPE,
   MOUSE_DOWN_EVENT_TYPE,
-  MOUSE_MOVE_ACTIVE_EVENT_TYPE,
-  MOUSE_MOVE_FINISHED_EVENT_TYPE,
+  MOUSE_DRAG_ACTIVE_EVENT_TYPE,
+  MOUSE_DRAG_FINISHED_EVENT_TYPE,
   MOUSE_CLICK_EVENT_TYPE,
   MouseClick,
 } from 'src/eventHandlers';
@@ -31,9 +31,9 @@ export default function drawPointShape({ canvas, mouseTracker }: DrawTempShapePr
     return handleMouseIdle({ mouseTracker, canvas });
   } else if (mouseTracker.type === MOUSE_DOWN_EVENT_TYPE) {
     return handleMouseDown({ mouseTracker, canvas });
-  } else if (mouseTracker.type === MOUSE_MOVE_ACTIVE_EVENT_TYPE) {
+  } else if (mouseTracker.type === MOUSE_DRAG_ACTIVE_EVENT_TYPE) {
     return handleMouseDragActive({ mouseTracker, canvas });
-  } else if (mouseTracker.type === MOUSE_MOVE_FINISHED_EVENT_TYPE) {
+  } else if (mouseTracker.type === MOUSE_DRAG_FINISHED_EVENT_TYPE) {
     return respondWithNewFinishedSegmentAdded({ mouseTracker, canvas });
   } else if (mouseTracker.type === MOUSE_CLICK_EVENT_TYPE) {
     return respondWithNewFinishedSegmentAdded({ mouseTracker, canvas });
@@ -116,9 +116,9 @@ function respondWithNewFinishedSegmentAdded({
     tempShape,
     completed: false,
     mouseTrackerUpdate: {
-      type: MOUSE_MOVE_ACTIVE_EVENT_TYPE,
+      type: MOUSE_DRAG_ACTIVE_EVENT_TYPE,
       start: mouseTracker.start,
-      current: mouseTracker.start,
+      current,
       target: mouseTracker.target,
       finishedSegments: tempShape,
       eventSteam: mouseTracker.eventSteam,

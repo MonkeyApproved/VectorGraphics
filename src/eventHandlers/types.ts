@@ -31,15 +31,15 @@ export interface MouseDown extends BaseMouseEvent {
   type: typeof MOUSE_DOWN_EVENT_TYPE;
 }
 
-export const MOUSE_MOVE_ACTIVE_EVENT_TYPE = 'mouseMoveActive';
+export const MOUSE_DRAG_ACTIVE_EVENT_TYPE = 'mouseDragActive';
 export interface MouseDragActive extends BaseMouseEvent {
-  type: typeof MOUSE_MOVE_ACTIVE_EVENT_TYPE;
+  type: typeof MOUSE_DRAG_ACTIVE_EVENT_TYPE;
   current: Coordinate;
 }
 
-export const MOUSE_MOVE_FINISHED_EVENT_TYPE = 'mouseMoveFinished';
+export const MOUSE_DRAG_FINISHED_EVENT_TYPE = 'mouseDragFinished';
 export interface MouseDragFinished extends BaseMouseEvent {
-  type: typeof MOUSE_MOVE_FINISHED_EVENT_TYPE;
+  type: typeof MOUSE_DRAG_FINISHED_EVENT_TYPE;
   end: Coordinate;
 }
 

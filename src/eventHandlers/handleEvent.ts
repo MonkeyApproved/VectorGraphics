@@ -1,7 +1,15 @@
 import * as d3 from 'd3';
 import { BaseSyntheticEvent } from 'react';
 import { Coordinate } from 'src/redux/types';
-import { CanvasMouseEvent, MouseEventTracker } from './types';
+import {
+  CanvasMouseEvent,
+  MOUSE_CLICK_EVENT_TYPE,
+  MOUSE_DOWN_EVENT_TYPE,
+  MOUSE_DRAG_ACTIVE_EVENT_TYPE,
+  MOUSE_DRAG_FINISHED_EVENT_TYPE,
+  MOUSE_IDLE_EVENT_TYPE,
+  MouseEventTracker,
+} from './types';
 
 export enum TokenType {
   MouseDown = 'mousedown',
@@ -23,7 +31,7 @@ interface MouseEventHandlerProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function updateMouseEvent({ eventTracker, currentEvent }: MouseEventHandlerProps): MouseEventTracker {
   const eventType = currentEvent.type;
-  if (eventTracker.type === 'idle' && eventType !== TokenType.MouseDown) {
+  if (eventTracker.type === MOUSE_IDLE_EVENT_TYPE && eventType !== TokenType.MouseDown) {
     // there is nothing to do
     return eventTracker;
   } else if (eventType === TokenType.MouseDown) {
@@ -38,7 +46,7 @@ export function updateMouseEvent({ eventTracker, currentEvent }: MouseEventHandl
 }
 
 function handleMouseDown({ eventTracker, currentEvent }: MouseEventHandlerProps): MouseEventTracker {
-  if (eventTracker.type !== 'idle') {
+  if (eventTracker.type !== MOUSE_IDLE_EVENT_TYPE) {
     // it seems like the last event was not finished properly
     console.warn(`Got mouse down while canvas tracker was still ${eventTracker.type}`);
   }
@@ -46,18 +54,18 @@ function handleMouseDown({ eventTracker, currentEvent }: MouseEventHandlerProps)
   currentEvent.preventDefault();
   // start a new mouse event
   return {
-    type: 'mouseDown',
+    type: MOUSE_DOWN_EVENT_TYPE,
     target: currentEvent.target.id,
     start: getMousePosition({ event: currentEvent }),
-    eventSteam: eventTracker.type !== 'idle' ? eventTracker.eventSteam : [],
+    eventSteam: eventTracker.type !== MOUSE_IDLE_EVENT_TYPE ? eventTracker.eventSteam : [],
   };
 }
 
 function handleMouseMove({ eventTracker, currentEvent }: MouseEventHandlerProps): MouseEventTracker {
-  if (eventTracker.type === 'mouseDown' || eventTracker.type === 'mouseMoveActive') {
+  if (eventTracker.type === 'mouseDown' || eventTracker.type === MOUSE_DRAG_ACTIVE_EVENT_TYPE) {
     // this is the first time the mouse moves after a mouse down
     return {
-      type: 'mouseMoveActive',
+      type: MOUSE_DRAG_ACTIVE_EVENT_TYPE,
       target: eventTracker.target,
       start: eventTracker.start,
       current: getMousePosition({ event: currentEvent }),
@@ -68,20 +76,20 @@ function handleMouseMove({ eventTracker, currentEvent }: MouseEventHandlerProps)
 }
 
 function handleMouseUp({ eventTracker, currentEvent }: MouseEventHandlerProps): MouseEventTracker {
-  if (eventTracker.type === 'mouseMoveActive') {
+  if (eventTracker.type === MOUSE_DRAG_ACTIVE_EVENT_TYPE) {
     // this is the first time the mouse moves after a mouse down
     const end = getMousePosition({ event: currentEvent });
     return {
-      type: 'mouseMoveFinished',
+      type: MOUSE_DRAG_FINISHED_EVENT_TYPE,
       target: eventTracker.target,
       start: eventTracker.start,
       end,
       eventSteam: [...eventTracker.eventSteam, { position: end, time: Date.now() }],
     };
-  } else if (eventTracker.type === 'mouseDown') {
+  } else if (eventTracker.type === MOUSE_DOWN_EVENT_TYPE) {
     // this is the first time the mouse moves after a mouse down
     return {
-      type: 'mouseClick',
+      type: MOUSE_CLICK_EVENT_TYPE,
       target: eventTracker.target,
       start: eventTracker.start,
       eventSteam: [...eventTracker.eventSteam, { position: eventTracker.start, time: Date.now() }],

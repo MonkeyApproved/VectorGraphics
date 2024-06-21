@@ -7,8 +7,8 @@ import {
   MouseDown,
   MOUSE_IDLE_EVENT_TYPE,
   MOUSE_DOWN_EVENT_TYPE,
-  MOUSE_MOVE_ACTIVE_EVENT_TYPE,
-  MOUSE_MOVE_FINISHED_EVENT_TYPE,
+  MOUSE_DRAG_ACTIVE_EVENT_TYPE,
+  MOUSE_DRAG_FINISHED_EVENT_TYPE,
   MOUSE_CLICK_EVENT_TYPE,
   MouseClick,
 } from 'src/eventHandlers';
@@ -31,9 +31,9 @@ export default function drawSimpleShape({ canvas, mouseTracker }: DrawTempShapeP
   } else if (mouseTracker.type === MOUSE_DOWN_EVENT_TYPE) {
     // we first wait to see if this is going to be a click or a drag
     return handleMouseDown({ mouseTracker, canvas });
-  } else if (mouseTracker.type === MOUSE_MOVE_ACTIVE_EVENT_TYPE) {
+  } else if (mouseTracker.type === MOUSE_DRAG_ACTIVE_EVENT_TYPE) {
     return handleMouseDragActive({ mouseTracker, canvas });
-  } else if (mouseTracker.type === MOUSE_MOVE_FINISHED_EVENT_TYPE) {
+  } else if (mouseTracker.type === MOUSE_DRAG_FINISHED_EVENT_TYPE) {
     return handleMouseDragFinished({ mouseTracker, canvas });
   } else if (mouseTracker.type === MOUSE_CLICK_EVENT_TYPE) {
     return handleMouseClick({ mouseTracker, canvas });
