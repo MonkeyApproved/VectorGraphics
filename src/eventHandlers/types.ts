@@ -59,4 +59,4 @@ export type MouseEventTracker = Idle | MouseDown | MouseDragActive | MouseDragFi
  *   - T (target): a reference to the element from which the event was originally dispatched.
  *     This might be a child element to the element on which the event listener is registered.
  */
-export type CanvasMouseEvent = BaseSyntheticEvent<MouseEvent, SVGSVGElement>;
+export type CanvasMouseEvent<T = Element> = BaseSyntheticEvent<MouseEvent, T>;

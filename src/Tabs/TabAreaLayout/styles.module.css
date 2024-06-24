@@ -1,0 +1,84 @@
+.single {
+  /* positioning */
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  /* grid definition */
+  display: grid;
+  grid-template-areas:
+      "single";
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  gap: 0;
+  /* others */
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.twoHorizontal {
+  /* positioning */
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  /* grid definition */
+  display: grid;
+  grid-template-areas:
+      "left divider right";
+  grid-template-rows: 1fr;
+  gap: 0;
+  /* others */
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.twoVertical {
+  /* positioning */
+  height: 100%;
+  width: 100%;
+  /* grid definition */
+  display: grid;
+  grid-template-areas:
+      "top"
+      "divider"
+      "bottom";
+  grid-template-columns: 1fr;
+  gap: 0;
+  /* others */
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.quadrant {
+  /* positioning */
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  /* grid definition */
+  display: grid;
+  grid-template-areas:
+      "topLeft dividerHorizontal topRight"
+      "dividerVertical dividerHorizontal dividerVertical2"
+      "bottomLeft dividerHorizontal bottomRight";
+  gap: 0;
+  /* others */
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.tabArea {
+  background-color: #1f1f1f;
+}
+
+.dividerIdle {
+  background-color: #444444;
+}
+
+.dividerDrag {
+  background-color: #888888;
+}

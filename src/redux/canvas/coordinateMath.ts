@@ -1,6 +1,6 @@
 import { Area, Coordinate } from './types';
 
-export interface CoordinateMathProps {
+interface CoordinateMathProps {
   leftArg: Coordinate;
   rightArg: Coordinate;
 }
@@ -37,4 +37,29 @@ export function getAreaCenter({ area }: { area: Area }): Coordinate {
 
 export function pointDistance({ leftArg, rightArg }: CoordinateMathProps): number {
   return Math.sqrt((leftArg.x - rightArg.x) ** 2 + (leftArg.y - rightArg.y) ** 2);
+}
+
+export function valueWithMinMax({ value, min, max }: { value: number; min?: number; max?: number }): number;
+export function valueWithMinMax({
+  value,
+  min,
+  max,
+}: {
+  value: number | undefined;
+  min?: number;
+  max?: number;
+}): number | undefined;
+export function valueWithMinMax({
+  value,
+  min,
+  max,
+}: {
+  value?: number;
+  min?: number;
+  max?: number;
+}): number | undefined {
+  if (value === undefined) return value;
+  if (min !== undefined && value < min) return min;
+  if (max !== undefined && value > max) return max;
+  return value;
 }
