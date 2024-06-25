@@ -2,10 +2,11 @@ import { useState } from 'react';
 import TabArea from '../TabArea';
 import styles from './styles.module.css';
 import { SingleTabAreaPosition } from 'src/redux/types';
-import { Content } from 'src/redux/content';
+import { getTabContent, useAppSelector } from 'src/redux/selectors';
 
-export default function SingleTabArea({ content }: { content: Record<SingleTabAreaPosition, Content[]> }) {
+export default function SingleTabArea() {
   const [tabDragActive, setTabDragActive] = useState(false);
+  const content = useAppSelector(getTabContent<SingleTabAreaPosition>);
 
   return (
     <div className={styles.single} style={{ gridArea: 'tabAreas' }}>
@@ -13,7 +14,7 @@ export default function SingleTabArea({ content }: { content: Record<SingleTabAr
         tabDragActive={tabDragActive}
         setTabDragActive={setTabDragActive}
         position="center"
-        contentList={content.center}
+        tabAreaContent={content.center}
       />
     </div>
   );

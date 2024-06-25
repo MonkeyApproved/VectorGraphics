@@ -55,6 +55,7 @@ export const mockContent: { [key: string]: Content } = {
 export const initialUiStates: { [key: string]: UiState } = {
   singleAreaOneEach: {
     tabCounter: 8,
+    tabSelectionOrder: ['tab1', 'tab2', 'tab3', 'tab4', 'tab5', 'tab6', 'tab7', 'tab8'],
     tabs: {
       type: 'single',
       content: { center: [mockContent.canvas1, mockContent.var1, mockContent.spreadsheet1, mockContent.dataExplorer1] },

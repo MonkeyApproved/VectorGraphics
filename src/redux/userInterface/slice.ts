@@ -6,11 +6,13 @@ import { initialCanvas, initialVariableManager } from 'src/redux/utils';
 
 export interface UiState {
   tabCounter: number;
+  tabSelectionOrder: string[];
   tabs: Tabs;
 }
 
 export const initialUserInterfaceState: UiState = {
   tabCounter: 2,
+  tabSelectionOrder: ['tab1', 'tab2'],
   tabs: {
     type: 'twoHorizontal',
     content: {

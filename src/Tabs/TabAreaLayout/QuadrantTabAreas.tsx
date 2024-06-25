@@ -6,15 +6,16 @@ import { valueWithMinMax } from 'src/redux/utils';
 import TabArea from '../TabArea';
 import { DIVIDER_WIDTH } from './const';
 import { QuadrantTabAreaPosition } from 'src/redux/types';
-import { Content } from 'src/redux/content';
+import { getTabContent, useAppSelector } from 'src/redux/selectors';
 
-export default function QuadrantTabAreas({ content }: { content: Record<QuadrantTabAreaPosition, Content[]> }) {
+export default function QuadrantTabAreas() {
   const [tabDragActive, setTabDragActive] = useState(false);
   const [dividerXPos, setDividerXPos] = useState<number>();
   const [dividerYPos, setDividerYPos] = useState<number>();
   const [dragXActive, setDragXActive] = useState(false);
   const [dragYActive, setDragYActive] = useState(false);
   const { width, height, ref } = useRefElementSize<HTMLDivElement>();
+  const content = useAppSelector(getTabContent<QuadrantTabAreaPosition>);
 
   const columnWidth = valueWithMinMax({ value: dividerXPos, min: 200, max: width - 200 });
   const rowHeight = valueWithMinMax({ value: dividerYPos, min: 100, max: height - 100 });
@@ -58,25 +59,25 @@ export default function QuadrantTabAreas({ content }: { content: Record<Quadrant
         tabDragActive={tabDragActive}
         setTabDragActive={setTabDragActive}
         position="topLeft"
-        contentList={content.topLeft}
+        tabAreaContent={content.topLeft}
       />
       <TabArea<QuadrantTabAreaPosition>
         tabDragActive={tabDragActive}
         setTabDragActive={setTabDragActive}
         position="topRight"
-        contentList={content.topRight}
+        tabAreaContent={content.topRight}
       />
       <TabArea<QuadrantTabAreaPosition>
         tabDragActive={tabDragActive}
         setTabDragActive={setTabDragActive}
         position="bottomLeft"
-        contentList={content.bottomLeft}
+        tabAreaContent={content.bottomLeft}
       />
       <TabArea<QuadrantTabAreaPosition>
         tabDragActive={tabDragActive}
         setTabDragActive={setTabDragActive}
         position="bottomRight"
-        contentList={content.bottomRight}
+        tabAreaContent={content.bottomRight}
       />
     </div>
   );

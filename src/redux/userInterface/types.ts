@@ -1,4 +1,4 @@
-import { Content } from './content';
+import { Content, ContentWithLabel } from './content';
 
 /**
  * The position of a tab in a tab area.
@@ -43,3 +43,8 @@ export interface QuadrantTabAreas {
 }
 
 export type Tabs = SingleTabArea | TwoHorizontalTabAreas | TwoVerticalTabAreas | QuadrantTabAreas;
+
+export interface TabAreaContent {
+  content: ContentWithLabel[];
+  selectedTab?: Content;
+}
