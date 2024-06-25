@@ -111,6 +111,7 @@
 }
 
 .tabContent {
+  position: relative;
   grid-area: tabContent;
   background-color: #1f1f1f;
 }

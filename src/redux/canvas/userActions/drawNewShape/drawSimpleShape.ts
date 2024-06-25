@@ -11,7 +11,7 @@ import {
   MOUSE_DRAG_FINISHED_EVENT_TYPE,
   MOUSE_CLICK_EVENT_TYPE,
   MouseClick,
-} from 'src/eventHandlers';
+} from 'src/Canvas/eventHandlers';
 import { Canvas } from '../../canvas';
 import { getNewShape } from '../../shape';
 import { setShapeAttributes } from '../svgStateManagement/updateShape';

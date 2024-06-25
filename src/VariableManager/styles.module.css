@@ -41,6 +41,7 @@
 	font-size: 100%;
 	line-height: 3vh;
 	font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -49,11 +50,11 @@
 
 .result {
 	position: relative;
-	background-color: #eee;
+	background-color: #181818;
 	border-radius: 3px;
 	height: 100%;
 	vertical-align: middle;
-	color: #034b78;
+	color: #888888;
 }
 
 .input {
@@ -76,12 +77,12 @@
 
 .input::selection {
 	background: #fffffffe;
-	color: var(--color-blue2);
+	color: #0A21C0;
 }
 
 .input:hover {
-	color: var(--color-blue2);
-	background-color: #ddd;
+	color: #aaaaaa;
+	background-color: #333333;
 }
 
 .result:lang(fr),

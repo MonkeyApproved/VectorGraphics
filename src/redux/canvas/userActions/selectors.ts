@@ -1,4 +1,4 @@
-import { MouseEventTracker } from 'src/eventHandlers';
+import { MouseEventTracker } from 'src/Canvas/eventHandlers';
 import { RootState } from 'src/redux/store';
 import { DRAW_ACTION_TYPE, DrawAction, SELECT_ACTION_TYPE, UserAction } from '.';
 import { Canvas } from '../canvas';

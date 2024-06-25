@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 import MenuGrid from './MenuGrid';
 import { useEffect, useState } from 'react';
-import { CanvasMouseEvent, MouseEventTracker, updateMouseEvent } from 'src/eventHandlers';
+import { CanvasMouseEvent, MouseEventTracker, updateMouseEvent } from 'src/Canvas/eventHandlers';
 import { getCanvas, getUIResponse, useAppSelector } from 'src/redux/selectors';
 import { getSvgCanvasIds } from 'src/redux/utils';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';

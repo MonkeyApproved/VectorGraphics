@@ -1,4 +1,4 @@
-import { MouseEventTracker } from 'src/eventHandlers';
+import { MouseEventTracker } from 'src/Canvas/eventHandlers';
 import { DRAW_ACTION_TYPE, SELECT_ACTION_TYPE } from '.';
 import { Rect, NewShape, TempShareGeneric } from '../shape';
 

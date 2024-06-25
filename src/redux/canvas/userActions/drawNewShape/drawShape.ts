@@ -1,4 +1,4 @@
-import { BaseEvent, MouseEventTracker } from 'src/eventHandlers';
+import { BaseEvent, MouseEventTracker } from 'src/Canvas/eventHandlers';
 import { Canvas } from '../../canvas';
 import { DrawAction } from '../userAction';
 import { UIResponse } from '../uiResponse';
