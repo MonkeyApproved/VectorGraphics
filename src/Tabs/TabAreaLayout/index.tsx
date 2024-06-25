@@ -2,16 +2,18 @@ import SingleTabArea from './SingleTabArea';
 import TwoHorizontalTabAreas from './TwoHorizontalTabAreas';
 import TwoVerticalTabAreas from './TwoVerticalTabAreas';
 import QuadrantTabAreas from './QuadrantTabAreas';
-import { TabAreaType } from 'src/redux/types';
+import { getTabs, useAppSelector } from 'src/redux/selectors';
 
-export default function TabAreaLayout({ tabAreaType }: { tabAreaType: TabAreaType }) {
-  if (tabAreaType === 'single') {
-    return <SingleTabArea />;
-  } else if (tabAreaType === 'two-horizontal') {
-    return <TwoHorizontalTabAreas />;
-  } else if (tabAreaType === 'two-vertical') {
-    return <TwoVerticalTabAreas />;
-  } else if (tabAreaType === 'quadrant') {
-    return <QuadrantTabAreas />;
+export default function TabAreaLayout() {
+  const tabs = useAppSelector(getTabs);
+
+  if (tabs.type === 'single') {
+    return <SingleTabArea content={tabs.content} />;
+  } else if (tabs.type === 'twoHorizontal') {
+    return <TwoHorizontalTabAreas content={tabs.content} />;
+  } else if (tabs.type === 'twoVertical') {
+    return <TwoVerticalTabAreas content={tabs.content} />;
+  } else if (tabs.type === 'quadrant') {
+    return <QuadrantTabAreas content={tabs.content} />;
   }
 }

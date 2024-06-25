@@ -5,8 +5,11 @@ import { valueWithMinMax } from 'src/redux/utils';
 import { useRefElementSize } from './ref';
 import TabArea from '../TabArea';
 import { DIVIDER_WIDTH } from './const';
+import { HorizontalTabAreaPosition } from 'src/redux/types';
+import { Content } from 'src/redux/content';
 
-export default function TwoHorizontalTabAreas() {
+export default function TwoHorizontalTabAreas({ content }: { content: Record<HorizontalTabAreaPosition, Content[]> }) {
+  const [tabDragActive, setTabDragActive] = useState(false);
   const [dividerPos, setDividerPos] = useState<number>();
   const [dragActive, setDragActive] = useState(false);
   const { ref, width } = useRefElementSize<HTMLDivElement>();
@@ -25,8 +28,18 @@ export default function TwoHorizontalTabAreas() {
         className={dragActive ? styles.dividerDrag : styles.dividerIdle}
         style={{ gridArea: 'divider' }}
       />
-      <TabArea gridArea="left" />
-      <TabArea gridArea="right" />
+      <TabArea<HorizontalTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="left"
+        contentList={content.left}
+      />
+      <TabArea<HorizontalTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="right"
+        contentList={content.right}
+      />
     </div>
   );
 }

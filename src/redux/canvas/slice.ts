@@ -20,6 +20,8 @@ export interface CanvasState {
   canvases: { [key: string]: Canvas };
 }
 
+export const initialCanvas: Canvas = { id: 'canvas1', ...getEmptyCanvas({ label: 'Canvas' }) };
+
 export const initialCanvasState: CanvasState = {
   globalSettings: defaultSvgSettings,
   counters: initialCounterState,
@@ -29,10 +31,7 @@ export const initialCanvasState: CanvasState = {
   elements: {},
   groups: {},
   canvases: {
-    canvas1: {
-      id: 'canvas1',
-      ...getEmptyCanvas({ label: 'Canvas' }),
-    },
+    canvas1: initialCanvas,
   },
 };
 

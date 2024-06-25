@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 import { useState } from 'react';
 import { addEquation, useAppDispatch } from 'src/redux/reducers';
-import { getVariableManagerContext } from 'src/redux/utils';
+import { getVariableManagerContext } from 'src/redux/context';
 import { addVariableToVariableManager } from 'src/redux/variableManager/slice';
 
 export default function NewVariableInput({ managerId, index }: { managerId: string; index: number }) {

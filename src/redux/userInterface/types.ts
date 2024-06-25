@@ -12,35 +12,34 @@ export interface TabPosition {
   horizontal: 'left' | 'right';
 }
 
-export type TabAreaType = 'single' | 'two-horizontal' | 'two-vertical' | 'quadrant';
+export type TabAreaType = 'single' | 'twoHorizontal' | 'twoVertical' | 'quadrant';
 
 export interface BaseTabArea {
   type: TabAreaType;
 }
 
+export type SingleTabAreaPosition = 'center';
 export interface SingleTabArea {
   type: 'single';
-  tabs: Content[];
+  content: Record<SingleTabAreaPosition, Content[]>;
 }
 
+export type HorizontalTabAreaPosition = 'left' | 'right';
 export interface TwoHorizontalTabAreas {
-  type: 'two-horizontal';
-  left: Content[];
-  right: Content[];
+  type: 'twoHorizontal';
+  content: Record<HorizontalTabAreaPosition, Content[]>;
 }
 
+export type VerticalTabAreaPosition = 'top' | 'bottom';
 export interface TwoVerticalTabAreas {
-  type: 'two-vertical';
-  top: Content[];
-  bottom: Content[];
+  type: 'twoVertical';
+  content: Record<VerticalTabAreaPosition, Content[]>;
 }
 
+export type QuadrantTabAreaPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 export interface QuadrantTabAreas {
   type: 'quadrant';
-  topLeft: Content[];
-  topRight: Content[];
-  bottomLeft: Content[];
-  bottomRight: Content[];
+  content: Record<QuadrantTabAreaPosition, Content[]>;
 }
 
 export type Tabs = SingleTabArea | TwoHorizontalTabAreas | TwoVerticalTabAreas | QuadrantTabAreas;

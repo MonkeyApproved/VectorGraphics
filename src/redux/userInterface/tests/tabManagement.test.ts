@@ -10,24 +10,24 @@ describe('Changing tab area type', () => {
     store = makeStore({ ui: initialUiStates.singleAreaOneEach });
   });
 
-  it('correctly rearranges tabs, when switching to "two-horizontal"', () => {
-    store.dispatch(changeTabAreaType({ type: 'two-horizontal' }));
+  it('correctly rearranges tabs, when switching to "twoHorizontal"', () => {
+    store.dispatch(changeTabAreaType({ type: 'twoHorizontal' }));
     const state = store.getState();
     const tabs = state.ui.tabs as TwoHorizontalTabAreas;
 
-    expect(tabs.type).toEqual('two-horizontal');
-    expect(tabs.left).toHaveLength(3); // canvas1, var1, spreadsheet1
-    expect(tabs.right).toHaveLength(1); // dataExplorer1
+    expect(tabs.type).toEqual('twoHorizontal');
+    expect(tabs.content.left).toHaveLength(3); // canvas1, var1, spreadsheet1
+    expect(tabs.content.right).toHaveLength(1); // dataExplorer1
   });
 
-  it('correctly rearranges tabs, when switching to "two-vertical"', () => {
-    store.dispatch(changeTabAreaType({ type: 'two-vertical' }));
+  it('correctly rearranges tabs, when switching to "twoVertical"', () => {
+    store.dispatch(changeTabAreaType({ type: 'twoVertical' }));
     const state = store.getState();
     const tabs = state.ui.tabs as TwoVerticalTabAreas;
 
-    expect(tabs.type).toEqual('two-vertical');
-    expect(tabs.top).toHaveLength(3); // canvas1, var1, dataExplorer1
-    expect(tabs.bottom).toHaveLength(1); // spreadsheet1
+    expect(tabs.type).toEqual('twoVertical');
+    expect(tabs.content.top).toHaveLength(3); // canvas1, var1, dataExplorer1
+    expect(tabs.content.bottom).toHaveLength(1); // spreadsheet1
   });
 
   it('does not change anything, when switching to "quadrant"', () => {
@@ -36,9 +36,9 @@ describe('Changing tab area type', () => {
     const tabs = state.ui.tabs as QuadrantTabAreas;
 
     expect(tabs.type).toEqual('quadrant');
-    expect(tabs.topLeft).toHaveLength(2); // canvas1, canvas1
-    expect(tabs.topRight).toHaveLength(1); // dataExplorer1
-    expect(tabs.bottomLeft).toHaveLength(1); // spreadsheet1
-    expect(tabs.bottomRight).toHaveLength(0); // NONE
+    expect(tabs.content.topLeft).toHaveLength(2); // canvas1, canvas1
+    expect(tabs.content.topRight).toHaveLength(1); // dataExplorer1
+    expect(tabs.content.bottomLeft).toHaveLength(1); // spreadsheet1
+    expect(tabs.content.bottomRight).toHaveLength(0); // NONE
   });
 });

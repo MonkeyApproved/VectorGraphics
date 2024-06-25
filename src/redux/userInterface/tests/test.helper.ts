@@ -57,7 +57,7 @@ export const initialUiStates: { [key: string]: UiState } = {
     tabCounter: 8,
     tabs: {
       type: 'single',
-      tabs: [mockContent.canvas1, mockContent.var1, mockContent.spreadsheet1, mockContent.dataExplorer1],
+      content: { center: [mockContent.canvas1, mockContent.var1, mockContent.spreadsheet1, mockContent.dataExplorer1] },
     },
   },
 };

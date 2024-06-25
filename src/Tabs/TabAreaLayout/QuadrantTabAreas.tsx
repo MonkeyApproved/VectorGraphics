@@ -5,8 +5,11 @@ import { useRefElementSize } from './ref';
 import { valueWithMinMax } from 'src/redux/utils';
 import TabArea from '../TabArea';
 import { DIVIDER_WIDTH } from './const';
+import { QuadrantTabAreaPosition } from 'src/redux/types';
+import { Content } from 'src/redux/content';
 
-export default function QuadrantTabAreas() {
+export default function QuadrantTabAreas({ content }: { content: Record<QuadrantTabAreaPosition, Content[]> }) {
+  const [tabDragActive, setTabDragActive] = useState(false);
   const [dividerXPos, setDividerXPos] = useState<number>();
   const [dividerYPos, setDividerYPos] = useState<number>();
   const [dragXActive, setDragXActive] = useState(false);
@@ -51,10 +54,30 @@ export default function QuadrantTabAreas() {
         className={dragYActive ? styles.dividerDrag : styles.dividerIdle}
         style={{ gridArea: 'dividerVertical2' }}
       />
-      <TabArea gridArea="topLeft" />
-      <TabArea gridArea="topRight" />
-      <TabArea gridArea="bottomLeft" />
-      <TabArea gridArea="bottomRight" />
+      <TabArea<QuadrantTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="topLeft"
+        contentList={content.topLeft}
+      />
+      <TabArea<QuadrantTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="topRight"
+        contentList={content.topRight}
+      />
+      <TabArea<QuadrantTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="bottomLeft"
+        contentList={content.bottomLeft}
+      />
+      <TabArea<QuadrantTabAreaPosition>
+        tabDragActive={tabDragActive}
+        setTabDragActive={setTabDragActive}
+        position="bottomRight"
+        contentList={content.bottomRight}
+      />
     </div>
   );
 }

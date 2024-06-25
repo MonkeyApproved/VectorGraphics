@@ -1,10 +1,8 @@
-import { getTabAreaType, useAppSelector } from 'src/redux/selectors';
 import styles from './styles.module.css';
 import { changeTabAreaType, useAppDispatch } from 'src/redux/reducers';
 import TabAreaLayout from './TabAreaLayout';
 
 export default function Tabs() {
-  const tabAreaType = useAppSelector(getTabAreaType);
   const dispatch = useAppDispatch();
 
   return (
@@ -16,13 +14,13 @@ export default function Tabs() {
         </button>
         <button
           className={styles.tabAreaTypeButton}
-          onClick={() => dispatch(changeTabAreaType({ type: 'two-vertical' }))}
+          onClick={() => dispatch(changeTabAreaType({ type: 'twoVertical' }))}
         >
           2V
         </button>
         <button
           className={styles.tabAreaTypeButton}
-          onClick={() => dispatch(changeTabAreaType({ type: 'two-horizontal' }))}
+          onClick={() => dispatch(changeTabAreaType({ type: 'twoHorizontal' }))}
         >
           2H
         </button>
@@ -30,7 +28,7 @@ export default function Tabs() {
           Q
         </button>
       </div>
-      <TabAreaLayout tabAreaType={tabAreaType} />
+      <TabAreaLayout />
     </div>
   );
 }

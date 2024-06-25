@@ -7,14 +7,16 @@ export interface VariableManagerState {
   managers: { [key: string]: VariableManager };
 }
 
+export const initialVariableManager: VariableManager = {
+  id: 'variableManager1',
+  label: 'Variables',
+  variables: [],
+};
+
 export const initialVariableManagerState: VariableManagerState = {
-  managerCounter: 0,
+  managerCounter: 1,
   managers: {
-    variableManager1: {
-      id: 'variableManager1',
-      label: 'Variables',
-      variables: [],
-    },
+    variableManager1: initialVariableManager,
   },
 };
 

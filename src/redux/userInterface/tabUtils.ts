@@ -31,9 +31,9 @@ export function placeContent({ content, tabs }: ManageContentProps<Tabs>) {
   switch (tabs.type) {
     case 'single':
       return placeContentInSingleTabArea({ content, tabs });
-    case 'two-horizontal':
+    case 'twoHorizontal':
       return placeContentInTwoHorizontalTabAreas({ content, tabs });
-    case 'two-vertical':
+    case 'twoVertical':
       return placeContentInTwoVerticalTabAreas({ content, tabs });
     case 'quadrant':
       return placeContentInQuadrantTabAreas({ content, tabs });
@@ -43,14 +43,14 @@ export function placeContent({ content, tabs }: ManageContentProps<Tabs>) {
 }
 
 export function placeContentInSingleTabArea({ content, tabs }: ManageContentProps<SingleTabArea>) {
-  tabs.tabs.push(content);
+  tabs.content.center.push(content);
 }
 
 export function placeContentInTwoHorizontalTabAreas({ content, tabs }: ManageContentProps<TwoHorizontalTabAreas>) {
   if (content.position.horizontal === 'left') {
-    tabs.left.push(content);
+    tabs.content.left.push(content);
   } else if (content.position.horizontal === 'right') {
-    tabs.right.push(content);
+    tabs.content.right.push(content);
   } else {
     throw new Error(`Invalid horizontal position: ${content.position.horizontal}`);
   }
@@ -58,9 +58,9 @@ export function placeContentInTwoHorizontalTabAreas({ content, tabs }: ManageCon
 
 export function placeContentInTwoVerticalTabAreas({ content, tabs }: ManageContentProps<TwoVerticalTabAreas>) {
   if (content.position.vertical === 'top') {
-    tabs.top.push(content);
+    tabs.content.top.push(content);
   } else if (content.position.vertical === 'bottom') {
-    tabs.bottom.push(content);
+    tabs.content.bottom.push(content);
   } else {
     throw new Error(`Invalid vertical position: ${content.position.vertical}`);
   }
@@ -68,13 +68,13 @@ export function placeContentInTwoVerticalTabAreas({ content, tabs }: ManageConte
 
 export function placeContentInQuadrantTabAreas({ content, tabs }: ManageContentProps<QuadrantTabAreas>) {
   if (content.position.vertical === 'top' && content.position.horizontal === 'left') {
-    tabs.topLeft.push(content);
+    tabs.content.topLeft.push(content);
   } else if (content.position.vertical === 'top' && content.position.horizontal === 'right') {
-    tabs.topRight.push(content);
+    tabs.content.topRight.push(content);
   } else if (content.position.vertical === 'bottom' && content.position.horizontal === 'left') {
-    tabs.bottomLeft.push(content);
+    tabs.content.bottomLeft.push(content);
   } else if (content.position.vertical === 'bottom' && content.position.horizontal === 'right') {
-    tabs.bottomRight.push(content);
+    tabs.content.bottomRight.push(content);
   } else {
     throw new Error(`Invalid position: ${content.position.horizontal}, ${content.position.vertical}`);
   }
@@ -84,9 +84,9 @@ export const removeContent = ({ content, tabs }: ManageContentProps<Tabs>) => {
   switch (tabs.type) {
     case 'single':
       return removeContentInSingleTabArea({ content, tabs });
-    case 'two-horizontal':
+    case 'twoHorizontal':
       return removeContentInTwoHorizontalTabAreas({ content, tabs });
-    case 'two-vertical':
+    case 'twoVertical':
       return removeContentInTwoVerticalTabAreas({ content, tabs });
     case 'quadrant':
       return removeContentInQuadrantTabAreas({ content, tabs });
@@ -96,54 +96,54 @@ export const removeContent = ({ content, tabs }: ManageContentProps<Tabs>) => {
 };
 
 export const removeContentInSingleTabArea = ({ content, tabs }: ManageContentProps<SingleTabArea>) => {
-  tabs.tabs = tabs.tabs.filter((c) => c.tabId !== content.tabId);
+  tabs.content.center = tabs.content.center.filter((c) => c.tabId !== content.tabId);
 };
 
 export const removeContentInTwoHorizontalTabAreas = ({ content, tabs }: ManageContentProps<TwoHorizontalTabAreas>) => {
   if (content.position.horizontal === 'left') {
-    tabs.left = tabs.left.filter((c) => c.tabId !== content.tabId);
+    tabs.content.left = tabs.content.left.filter((c) => c.tabId !== content.tabId);
   } else if (content.position.horizontal === 'right') {
-    tabs.right = tabs.right.filter((c) => c.tabId !== content.tabId);
+    tabs.content.right = tabs.content.right.filter((c) => c.tabId !== content.tabId);
   }
 };
 
 export const removeContentInTwoVerticalTabAreas = ({ content, tabs }: ManageContentProps<TwoVerticalTabAreas>) => {
   if (content.position.vertical === 'top') {
-    tabs.top = tabs.top.filter((c) => c.tabId !== content.tabId);
+    tabs.content.top = tabs.content.top.filter((c) => c.tabId !== content.tabId);
   } else if (content.position.vertical === 'bottom') {
-    tabs.bottom = tabs.bottom.filter((c) => c.tabId !== content.tabId);
+    tabs.content.bottom = tabs.content.bottom.filter((c) => c.tabId !== content.tabId);
   }
 };
 
 export const removeContentInQuadrantTabAreas = ({ content, tabs }: ManageContentProps<QuadrantTabAreas>) => {
   if (content.position.vertical === 'top' && content.position.horizontal === 'left') {
-    tabs.topLeft = tabs.topLeft.filter((c) => c.tabId !== content.tabId);
+    tabs.content.topLeft = tabs.content.topLeft.filter((c) => c.tabId !== content.tabId);
   } else if (content.position.vertical === 'top' && content.position.horizontal === 'right') {
-    tabs.topRight = tabs.topRight.filter((c) => c.tabId !== content.tabId);
+    tabs.content.topRight = tabs.content.topRight.filter((c) => c.tabId !== content.tabId);
   } else if (content.position.vertical === 'bottom' && content.position.horizontal === 'left') {
-    tabs.bottomLeft = tabs.bottomLeft.filter((c) => c.tabId !== content.tabId);
+    tabs.content.bottomLeft = tabs.content.bottomLeft.filter((c) => c.tabId !== content.tabId);
   } else if (content.position.vertical === 'bottom' && content.position.horizontal === 'right') {
-    tabs.bottomRight = tabs.bottomRight.filter((c) => c.tabId !== content.tabId);
+    tabs.content.bottomRight = tabs.content.bottomRight.filter((c) => c.tabId !== content.tabId);
   }
 };
 
 export function getContentList({ position, tabs }: { position: TabPosition; tabs: Tabs }): Content[] {
   switch (tabs.type) {
     case 'single':
-      return tabs.tabs;
-    case 'two-horizontal':
-      return position.horizontal === 'left' ? tabs.left : tabs.right;
-    case 'two-vertical':
-      return position.vertical === 'top' ? tabs.top : tabs.bottom;
+      return tabs.content.center;
+    case 'twoHorizontal':
+      return position.horizontal === 'left' ? tabs.content.left : tabs.content.right;
+    case 'twoVertical':
+      return position.vertical === 'top' ? tabs.content.top : tabs.content.bottom;
     case 'quadrant':
       if (position.vertical === 'top' && position.horizontal === 'left') {
-        return tabs.topLeft;
+        return tabs.content.topLeft;
       } else if (position.vertical === 'top' && position.horizontal === 'right') {
-        return tabs.topRight;
+        return tabs.content.topRight;
       } else if (position.vertical === 'bottom' && position.horizontal === 'left') {
-        return tabs.bottomLeft;
+        return tabs.content.bottomLeft;
       } else if (position.vertical === 'bottom' && position.horizontal === 'right') {
-        return tabs.bottomRight;
+        return tabs.content.bottomRight;
       }
   }
   throw new Error(`Invalid tab type: ${(tabs as Tabs).type}`);
@@ -152,25 +152,25 @@ export function getContentList({ position, tabs }: { position: TabPosition; tabs
 export function getAllContent({ tabs }: { tabs: Tabs }): Content[] {
   switch (tabs.type) {
     case 'single':
-      return tabs.tabs;
-    case 'two-horizontal':
-      return tabs.left.concat(tabs.right);
-    case 'two-vertical':
-      return tabs.top.concat(tabs.bottom);
+      return tabs.content.center;
+    case 'twoHorizontal':
+      return tabs.content.left.concat(tabs.content.right);
+    case 'twoVertical':
+      return tabs.content.top.concat(tabs.content.bottom);
     case 'quadrant':
-      return tabs.topLeft.concat(tabs.topRight, tabs.bottomLeft, tabs.bottomRight);
+      return tabs.content.topLeft.concat(tabs.content.topRight, tabs.content.bottomLeft, tabs.content.bottomRight);
   }
 }
 
 export function getEmptyTabs({ type }: { type: TabAreaType }): Tabs {
   switch (type) {
     case 'single':
-      return { type, tabs: [] };
-    case 'two-horizontal':
-      return { type, left: [], right: [] };
-    case 'two-vertical':
-      return { type, top: [], bottom: [] };
+      return { type, content: { center: [] } };
+    case 'twoHorizontal':
+      return { type, content: { left: [], right: [] } };
+    case 'twoVertical':
+      return { type, content: { top: [], bottom: [] } };
     case 'quadrant':
-      return { type, topLeft: [], topRight: [], bottomLeft: [], bottomRight: [] };
+      return { type, content: { topLeft: [], topRight: [], bottomLeft: [], bottomRight: [] } };
   }
 }

@@ -1,27 +1,36 @@
 import cn from 'classnames';
-import { CSSProperties } from 'react';
+import { CSSProperties, Dispatch, SetStateAction } from 'react';
 import styles from './styles.module.css';
+import Tab from './Tab';
+import { Content } from 'src/redux/content';
 
-export interface TabAreaProps {
-  gridArea?: string;
+export interface TabAreaProps<Positions extends string> {
+  tabDragActive: boolean;
+  setTabDragActive: Dispatch<SetStateAction<boolean>>;
+  position: Positions;
+  contentList: Content[];
   style?: CSSProperties;
 }
 
-export default function TabArea({ gridArea, style }: TabAreaProps) {
+export default function TabArea<Positions extends string>({
+  tabDragActive,
+  setTabDragActive,
+  position,
+  contentList,
+  style,
+}: TabAreaProps<Positions>) {
   return (
-    <div className={styles.tabArea} style={{ gridArea, ...style }} id="tabArea">
+    <div className={styles.tabArea} style={{ gridArea: position, ...style }} id="tabArea">
       <div className={styles.tabList}>
-        <div className={cn(styles.tabInactive, 'noSelect')}>
-          <span>Tab 1</span>
-        </div>
-        <div className={cn(styles.tabActive, 'noSelect')}>
-          <span>Tab 2</span>
-        </div>
-        <div className={cn(styles.tabInactive, 'noSelect')}>
-          <span>Tab with long name</span>
-          <div className={styles.tabDragAreaLeft} />
-          <div className={styles.tabDragAreaRight} />
-        </div>
+        {contentList.map((content) => (
+          <Tab
+            key={`${position}-${content.tabId}`}
+            content={content}
+            selected={content.selected || false}
+            tabDragActive={tabDragActive}
+            setTabDragActive={setTabDragActive}
+          />
+        ))}
       </div>
       <div className={cn(styles.tabOptions, 'noSelect')}>...</div>
       <div className={cn(styles.tabContent, 'noSelect')}></div>

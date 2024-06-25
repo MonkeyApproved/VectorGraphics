@@ -5,6 +5,8 @@ import { TabPosition } from './types';
 
 export const getTabAreaType = (state: RootState) => state.ui.tabs.type;
 
+export const getTabs = (state: RootState) => state.ui.tabs;
+
 export const getTabAreaContent =
   ({ position }: { position: TabPosition }) =>
   (state: RootState): ContentWithLabel[] => {

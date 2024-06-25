@@ -25,6 +25,7 @@ export interface BaseContent {
   type: string;
   contentId: string;
   position: TabPosition;
+  selected?: boolean;
 }
 
 export interface AvailableContent {
