@@ -16,8 +16,7 @@ export default function VariableInput({ variableName, index }: VariableInputProp
   const dispatch = useAppDispatch();
 
   const onNameSubmit = () => {
-    // eslint-disable-next-line no-console
-    console.log(`Variable name changed from ${equation.context.name} to ${currentName}`);
+    console.warn(`Variable name changed from ${equation.context.name} to ${currentName}`);
   };
 
   const onValueSubmit = () => {

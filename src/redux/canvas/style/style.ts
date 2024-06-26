@@ -29,6 +29,12 @@ export function getSvgStyleParams({ style = defaultStyle }: { style?: Style }): 
   };
 }
 
+export function getSvgStyleAttribute({ style }: { style?: Style }) {
+  const params = getSvgStyleParams({ style });
+  const styles = Object.entries(params).map(([key, value]) => `${key}: ${value}`);
+  return styles.join('; ');
+}
+
 export function getDefaultElementStyle({ canvas }: { canvas: Canvas }) {
   if (canvas.localSettings?.defaultElementStyle) {
     return canvas.localSettings.defaultElementStyle;

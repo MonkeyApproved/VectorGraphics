@@ -2,10 +2,10 @@ import { CanvasSliceReducer } from './slice';
 import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
 import { applyStyle, getExistingCanvasElement } from './reducers.helper';
 import { Shape, NewShape } from './shape';
-import { Style, getDefaultElementStyle } from './style';
+import { Style } from './style';
 import { getEmptyCanvas } from './canvas';
 import { getFreshStats } from './utils';
-import { UserAction, appendElementToCanvas } from './userActions';
+import { UserAction } from './canvas/userAction';
 import { Element } from './element';
 
 type NewStyle = Omit<Style, 'id' | 'stats'>;
@@ -62,10 +62,6 @@ const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; shape: NewShape
   // add the element to the canvas
   canvas.elementIds.push(elementId);
   element.stats.usages++;
-
-  // lastly, we have to add the new shape to the actual SVG canvas
-  const style = getDefaultElementStyle({ canvas });
-  appendElementToCanvas({ canvas, shape, style });
 };
 
 const duplicateElement: CanvasSliceReducer<{ elementId: string }> = (state, { payload }) => {

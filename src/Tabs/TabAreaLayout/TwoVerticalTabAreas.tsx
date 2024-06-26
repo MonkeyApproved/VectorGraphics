@@ -21,7 +21,6 @@ export default function TwoVerticalTabAreas() {
   return (
     <div className={styles.twoVertical} style={{ gridTemplateRows: rows, gridArea: 'tabAreas' }} ref={ref}>
       <Divider
-        dragBorderRef={ref}
         setDividerPos={setDividerPos}
         setDragActive={setDragActive}
         dimension="y"

@@ -1,7 +1,7 @@
 import { SvgSettings } from '../settings';
 import { BaseEntity } from '../types';
 import { getFreshStats } from '../utils';
-import { UserAction, getInitialUserAction } from '../userActions/userAction';
+import { UserAction, getInitialUserAction } from './userAction';
 
 export interface SvgCanvasIds {
   bottomId: string;

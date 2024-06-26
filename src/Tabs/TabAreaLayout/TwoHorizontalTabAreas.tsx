@@ -21,7 +21,6 @@ export default function TwoHorizontalTabAreas() {
   return (
     <div className={styles.twoHorizontal} style={{ gridTemplateColumns: columns, gridArea: 'tabAreas' }} ref={ref}>
       <Divider
-        dragBorderRef={ref}
         setDividerPos={setDividerPos}
         setDragActive={setDragActive}
         dimension="x"

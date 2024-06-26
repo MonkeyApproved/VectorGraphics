@@ -29,7 +29,6 @@ export default function QuadrantTabAreas() {
       ref={ref}
     >
       <Divider
-        dragBorderRef={ref}
         setDividerPos={setDividerXPos}
         setDragActive={setDragXActive}
         dimension="x"
@@ -38,7 +37,6 @@ export default function QuadrantTabAreas() {
         style={{ gridArea: 'dividerHorizontal' }}
       />
       <Divider
-        dragBorderRef={ref}
         setDividerPos={setDividerYPos}
         setDragActive={setDragYActive}
         dimension="y"
@@ -47,7 +45,6 @@ export default function QuadrantTabAreas() {
         style={{ gridArea: 'dividerVertical' }}
       />
       <Divider
-        dragBorderRef={ref}
         setDividerPos={setDividerYPos}
         setDragActive={setDragYActive}
         dimension="y"

@@ -1,6 +1,6 @@
+import { getSvgShapeParams, getSvgStyleParams } from 'src/redux/utils';
 import { ElementSelection } from './selectElement';
-import { AnyShape, getSvgShapeParams } from '../../shape';
-import { Style, getSvgStyleParams } from '../../style';
+import { AnyShape, Style } from 'src/redux/types';
 
 export function setShapeAttributes({ shape, selection }: { shape: AnyShape; selection: ElementSelection }) {
   const params = getSvgShapeParams({ shape });

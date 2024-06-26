@@ -4,8 +4,9 @@ export { getExistingEquation, getEquation } from './math/equationParsing';
 
 // canvas slice
 export { initialCanvas } from './canvas/slice';
-export { getSvgCanvasIds } from './canvas/canvas';
-export { removeTempShapeFromCanvas } from './canvas/userActions';
+export { getSvgShapeParams, getNewShape } from './canvas/shape';
+export { getSvgStyleParams, getSvgStyleAttribute } from './canvas/style';
+export { getSvgCanvasIds, getMainCanvasId, getTopCanvasId, getBottomCanvasId } from './canvas/canvas';
 export * from './canvas/coordinateMath';
 
 // variableManager slice

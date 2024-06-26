@@ -14,8 +14,8 @@ export const defaultSvgSettings: SvgSettings = {
   defaultElementStyle: {
     id: 'canvasElementDefault',
     stats: getFreshStats(),
-    stroke: { color: 'black', width: 1 },
-    fill: { color: 'black', opacity: 0.5 },
+    stroke: { color: 'white', width: 2 },
+    fill: { color: '#666666', opacity: 0.5 },
   },
   selectionBoxStyle: {
     id: 'canvasSelectionDefault',

@@ -9,7 +9,6 @@ export * from './math/selectors';
 
 // canvas slice
 export * from './canvas/selectors';
-export * from './canvas/userActions/selectors';
 
 // variableManager slice
 export * from './variableManager/selectors';
