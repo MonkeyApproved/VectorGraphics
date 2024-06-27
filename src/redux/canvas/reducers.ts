@@ -64,6 +64,14 @@ const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; shape: NewShape
   element.stats.usages++;
 };
 
+const setSelectedElements: CanvasSliceReducer<{ canvasId: string; elements: string[] }> = (state, { payload }) => {
+  const canvas = state.canvases[payload.canvasId];
+  if (!canvas) {
+    throw new Error(`Canvas with id ${payload.canvasId} not found`);
+  }
+  canvas.selectedElementIds = payload.elements;
+};
+
 const duplicateElement: CanvasSliceReducer<{ elementId: string }> = (state, { payload }) => {
   // get the element to duplicate
   const element = state.elements[payload.elementId];
@@ -124,6 +132,8 @@ const removeElement: CanvasSliceReducer<{ elementId: string }> = (state, { paylo
 };
 
 export const reducers = {
+  // selection reducers
+  setSelectedElements,
   // canvas reducers
   addCanvas,
   removeCanvas,

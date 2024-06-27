@@ -1,29 +1,23 @@
-import { Coordinate, NewShape, ShapeType } from 'src/redux/types';
-import { ElementSelection } from '../svgStateManagement/selectElement';
+import { NewShape } from 'src/redux/types';
 import { getMousePosition } from '../utils';
-import { getNewShape } from 'src/redux/utils';
-import { removeElement } from '../svgStateManagement/removeElement';
+import { getNewShape, getTopCanvasId } from 'src/redux/utils';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
-import { Dispatch, RefObject, SetStateAction, useEffect } from 'react';
-import { setShapeAttributes } from '../svgStateManagement/updateShape';
-
-export interface DrawSimpleShapeProps {
-  canvasId: string;
-  canvasRef: RefObject<SVGSVGElement>;
-  shapeType: ShapeType;
-  mouseDownPosition: Coordinate;
-  tempShape: ElementSelection;
-  setMouseActionActive: Dispatch<SetStateAction<boolean>>;
-}
+import { useEffect, useState } from 'react';
+import { DrawShapeProps } from './DrawShape';
+import TempShape from './TempShape';
+import styles from './styles.module.css';
+import { getCanvas, useAppSelector } from 'src/redux/selectors';
 
 export default function DrawSimpleShape({
   canvasId,
   canvasRef,
   shapeType,
   mouseDownPosition,
-  tempShape,
   setMouseActionActive,
-}: DrawSimpleShapeProps) {
+}: DrawShapeProps) {
+  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const topCanvasId = getTopCanvasId({ canvasId });
+  const [tempShape, setTempShape] = useState<NewShape>(getNewShape({ shapeType, start: mouseDownPosition }));
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,8 +43,7 @@ export default function DrawSimpleShape({
 
   const updateShape = (event: MouseEvent) => {
     // update the temp shape with the current mouse position
-    const currentShape = getCurrentShape({ event });
-    setShapeAttributes({ shape: currentShape, selection: tempShape });
+    setTempShape(getCurrentShape({ event }));
   };
 
   const submitShape = (event: MouseEvent) => {
@@ -58,12 +51,15 @@ export default function DrawSimpleShape({
     const finalShape = getCurrentShape({ event });
 
     // now we can remove the temp shape and submit the final shape to the store
-    removeElement({ selection: tempShape });
     dispatch(addElementToCanvas({ canvasId, shape: finalShape }));
 
     // finally, we inform CanvasMouseEvents that the current mouse action is finished
     setMouseActionActive(false);
   };
 
-  return null;
+  return (
+    <svg className={styles.topCanvas} id={topCanvasId} viewBox={canvas.viewBox}>
+      <TempShape tempShape={tempShape} canvasId={canvasId} />
+    </svg>
+  );
 }

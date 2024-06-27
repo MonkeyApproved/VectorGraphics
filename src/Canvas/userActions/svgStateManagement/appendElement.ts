@@ -1,4 +1,4 @@
-import { AnyShape, ShapeType, Style, SvgSettings } from 'src/redux/types';
+import { AnyShape, Style, SvgSettings } from 'src/redux/types';
 import { ElementSelection, selectExistingCanvas } from './selectElement';
 import { setShapeAttributes, setStyleAttributes } from './updateShape';
 
@@ -28,21 +28,6 @@ export function appendElementToCanvas({
     setStyleAttributes({ style, selection: shapeSelection });
   }
   return shapeSelection;
-}
-
-export function appendTempShapeToCanvas({
-  canvasId,
-  shapeType,
-  canvasSettings,
-}: {
-  canvasId: string;
-  shapeType: ShapeType;
-  canvasSettings: SvgSettings;
-}): ElementSelection {
-  const canvasSelection = selectExistingCanvas({ canvasId });
-  const elementSelection = appendElement({ parent: canvasSelection, elementType: shapeType });
-  setStyleAttributes({ selection: elementSelection, style: canvasSettings.defaultElementStyle });
-  return elementSelection;
 }
 
 export function appendSelectionRectToCanvas({

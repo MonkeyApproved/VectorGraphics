@@ -1,10 +1,11 @@
-import { RefObject, createElement } from 'react';
+import { createElement } from 'react';
 import { getSvgStyleParams } from 'src/redux/utils';
-import { ElementResolved } from 'src/redux/types';
 import { getSvgShapeParams } from 'src/redux/utils';
+import { getCanvasElementDetails, useAppSelector } from 'src/redux/selectors';
 
-export default function Element({ element }: { element: ElementResolved; canvasRef: RefObject<SVGSVGElement> }) {
-  const attributes = getSvgShapeParams({ shape: element.shape });
-  const style = getSvgStyleParams({ style: element.style });
-  return createElement(element.shape.type, { ...attributes, style });
+export default function Element({ elementId, canvasId }: { elementId: string; canvasId: string }) {
+  const details = useAppSelector(getCanvasElementDetails({ elementId, canvasId }));
+  const attributes = getSvgShapeParams({ shape: details.shape });
+  const style = getSvgStyleParams({ style: details.style });
+  return createElement(details.shape.type, { ...attributes, style });
 }

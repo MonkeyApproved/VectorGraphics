@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ComponentCounter, initialCounterState } from './id';
 import { defaultSvgSettings, SvgSettings } from './settings';
 import { Shape } from './shape';
-import { Style } from './style';
+import { defaultStyle, Style } from './style';
 import { Transformation } from './transformation';
 import { Element } from './element';
 import { Group } from './group';
@@ -26,7 +26,9 @@ export const initialCanvasState: CanvasState = {
   globalSettings: defaultSvgSettings,
   counters: initialCounterState,
   shapes: {},
-  styles: {},
+  styles: {
+    [defaultStyle.id]: defaultStyle,
+  },
   transformations: {},
   elements: {},
   groups: {},
@@ -52,6 +54,8 @@ export const {
   removeCanvas,
   setUserAction,
   addElementToCanvas,
+  // selection reducers
+  setSelectedElements,
   // element/shape reducers
   duplicateElement,
   removeElement,

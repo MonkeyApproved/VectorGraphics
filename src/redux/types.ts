@@ -20,7 +20,7 @@ export type {
 } from './canvas/shape';
 export type { Fill, Color, Stroke, Style } from './canvas/style';
 export type { Transformation, Translation, Rotation, Scale, Skew } from './canvas/transformation';
-export type { Element, ElementResolved } from './canvas/element';
+export type { Element, ElementDetails } from './canvas/element';
 export type { Canvas, SvgCanvasIds } from './canvas/canvas';
 export type { SvgSettings } from './canvas/settings';
 export type { UserAction, DrawAction, SelectAction } from './canvas/canvas/userAction';

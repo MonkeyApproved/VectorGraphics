@@ -11,10 +11,11 @@ export interface Element {
   transformationId?: string;
 }
 
-export interface ElementResolved {
+export interface ElementDetails {
   id: string;
   stats: Stats;
   shape: Shape;
   style?: Style;
   transformation?: Transformation;
+  selected?: boolean;
 }

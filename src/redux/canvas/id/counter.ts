@@ -17,9 +17,9 @@ export const initialCounterState: ComponentCounter = {
     polygon: 0,
     polyline: 0,
   },
-  styles: 0,
+  styles: 1, // default style
   transformations: 0,
   elements: 0,
   groups: 0,
-  canvases: 1,
+  canvases: 1, // initial canvas
 };

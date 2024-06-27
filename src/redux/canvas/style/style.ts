@@ -10,7 +10,8 @@ export interface Style extends BaseEntity {
 }
 
 export const defaultStyle: Style = {
-  id: 'default',
+  id: 'style1',
+  label: 'Default',
   stats: getFreshStats(),
   fill: defaultFillStyle,
   stroke: defaultStrokeStyle,

@@ -1,22 +1,13 @@
 import { Style } from './style';
 import { getFreshStats } from './utils';
 
-export type SvgTool = 'select' | 'addLine' | 'addRect' | 'addEllipse';
-
 export interface SvgSettings {
-  activeTool: SvgTool;
-  defaultElementStyle: Style;
+  defaultElementStyle: string;
   selectionBoxStyle: Style;
 }
 
 export const defaultSvgSettings: SvgSettings = {
-  activeTool: 'select',
-  defaultElementStyle: {
-    id: 'canvasElementDefault',
-    stats: getFreshStats(),
-    stroke: { color: 'white', width: 2 },
-    fill: { color: '#666666', opacity: 0.5 },
-  },
+  defaultElementStyle: 'style1', // add in initial state of store
   selectionBoxStyle: {
     id: 'canvasSelectionDefault',
     stats: getFreshStats(),

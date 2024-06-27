@@ -1,32 +1,28 @@
 import styles from './styles.module.css';
 import MenuGrid from './MenuGrid';
-import { getCanvas, getCanvasElements, useAppSelector } from 'src/redux/selectors';
-import { getSvgCanvasIds } from 'src/redux/utils';
+import { getCanvas, useAppSelector } from 'src/redux/selectors';
+import { getMainCanvasId } from 'src/redux/utils';
 import { useRef } from 'react';
 import CanvasMouseEvents from './userActions/CanvasMouseEvents';
 import Element from './Element';
 
 export default function Canvas({ canvasId }: { canvasId: string }) {
-  // redux state
+  // current redux state
   const canvas = useAppSelector(getCanvas({ canvasId }));
-  const elements = useAppSelector(getCanvasElements({ canvasId }));
-
-  const svgIds = getSvgCanvasIds({ canvasId: canvas.id });
+  // main canvas attributes: this canvas displays the current state of the store
+  const mainCanvasId = getMainCanvasId({ canvasId });
   const mainCanvasRef = useRef<SVGSVGElement>(null);
-
-  const svgElements = elements.map((element) => (
-    <Element key={element.id} element={element} canvasRef={mainCanvasRef} />
+  // elements in canvas
+  const svgElements = canvas.elementIds.map((elementId) => (
+    <Element key={elementId} elementId={elementId} canvasId={canvasId} />
   ));
 
   return (
     <>
       <div className={styles.canvasWrapper}>
-        <svg className={styles.bottomCanvas} id={svgIds.bottomId} viewBox={canvas.viewBox} />
-        <svg className={styles.canvas} id={svgIds.mainId} viewBox={canvas.viewBox} ref={mainCanvasRef}>
+        <svg className={styles.canvas} id={mainCanvasId} viewBox={canvas.viewBox} ref={mainCanvasRef}>
           {svgElements}
         </svg>
-        <svg className={styles.topCanvas} id={svgIds.topId} viewBox={canvas.viewBox} />
-
         {mainCanvasRef && <CanvasMouseEvents canvasId={canvasId} canvasRef={mainCanvasRef} />}
       </div>
       <MenuGrid canvas={canvas} status="status" />

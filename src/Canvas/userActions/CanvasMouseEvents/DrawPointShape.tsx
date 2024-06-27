@@ -1,30 +1,25 @@
-import { Coordinate, NewShape, ShapeType } from 'src/redux/types';
-import { ElementSelection } from '../svgStateManagement/selectElement';
+import { Coordinate, NewShape } from 'src/redux/types';
 import { getMousePosition } from '../utils';
-import { getNewShape } from 'src/redux/utils';
+import { getNewShape, getTopCanvasId } from 'src/redux/utils';
 // import { removeElement } from '../svgStateManagement/removeElement';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from 'react';
-import { setShapeAttributes } from '../svgStateManagement/updateShape';
+import { useEffect, useRef, useState } from 'react';
 import { ClickEvent, checkDoubleClick } from './doubleClick';
-
-export interface DrawSimpleShapeProps {
-  canvasId: string;
-  canvasRef: RefObject<SVGSVGElement>;
-  shapeType: ShapeType;
-  mouseDownPosition: Coordinate;
-  tempShape: ElementSelection;
-  setMouseActionActive: Dispatch<SetStateAction<boolean>>;
-}
+import { DrawShapeProps } from './DrawShape';
+import TempShape from './TempShape';
+import styles from './styles.module.css';
+import { getCanvas, useAppSelector } from 'src/redux/selectors';
 
 export default function DrawPointShape({
   canvasId,
   canvasRef,
   shapeType,
   mouseDownPosition,
-  tempShape,
   setMouseActionActive,
-}: DrawSimpleShapeProps) {
+}: DrawShapeProps) {
+  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const topCanvasId = getTopCanvasId({ canvasId });
+  const [tempShape, setTempShape] = useState<NewShape>(getNewShape({ shapeType, start: mouseDownPosition }));
   const finishedSegments = useRef<NewShape>();
   const mouseClicks = useRef<ClickEvent[]>([]);
   const dispatch = useAppDispatch();
@@ -54,22 +49,18 @@ export default function DrawPointShape({
   };
 
   const updateCurrentSegment = (event: MouseEvent) => {
-    console.warn('update');
     // update the temp shape with the current mouse position
-    const currentShape = getCurrentShape({ event });
-    setShapeAttributes({ shape: currentShape, selection: tempShape });
+    setTempShape(getCurrentShape({ event }));
   };
 
   const addSegment = (event: MouseEvent) => {
-    console.warn('add segment');
     // update the shape and update finished segments
     const currentShape = getCurrentShape({ event });
-    setShapeAttributes({ shape: currentShape, selection: tempShape });
+    setTempShape(currentShape);
     finishedSegments.current = currentShape;
   };
 
   const submitShape = (event: MouseEvent) => {
-    console.warn('submit');
     // update the shape with the final mouse position
     const finalShape = getCurrentShape({ event });
 
@@ -94,7 +85,11 @@ export default function DrawPointShape({
     }
   };
 
-  return null;
+  return (
+    <svg className={styles.topCanvas} id={topCanvasId} viewBox={canvas.viewBox}>
+      <TempShape tempShape={tempShape} canvasId={canvasId} />
+    </svg>
+  );
 }
 
 export function appendFinishedSegments({

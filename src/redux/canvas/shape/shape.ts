@@ -44,14 +44,14 @@ export function getNewShape({
 }: {
   shapeType: ShapeType;
   start: Coordinate;
-  end: Coordinate;
+  end?: Coordinate;
 }): NewShape {
-  if (shapeType === 'line') return getNewLine({ start, end });
-  if (shapeType === 'rect') return getNewRect({ start, end });
-  if (shapeType === 'circle') return getNewCircle({ start, end });
-  if (shapeType === 'ellipse') return getNewEllipse({ start, end });
-  if (shapeType === 'polygon') return getNewPolygon({ start, end });
-  if (shapeType === 'polyline') return getNewPolyline({ start, end });
-  if (shapeType === 'path') return getNewPath({ start, end });
+  if (shapeType === 'line') return getNewLine({ start, end: end || start });
+  if (shapeType === 'rect') return getNewRect({ start, end: end || start });
+  if (shapeType === 'circle') return getNewCircle({ start, end: end || start });
+  if (shapeType === 'ellipse') return getNewEllipse({ start, end: end || start });
+  if (shapeType === 'polygon') return getNewPolygon({ start, end: end || start });
+  if (shapeType === 'polyline') return getNewPolyline({ start, end: end || start });
+  if (shapeType === 'path') return getNewPath({ start, end: end || start });
   throw new Error(`Unknown shape type: ${shapeType}`);
 }

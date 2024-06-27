@@ -12,6 +12,7 @@ export interface SvgCanvasIds {
 export interface Canvas<UserActionType = UserAction> extends BaseEntity {
   viewBox: string;
   elementIds: string[]; // can be elements or groups
+  selectedElementIds: string[];
   currentUserAction: UserActionType;
   localSettings?: SvgSettings;
 }
@@ -22,6 +23,7 @@ export function getEmptyCanvas({ label }: { label?: string }): Omit<Canvas, 'id'
     label,
     viewBox: '0 0 1000 1000',
     elementIds: [],
+    selectedElementIds: [],
     currentUserAction: getInitialUserAction(),
   };
 }
