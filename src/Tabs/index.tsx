@@ -8,7 +8,7 @@ export default function Tabs() {
   return (
     <div className={styles.tabAreaWithTopBar}>
       <div className={styles.topBar}>
-        <div>Project name</div>
+        <span className="noSelect">Project name</span>
         <button className={styles.tabAreaTypeButton} onClick={() => dispatch(changeTabAreaType({ type: 'single' }))}>
           S
         </button>

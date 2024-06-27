@@ -1,10 +1,9 @@
 import styles from './styles.module.css';
-import MenuGrid from './MenuGrid';
 import { getCanvas, useAppSelector } from 'src/redux/selectors';
 import { getMainCanvasId } from 'src/redux/utils';
 import { useRef } from 'react';
-import CanvasMouseEvents from './userActions/CanvasMouseEvents';
 import Element from './Element';
+import { UserInterface } from './UserInterface';
 
 export default function Canvas({ canvasId }: { canvasId: string }) {
   // current redux state
@@ -23,9 +22,8 @@ export default function Canvas({ canvasId }: { canvasId: string }) {
         <svg className={styles.canvas} id={mainCanvasId} viewBox={canvas.viewBox} ref={mainCanvasRef}>
           {svgElements}
         </svg>
-        {mainCanvasRef && <CanvasMouseEvents canvasId={canvasId} canvasRef={mainCanvasRef} />}
+        <UserInterface canvasId={canvasId} canvasRef={mainCanvasRef} />
       </div>
-      <MenuGrid canvas={canvas} status="status" />
     </>
   );
 }

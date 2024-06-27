@@ -2,17 +2,19 @@ import { Coordinate } from 'src/redux/types';
 import { getMousePosition } from '../utils';
 import { getNewRect, getTopCanvasId } from 'src/redux/utils';
 import { setSelectedElements, useAppDispatch } from 'src/redux/reducers';
-import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import { getCanvas, useAppSelector } from 'src/redux/selectors';
 import styles from './styles.module.css';
 import SelectionRect from './SelectionRect';
 import { Rect, TempShareGeneric } from 'src/redux/canvas/shape';
+import { ReactSetState } from '../types';
 
 export interface DrawSimpleShapeProps {
   canvasId: string;
   canvasRef: RefObject<SVGSVGElement>;
   mouseDownPosition: Coordinate;
   setMouseActionActive: Dispatch<SetStateAction<boolean>>;
+  setStatus: ReactSetState<string>;
 }
 
 export default function SelectElements({
@@ -20,9 +22,11 @@ export default function SelectElements({
   canvasRef,
   mouseDownPosition,
   setMouseActionActive,
+  setStatus,
 }: DrawSimpleShapeProps) {
   const canvas = useAppSelector(getCanvas({ canvasId }));
   const topCanvasId = getTopCanvasId({ canvasId });
+  const selectedElements = useRef<string[]>([]);
   const [rect, setRect] = useState<TempShareGeneric<Rect>>(
     getNewRect({ start: mouseDownPosition, end: mouseDownPosition }),
   );
@@ -32,6 +36,7 @@ export default function SelectElements({
     document.body.addEventListener('mousemove', updateShape);
     document.body.addEventListener('mouseup', submitSelection);
     document.body.addEventListener('mouseleave', submitSelection);
+    setStatus(`Drag mouse to select multiple elements (${selectedElements.current.length} selected)`);
 
     return () => {
       document.body.removeEventListener('mousemove', updateShape);

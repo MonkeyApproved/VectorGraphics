@@ -1,7 +1,6 @@
 import { Coordinate, NewShape } from 'src/redux/types';
 import { getMousePosition } from '../utils';
 import { getNewShape, getTopCanvasId } from 'src/redux/utils';
-// import { removeElement } from '../svgStateManagement/removeElement';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
 import { useEffect, useRef, useState } from 'react';
 import { ClickEvent, checkDoubleClick } from './doubleClick';
@@ -16,6 +15,7 @@ export default function DrawPointShape({
   shapeType,
   mouseDownPosition,
   setMouseActionActive,
+  setStatus,
 }: DrawShapeProps) {
   const canvas = useAppSelector(getCanvas({ canvasId }));
   const topCanvasId = getTopCanvasId({ canvasId });
@@ -28,6 +28,7 @@ export default function DrawPointShape({
     document.body.addEventListener('mousemove', updateCurrentSegment);
     document.body.addEventListener('mouseup', onMouseUp);
     document.body.addEventListener('mouseleave', submitShape);
+    setStatus('Click to add segment; Double click to finish');
 
     return () => {
       document.body.removeEventListener('mousemove', updateCurrentSegment);

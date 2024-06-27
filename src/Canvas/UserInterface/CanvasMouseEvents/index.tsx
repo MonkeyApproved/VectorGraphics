@@ -3,16 +3,17 @@ import { Coordinate } from 'src/redux/types';
 import { getMousePosition } from '../utils';
 import { getCurrentUserAction, useAppSelector } from 'src/redux/selectors';
 import styles from './styles.module.css';
-import { ReactMouseEvent } from '../types';
+import { ReactMouseEvent, ReactSetState } from '../types';
 import DrawShape from './DrawShape';
 import SelectElements from './SelectElements';
 
 interface CanvasMouseEventProps {
   canvasId: string;
   canvasRef: RefObject<SVGSVGElement>;
+  setStatus: ReactSetState<string>;
 }
 
-export default function CanvasMouseEvents({ canvasId, canvasRef }: CanvasMouseEventProps) {
+export default function CanvasMouseEvents({ canvasId, canvasRef, setStatus }: CanvasMouseEventProps) {
   // mouse action state
   const [mouseDownPosition, setMouseDownPosition] = useState<Coordinate | undefined>();
   const [mouseDownTarget, setMouseDownTarget] = useState<string | undefined>();
@@ -48,6 +49,7 @@ export default function CanvasMouseEvents({ canvasId, canvasRef }: CanvasMouseEv
         shapeType={currentUserAction.shapeType}
         mouseDownPosition={mouseDownPosition}
         setMouseActionActive={setMouseActionActive}
+        setStatus={setStatus}
       />
     );
   } else if (currentUserAction.type === 'select') {
@@ -57,6 +59,7 @@ export default function CanvasMouseEvents({ canvasId, canvasRef }: CanvasMouseEv
         canvasRef={canvasRef}
         mouseDownPosition={mouseDownPosition}
         setMouseActionActive={setMouseActionActive}
+        setStatus={setStatus}
       />
     );
   }
