@@ -1,12 +1,12 @@
 import { Coordinate, NewShape } from 'src/redux/types';
-import { getMousePosition } from '../utils';
+import { getMousePosition } from '../../utils';
 import { getNewShape, getTopCanvasId } from 'src/redux/utils';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
 import { useEffect, useRef, useState } from 'react';
-import { ClickEvent, checkDoubleClick } from './doubleClick';
-import { DrawShapeProps } from './DrawShape';
+import { ClickEvent, checkDoubleClick } from '../doubleClick';
+import { DrawShapeProps } from '.';
 import TempShape from './TempShape';
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
 import { getCanvas, useAppSelector } from 'src/redux/selectors';
 
 export default function DrawPointShape({

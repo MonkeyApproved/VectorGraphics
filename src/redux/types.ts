@@ -17,13 +17,20 @@ export type {
   Polyline,
   NewShape,
   AnyShape,
+  PathSegmentTypes,
 } from './canvas/shape';
 export type { Fill, Color, Stroke, Style } from './canvas/style';
 export type { Transformation, Translation, Rotation, Scale, Skew } from './canvas/transformation';
 export type { Element, ElementDetails } from './canvas/element';
 export type { Canvas, SvgCanvasIds } from './canvas/canvas';
 export type { SvgSettings } from './canvas/settings';
-export type { UserAction, DrawAction, SelectAction } from './canvas/canvas/userAction';
+export type {
+  UserAction,
+  DrawAction,
+  SelectAction,
+  SettingsAction,
+  MainUserActionTypes,
+} from './canvas/canvas/userAction';
 export * from './canvas/types';
 
 // variableManager slice

@@ -1,11 +1,11 @@
 import { NewShape } from 'src/redux/types';
-import { getMousePosition } from '../utils';
+import { getMousePosition } from '../../utils';
 import { getNewShape, getTopCanvasId } from 'src/redux/utils';
 import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
 import { useEffect, useState } from 'react';
-import { DrawShapeProps } from './DrawShape';
+import { DrawShapeProps } from '.';
 import TempShape from './TempShape';
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
 import { getCanvas, useAppSelector } from 'src/redux/selectors';
 
 export default function DrawSimpleShape({

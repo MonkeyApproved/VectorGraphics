@@ -1,13 +1,13 @@
 import { Coordinate } from 'src/redux/types';
-import { getMousePosition } from '../utils';
+import { getMousePosition } from '../../utils';
 import { getNewRect, getTopCanvasId } from 'src/redux/utils';
 import { setSelectedElements, useAppDispatch } from 'src/redux/reducers';
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import { getCanvas, useAppSelector } from 'src/redux/selectors';
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
 import SelectionRect from './SelectionRect';
 import { Rect, TempShareGeneric } from 'src/redux/canvas/shape';
-import { ReactSetState } from '../types';
+import { ReactSetState } from '../../types';
 
 export interface DrawSimpleShapeProps {
   canvasId: string;
