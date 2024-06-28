@@ -2,10 +2,10 @@ import { RefObject, useState } from 'react';
 import { Coordinate } from 'src/redux/types';
 import { getMousePosition } from '../utils';
 import { getCurrentUserAction, useAppSelector } from 'src/redux/selectors';
-import styles from './styles.module.css';
 import { ReactMouseEvent, ReactSetState } from '../types';
 import DrawShape from './DrawShape';
 import SelectElements from './SelectElements';
+import Idle from './Idle';
 
 interface CanvasMouseEventProps {
   canvasId: string;
@@ -39,12 +39,11 @@ export default function CanvasMouseEvents({ canvasId, canvasRef, setStatus }: Ca
   };
 
   if (!mouseDownPosition || !mouseActionActive) {
-    return <div className={styles.mouseListener} onMouseDown={startMouseAction} />;
+    return <Idle canvasId={canvasId} onMouseDown={startMouseAction} />;
   } else if (currentUserAction.type === 'drawShape') {
     return (
       <DrawShape
         canvasId={canvasId}
-        currentUserAction={currentUserAction}
         canvasRef={canvasRef}
         shapeType={currentUserAction.shapeType}
         mouseDownPosition={mouseDownPosition}

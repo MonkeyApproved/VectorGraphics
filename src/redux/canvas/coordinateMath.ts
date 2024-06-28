@@ -1,3 +1,5 @@
+import { AnyShapeGeneric, Rect, ShapeArea } from './shape';
+import { getRectArea } from './shape/rect';
 import { Area, Coordinate } from './types';
 
 interface CoordinateMathProps {
@@ -62,4 +64,14 @@ export function valueWithMinMax({
   if (min !== undefined && value < min) return min;
   if (max !== undefined && value > max) return max;
   return value;
+}
+
+export function isShapeAreaInRect({ shapeArea, rect }: { shapeArea: ShapeArea; rect: AnyShapeGeneric<Rect> }) {
+  const rectArea = getRectArea({ shape: rect });
+  return (
+    shapeArea.minX > rectArea.minX &&
+    shapeArea.maxX < rectArea.maxX &&
+    shapeArea.minY > rectArea.minY &&
+    shapeArea.maxY < rectArea.maxY
+  );
 }

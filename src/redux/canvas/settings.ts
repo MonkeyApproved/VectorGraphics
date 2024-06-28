@@ -4,6 +4,7 @@ import { getFreshStats } from './utils';
 export interface SvgSettings {
   defaultElementStyle: string;
   selectionBoxStyle: Style;
+  highlightedElementStyle: Style;
 }
 
 export const defaultSvgSettings: SvgSettings = {
@@ -13,5 +14,10 @@ export const defaultSvgSettings: SvgSettings = {
     stats: getFreshStats(),
     stroke: { color: '#55BBEE', width: 0.2 },
     fill: { color: '#55bbEE', opacity: 0.2 },
+  },
+  highlightedElementStyle: {
+    id: 'highlightedElementDefault',
+    stats: getFreshStats(),
+    stroke: { color: '#33FF33', width: 2 },
   },
 };

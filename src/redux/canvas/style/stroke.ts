@@ -2,9 +2,9 @@ import { Length, LengthArray, LineWidth, Percentage } from '../types';
 import { Color } from './color';
 
 export const defaultStrokeStyle: Stroke = {
-  color: 'black',
+  color: 'white',
   opacity: 1,
-  width: 1,
+  width: 2,
 };
 
 export interface Stroke {

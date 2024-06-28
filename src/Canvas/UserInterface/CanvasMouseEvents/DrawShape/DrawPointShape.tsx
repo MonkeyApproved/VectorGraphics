@@ -28,7 +28,7 @@ export default function DrawPointShape({
     document.body.addEventListener('mousemove', updateCurrentSegment);
     document.body.addEventListener('mouseup', onMouseUp);
     document.body.addEventListener('mouseleave', submitShape);
-    setStatus('Click to add segment; Double click to finish');
+    setStatus('click to add segment; double click to finish');
 
     return () => {
       document.body.removeEventListener('mousemove', updateCurrentSegment);

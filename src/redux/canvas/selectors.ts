@@ -2,6 +2,7 @@ import { RootState } from 'src/redux/store';
 import { UserAction } from './canvas/userAction';
 import { ElementDetails } from './element';
 import { Style } from './style';
+import { NewShapeGeneric, Rect, ShapeArea, getShapeArea } from './shape';
 
 export const getCanvas =
   ({ canvasId }: { canvasId: string }) =>
@@ -45,4 +46,53 @@ export const getSelectionRectStyle =
     const canvas = state.canvas.canvases[canvasId];
     const localStyle = canvas.localSettings?.selectionBoxStyle;
     return localStyle || state.canvas.globalSettings.selectionBoxStyle;
+  };
+
+export const getHighlightedElementStyle =
+  ({ canvasId }: { canvasId: string }) =>
+  (state: RootState): Style => {
+    const canvas = state.canvas.canvases[canvasId];
+    const localStyle = canvas.localSettings?.highlightedElementStyle;
+    return localStyle || state.canvas.globalSettings.highlightedElementStyle;
+  };
+
+export const getSelectedElementIds =
+  ({ canvasId }: { canvasId: string }) =>
+  (state: RootState): string[] =>
+    state.canvas.canvases[canvasId].selectedElementIds;
+
+export const getAllElementAreas =
+  ({ canvasId }: { canvasId: string }) =>
+  (state: RootState): ShapeArea[] => {
+    const canvas = state.canvas.canvases[canvasId];
+    return canvas.elementIds.map((elementId) => {
+      const shapeId = state.canvas.elements[elementId].shapeId;
+      const shape = state.canvas.shapes[shapeId];
+      const rawArea = getShapeArea({ shape });
+      return {
+        elementId,
+        shapeId,
+        ...rawArea,
+      };
+    });
+  };
+
+export const getMinimalRectContainingElements =
+  ({ elementIds }: { elementIds: string[] }) =>
+  (state: RootState): NewShapeGeneric<Rect> => {
+    const elementAreas = elementIds.map((elementId) => {
+      const element = state.canvas.elements[elementId];
+      const shape = state.canvas.shapes[element.shapeId];
+      return getShapeArea({ shape });
+    });
+    const minX = Math.min(...elementAreas.map((area) => area.minX));
+    const maxX = Math.max(...elementAreas.map((area) => area.maxX));
+    const minY = Math.min(...elementAreas.map((area) => area.minY));
+    const maxY = Math.max(...elementAreas.map((area) => area.maxY));
+    return {
+      type: 'rect',
+      position: { x: minX, y: minY },
+      size: { width: maxX - minX, height: maxY - minY },
+      positionAnchor: 'top-left',
+    };
   };

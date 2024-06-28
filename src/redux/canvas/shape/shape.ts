@@ -1,12 +1,12 @@
 import { DistributiveOmit } from 'react-redux';
 import { BaseEntity, Coordinate } from '../types';
-import { Circle, getCircleParams, getNewCircle } from './circle';
-import { Ellipse, getEllipseParams, getNewEllipse } from './ellipse';
-import { Line, getLineParams, getNewLine } from './line';
-import { Path, getNewPath, getPathParams } from './path';
-import { Polygon, getNewPolygon, getPolygonParams } from './polygon';
-import { Polyline, getNewPolyline, getPolylineParams } from './polyline';
-import { Rect, getNewRect, getRectParams } from './rect';
+import { Circle, getCircleArea, getCircleParams, getNewCircle } from './circle';
+import { Ellipse, getEllipseArea, getEllipseParams, getNewEllipse } from './ellipse';
+import { Line, getLineArea, getLineParams, getNewLine } from './line';
+import { Path, getNewPath, getPathArea, getPathParams } from './path';
+import { Polygon, getNewPolygon, getPolygonArea, getPolygonParams } from './polygon';
+import { Polyline, getNewPolyline, getPolylineArea, getPolylineParams } from './polyline';
+import { Rect, getNewRect, getRectArea, getRectParams } from './rect';
 
 export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polygon' | 'polyline';
 
@@ -16,7 +16,7 @@ export interface BaseShape extends BaseEntity {
 
 export type Shape = Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;
 export type NewShape = DistributiveOmit<Shape, 'id' | 'stats'>;
-export type TempShareGeneric<T extends BaseShape> = Omit<T, 'id' | 'stats'>;
+export type NewShapeGeneric<T extends BaseShape> = Omit<T, 'id' | 'stats'>;
 export type AnyShape = NewShape | Shape;
 export type AnyShapeGeneric<T extends BaseShape> = T | Omit<T, 'id' | 'stats'>;
 
@@ -54,4 +54,29 @@ export function getNewShape({
   if (shapeType === 'polyline') return getNewPolyline({ start, end: end || start });
   if (shapeType === 'path') return getNewPath({ start, end: end || start });
   throw new Error(`Unknown shape type: ${shapeType}`);
+}
+
+export interface ShapeArea {
+  elementId: string;
+  shapeId: string;
+  minX: number;
+  centerX: number;
+  maxX: number;
+  minY: number;
+  centerY: number;
+  maxY: number;
+}
+
+export type RawShapeArea = Omit<ShapeArea, 'elementId' | 'shapeId'>;
+export type GetShapeArea<S extends BaseShape> = ({ shape }: { shape: AnyShapeGeneric<S> }) => RawShapeArea;
+
+export function getShapeArea({ shape }: { shape: AnyShape }): RawShapeArea {
+  if (shape.type === 'line') return getLineArea({ shape });
+  if (shape.type === 'rect') return getRectArea({ shape });
+  if (shape.type === 'circle') return getCircleArea({ shape });
+  if (shape.type === 'ellipse') return getEllipseArea({ shape });
+  if (shape.type === 'polygon') return getPolygonArea({ shape });
+  if (shape.type === 'polyline') return getPolylineArea({ shape });
+  if (shape.type === 'path') return getPathArea({ shape });
+  throw new Error(`Unknown shape type: ${(shape as Shape).type}`);
 }

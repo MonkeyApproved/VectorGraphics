@@ -14,7 +14,6 @@ export default function DrawSimpleShape({
   shapeType,
   mouseDownPosition,
   setMouseActionActive,
-  setStatus,
 }: DrawShapeProps) {
   const canvas = useAppSelector(getCanvas({ canvasId }));
   const topCanvasId = getTopCanvasId({ canvasId });
@@ -25,7 +24,6 @@ export default function DrawSimpleShape({
     document.body.addEventListener('mousemove', updateShape);
     document.body.addEventListener('mouseup', submitShape);
     document.body.addEventListener('mouseleave', submitShape);
-    setStatus(`Drag mouse to draw ${shapeType}`);
 
     return () => {
       document.body.removeEventListener('mousemove', updateShape);
