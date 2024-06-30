@@ -21,7 +21,6 @@ export default function SvgCoordinateInput({ context, style, className }: SvgCon
   const [currentValue, setCurrentValue] = useState<string>(initialValue);
 
   const submitValue = () => {
-    console.warn('submitValue', currentValue);
     if (equation === undefined) {
       dispatch(addEquation({ context, value: currentValue }));
     } else {

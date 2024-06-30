@@ -1,4 +1,4 @@
-import { EquationDict, MathState } from '../slice';
+import { MathState, Namespace } from '../slice';
 import updateExistingEquation from './00A_updateEquationInput';
 import { Equation } from './types';
 import { Context } from '../context';
@@ -33,11 +33,11 @@ export default function getNewEquation({
   }
 }
 
-export function getNamespaceEquations({ state, namespace }: { state: MathState; namespace: string }): EquationDict {
+export function getNamespace({ state, namespace }: { state: MathState; namespace: string }): Namespace {
   if (!state.variables[namespace]) {
     throw new Error(`Namespace with id ${namespace} does not exist`);
   }
-  return state.variables[namespace].equations;
+  return state.variables[namespace];
 }
 
 export function getEquation({ context, state }: { context: Context; state: MathState }): Equation | undefined {
@@ -56,9 +56,9 @@ export function getExistingEquation({ context, state }: { context: Context; stat
   /**
    * Get equation matching context.
    */
-  const equationDict = getNamespaceEquations({ state, namespace: context.namespace });
-  if (!equationDict[context.name]) {
+  const namespace = getNamespace({ state, namespace: context.namespace });
+  if (!namespace.equations[context.name]) {
     throw new Error(`Equation with id ${context.name} does not exist in namespace ${context.namespace}`);
   }
-  return equationDict[context.name];
+  return namespace.equations[context.name];
 }

@@ -20,6 +20,7 @@ export type {
   PathSegmentTypes,
 } from './canvas/shape';
 export type { Fill, Color, Stroke, Style } from './canvas/style';
+export type { Namespace } from './math/slice';
 export type { Transformation, Translation, Rotation, Scale, Skew } from './canvas/transformation';
 export type { Element, ElementDetails } from './canvas/element';
 export type { Canvas, SvgCanvasIds } from './canvas/canvas';

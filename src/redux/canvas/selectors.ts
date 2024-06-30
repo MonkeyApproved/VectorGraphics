@@ -79,7 +79,10 @@ export const getAllElementAreas =
 
 export const getMinimalRectContainingElements =
   ({ elementIds }: { elementIds: string[] }) =>
-  (state: RootState): NewShapeGeneric<Rect> => {
+  (state: RootState): NewShapeGeneric<Rect> | undefined => {
+    if (elementIds.length === 0) {
+      return undefined;
+    }
     const elementAreas = elementIds.map((elementId) => {
       const element = state.canvas.elements[elementId];
       const shape = state.canvas.shapes[element.shapeId];

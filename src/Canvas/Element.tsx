@@ -1,8 +1,9 @@
 import { createElement, useEffect } from 'react';
 import { getSvgStyleParams } from 'src/redux/utils';
 import { getSvgShapeParams } from 'src/redux/utils';
-import { getCanvasElementDetails, getNamespaceVersion, useAppSelector } from 'src/redux/selectors';
+import { getCanvasElementDetails, getNamespaceOrUndefined, useAppSelector } from 'src/redux/selectors';
 import { Shape, Style } from 'src/redux/types';
+import { updateShapeFromVariableNamespace, useAppDispatch } from 'src/redux/reducers';
 
 export interface ElementProps {
   elementId: string;
@@ -12,21 +13,21 @@ export interface ElementProps {
 
 export default function Element({ elementId, canvasId, overwriteStyle }: ElementProps) {
   // current redux state
+  const dispatch = useAppDispatch();
   const details = useAppSelector(getCanvasElementDetails({ elementId, canvasId }));
-  const latestShapeVariableVersion: number | undefined = useAppSelector(
-    getNamespaceVersion({ namespace: details.shape.id }),
-  );
+  const shapeNamespace = useAppSelector(getNamespaceOrUndefined({ namespace: details.shape.id }));
+
+  useEffect(() => {
+    if (shapeNamespace && shapeNamespace.version !== details.shape.namespaceVersion) {
+      dispatch(updateShapeFromVariableNamespace({ shapeId: details.shape.id, namespace: shapeNamespace }));
+    }
+  }, [shapeNamespace?.version]);
 
   // svg properties for shape, style and transformations (TODO)
   const attributes = getSvgShapeParams({ shape: details.shape });
   const style = getSvgStyleParams({ style: overwriteStyle || details.style });
 
-  useEffect(() => {
-    if (latestShapeVariableVersion !== details.shape.namespaceVersion) {
-      console.warn(`Element ${elementId} has new shape version: ${latestShapeVariableVersion}`);
-    }
-  });
-
+  // create svg element
   return createElement(details.shape.type, { ...attributes, style });
 }
 

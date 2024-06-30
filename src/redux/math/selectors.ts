@@ -2,6 +2,7 @@ import { RootState } from '../store';
 import { Equation, getNumberFromEquation } from './equationParsing';
 import { getEquation, getExistingEquation as getExistingEquationHelper } from './equationParsing/getEquation';
 import { Context } from './context';
+import { Namespace } from '../types';
 
 export const getEquationOrUndefined =
   (context: Context) =>
@@ -15,10 +16,10 @@ export const getExistingEquation =
     return getExistingEquationHelper({ context, state: state.math });
   };
 
-export const getNamespaceVersion =
+export const getNamespaceOrUndefined =
   ({ namespace }: { namespace: string }) =>
-  (state: RootState): number | undefined => {
-    return state.math.variables[namespace]?.version;
+  (state: RootState): Namespace | undefined => {
+    return state.math.variables[namespace];
   };
 
 export const getEquationResult =

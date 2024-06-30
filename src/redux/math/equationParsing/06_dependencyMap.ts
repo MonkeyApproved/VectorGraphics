@@ -174,18 +174,27 @@ export function markCyclicDependency({
   });
 }
 
-export function incrementVersions({ dependencyMap, state }: { dependencyMap: DependencyMap; state: MathState }): void {
-  const affectedNamespaces = new Set<string>();
+export function incrementVersions({
+  originalContext,
+  dependencyMap,
+  state,
+}: {
+  originalContext: Context;
+  dependencyMap: DependencyMap;
+  state: MathState;
+}): void {
+  const affectedContexts: Context[] = [originalContext, ...dependencyMap.map((entry) => entry.context)];
+  const affectedNamespaces = new Set<string>(); // will be filled in the loop below
   // increase equation versions and collect all namespaces tah contain affected equations
-  dependencyMap.forEach((affectedChild) => {
-    if (affectedChild.context.type === UNKNOWN_CONTEXT_TYPE) return;
-    const equation = getEquation({ context: affectedChild.context, state });
+  affectedContexts.forEach((context) => {
+    if (context.type === UNKNOWN_CONTEXT_TYPE) return;
+    const equation = getEquation({ context: context, state });
     if (!equation) {
-      throw new Error(`Equation ${affectedChild.context.name} not found: Cannot update version.`);
+      throw new Error(`Equation ${context.name} not found: Cannot update version.`);
     } else {
       equation.version += 1;
     }
-    affectedNamespaces.add(affectedChild.context.namespace);
+    affectedNamespaces.add(context.namespace);
   });
 
   // increase affected namespace versions

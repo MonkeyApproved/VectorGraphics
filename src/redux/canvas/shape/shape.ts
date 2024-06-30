@@ -2,11 +2,12 @@ import { DistributiveOmit } from 'react-redux';
 import { BaseEntity, Coordinate } from '../types';
 import { Circle, getCircleArea, getCircleParams, getNewCircle } from './circle';
 import { Ellipse, getEllipseArea, getEllipseParams, getNewEllipse } from './ellipse';
-import { Line, getLineArea, getLineParams, getNewLine } from './line';
+import { Line, getLineArea, getLineParams, getNewLine, updateLineFromNamespace } from './line';
 import { Path, getNewPath, getPathArea, getPathParams } from './path';
 import { Polygon, getNewPolygon, getPolygonArea, getPolygonParams } from './polygon';
 import { Polyline, getNewPolyline, getPolylineArea, getPolylineParams } from './polyline';
 import { Rect, getNewRect, getRectArea, getRectParams } from './rect';
+import { Namespace } from 'src/redux/types';
 
 export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polygon' | 'polyline';
 
@@ -80,4 +81,17 @@ export function getShapeArea({ shape }: { shape: AnyShape }): RawShapeArea {
   if (shape.type === 'polyline') return getPolylineArea({ shape });
   if (shape.type === 'path') return getPathArea({ shape });
   throw new Error(`Unknown shape type: ${(shape as Shape).type}`);
+}
+
+export type UpdateShapeFromNamespace<S extends BaseShape> = ({
+  shape,
+  namespace,
+}: {
+  shape: S;
+  namespace: Namespace;
+}) => S;
+
+export function updateShapeFromNamespace({ shape, namespace }: { shape: Shape; namespace: Namespace }): Shape {
+  if (shape.type === 'line') return updateLineFromNamespace({ shape, namespace });
+  return shape;
 }

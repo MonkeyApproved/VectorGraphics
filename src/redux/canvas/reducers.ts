@@ -1,12 +1,13 @@
 import { CanvasSliceReducer } from './slice';
 import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
 import { applyStyle, getExistingCanvasElement } from './reducers.helper';
-import { Shape, NewShape } from './shape';
+import { Shape, NewShape, updateShapeFromNamespace } from './shape';
 import { Style } from './style';
 import { getEmptyCanvas } from './canvas';
 import { getFreshStats } from './utils';
 import { UserAction } from './canvas/userAction';
 import { Element } from './element';
+import { Namespace } from 'src/redux/types';
 
 type NewStyle = Omit<Style, 'id' | 'stats'>;
 type ExistingShape = Omit<Shape, 'stats'>;
@@ -110,6 +111,21 @@ const updateShape: CanvasSliceReducer<{ shape: Partial<ExistingShape> }> = (stat
   state.shapes[payload.shape.id] = { ...shape, ...payload.shape } as Shape;
 };
 
+const updateShapeFromVariableNamespace: CanvasSliceReducer<{ shapeId: string; namespace: Namespace }> = (
+  state,
+  { payload },
+) => {
+  // get the shape to update
+  const shape = state.shapes[payload.shapeId];
+  if (!shape) {
+    throw new Error(`Shape with id ${payload.shapeId} not found`);
+  }
+
+  // update shape values based on latest variable versions
+  const updatedShape = updateShapeFromNamespace({ shape, namespace: payload.namespace });
+  state.shapes[payload.shapeId] = updatedShape;
+};
+
 const updateStyle: CanvasSliceReducer<{ style: Partial<ExistingStyle> }> = (state, { payload }) => {
   // make sure the style id is provided
   if (!payload.style.id) throw new Error('Style id is required for update');
@@ -143,6 +159,7 @@ export const reducers = {
   duplicateElement,
   removeElement,
   updateShape,
+  updateShapeFromVariableNamespace,
   // style reducers
   applyNewStyle,
   applyExistingStyle,

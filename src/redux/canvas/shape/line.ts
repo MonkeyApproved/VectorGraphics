@@ -1,6 +1,6 @@
 import { GetShapeContextStructure } from '../context';
 import { Coordinate } from '../types';
-import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams, UpdateShapeFromNamespace } from './shape';
 
 export interface Line extends BaseShape {
   type: 'line';
@@ -40,6 +40,10 @@ export const getLineArea: GetShapeArea<Line> = ({ shape }) => {
   };
 };
 
+export const StartXContextName = 'startX';
+export const StartYContextName = 'startY';
+export const EndXContextName = 'endX';
+export const EndYContextName = 'endY';
 export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
   return [
     {
@@ -47,14 +51,14 @@ export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
       label: 'start',
       contexts: [
         {
-          name: 'startX',
+          name: StartXContextName,
           usage: 'position',
           dimension: 'x',
           label: 'x',
           initialValue: shape.start.x,
         },
         {
-          name: 'startY',
+          name: StartYContextName,
           usage: 'position',
           dimension: 'y',
           label: 'y',
@@ -67,14 +71,14 @@ export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
       label: 'end',
       contexts: [
         {
-          name: 'endX',
+          name: EndXContextName,
           usage: 'position',
           dimension: 'x',
           label: 'x',
           initialValue: shape.end.x,
         },
         {
-          name: 'endY',
+          name: EndYContextName,
           usage: 'position',
           dimension: 'y',
           label: 'y',
@@ -83,4 +87,21 @@ export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
       ],
     },
   ];
+};
+
+export const updateLineFromNamespace: UpdateShapeFromNamespace<Line> = ({ shape, namespace }) => {
+  const equations = namespace.equations;
+  console.warn(equations);
+  return {
+    ...shape,
+    namespaceVersion: namespace.version,
+    start: {
+      x: equations[StartXContextName]?.lastValidNumber || shape.start.x,
+      y: equations[StartYContextName]?.lastValidNumber || shape.start.y,
+    },
+    end: {
+      x: equations[EndXContextName]?.lastValidNumber || shape.end.x,
+      y: equations[EndYContextName]?.lastValidNumber || shape.end.y,
+    },
+  };
 };

@@ -60,6 +60,7 @@ export const {
   duplicateElement,
   removeElement,
   updateShape,
+  updateShapeFromVariableNamespace,
   // style reducers
   applyNewStyle,
   applyExistingStyle,

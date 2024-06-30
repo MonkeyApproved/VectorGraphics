@@ -28,7 +28,7 @@ export default function computeAllResults({
 }) {
   // first, we update the versions of all affected equations & namespaces
   // this ensures, that all consuming components are re-rendered
-  incrementVersions({ dependencyMap, state });
+  incrementVersions({ originalContext: context, dependencyMap, state });
 
   let equationReadyForEvaluation: Context | undefined = context;
   while (equationReadyForEvaluation !== undefined) {
