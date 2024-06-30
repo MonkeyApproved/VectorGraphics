@@ -1,7 +1,7 @@
 import { AppStore } from 'src/redux/store';
 import { Equation, Result } from 'src/redux/types';
 import { MathState, addEquation, initialMathState, updateEquationValue } from '../slice';
-import { getEquation } from '../selectors';
+import { getExistingEquation } from '../selectors';
 import { Context } from 'src/redux/context';
 
 export function getVariableContext(name: string): Context {
@@ -48,7 +48,7 @@ interface getEquationProps {
 
 export function getEquationFromStore({ store, name }: getEquationProps): Equation {
   const context = getVariableContext(name);
-  const equation = getEquation(context)(store.getState());
+  const equation = getExistingEquation(context)(store.getState());
   expect(equation).toBeDefined();
   return equation as Equation;
 }

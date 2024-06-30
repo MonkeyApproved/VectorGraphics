@@ -1,7 +1,7 @@
 import { AppStore, makeStore } from '../../store';
 import { equationContext, initialMathStates } from './test.helper';
 import { addEquation } from '../slice';
-import { getEquation } from '../selectors';
+import { getExistingEquation } from '../selectors';
 import { Equation, MathFunction } from '../equationParsing';
 import { equationError, tokenError } from '../equationParsing/errors';
 import { FunctionToken, getFunctionToken } from '../equationParsing/tokenUtils';
@@ -56,7 +56,7 @@ describe.each<InvalidSyntaxParams>(testEquations)(
     beforeEach(() => {
       store = makeStore({ math: initialMathStates.default });
       store.dispatch(addEquation({ context, value: input }));
-      equation = getEquation(context)(store.getState());
+      equation = getExistingEquation(context)(store.getState());
       expect(equation).toBeDefined();
     });
 

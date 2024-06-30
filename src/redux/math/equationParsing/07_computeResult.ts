@@ -3,7 +3,12 @@ import { computeMathFunctionResult } from './functionUtils/utils';
 import { TokenType } from './tokenUtils/tokenEnums';
 import { RpnToken } from './tokenUtils/tokenTypes';
 import { isValue } from './tokenUtils/tokenUtils';
-import { DependencyMap, markCyclicDependency, removeContextFromDependencyMap } from './06_dependencyMap';
+import {
+  DependencyMap,
+  incrementVersions,
+  markCyclicDependency,
+  removeContextFromDependencyMap,
+} from './06_dependencyMap';
 import { setEquationResult } from './result';
 import { MathState } from '../slice';
 import { Equation } from './types';
@@ -21,6 +26,10 @@ export default function computeAllResults({
   dependencyMap: DependencyMap;
   state: MathState;
 }) {
+  // first, we update the versions of all affected equations & namespaces
+  // this ensures, that all consuming components are re-rendered
+  incrementVersions({ dependencyMap, state });
+
   let equationReadyForEvaluation: Context | undefined = context;
   while (equationReadyForEvaluation !== undefined) {
     // evaluate the equation that has no more unresolved dependencies

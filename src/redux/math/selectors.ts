@@ -1,12 +1,24 @@
 import { RootState } from '../store';
 import { Equation, getNumberFromEquation } from './equationParsing';
-import { getExistingEquation } from './equationParsing/getEquation';
+import { getEquation, getExistingEquation as getExistingEquationHelper } from './equationParsing/getEquation';
 import { Context } from './context';
 
-export const getEquation =
+export const getEquationOrUndefined =
   (context: Context) =>
   (state: RootState): Equation | undefined => {
-    return getExistingEquation({ context, state: state.math });
+    return getEquation({ context, state: state.math });
+  };
+
+export const getExistingEquation =
+  (context: Context) =>
+  (state: RootState): Equation | undefined => {
+    return getExistingEquationHelper({ context, state: state.math });
+  };
+
+export const getNamespaceVersion =
+  ({ namespace }: { namespace: string }) =>
+  (state: RootState): number | undefined => {
+    return state.math.variables[namespace]?.version;
   };
 
 export const getEquationResult =

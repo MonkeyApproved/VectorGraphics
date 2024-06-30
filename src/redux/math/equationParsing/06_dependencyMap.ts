@@ -3,6 +3,7 @@ import { MathState } from '../slice';
 import { deleteContext, findMatchingContext } from './contextUtils';
 import { equationError, setEquationError } from './errors';
 import { getEquation } from './getEquation';
+import { UNKNOWN_CONTEXT_TYPE } from './unknownReference';
 
 export interface AffectedEquation {
   context: Context;
@@ -170,5 +171,25 @@ export function markCyclicDependency({
     if (equation) {
       setEquationError({ equation, errorMessage: equationError.cyclicDependency });
     }
+  });
+}
+
+export function incrementVersions({ dependencyMap, state }: { dependencyMap: DependencyMap; state: MathState }): void {
+  const affectedNamespaces = new Set<string>();
+  // increase equation versions and collect all namespaces tah contain affected equations
+  dependencyMap.forEach((affectedChild) => {
+    if (affectedChild.context.type === UNKNOWN_CONTEXT_TYPE) return;
+    const equation = getEquation({ context: affectedChild.context, state });
+    if (!equation) {
+      throw new Error(`Equation ${affectedChild.context.name} not found: Cannot update version.`);
+    } else {
+      equation.version += 1;
+    }
+    affectedNamespaces.add(affectedChild.context.namespace);
+  });
+
+  // increase affected namespace versions
+  affectedNamespaces.forEach((namespace) => {
+    state.variables[namespace].version += 1;
   });
 }

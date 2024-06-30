@@ -1,3 +1,4 @@
+import { GetShapeContextStructure } from '../context';
 import { getAreaContainingCoordinates } from '../coordinateMath';
 import { Area, Length } from '../types';
 import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams } from './shape';
@@ -39,4 +40,64 @@ export const getRectArea: GetShapeArea<Rect> = ({ shape }) => {
     centerY: (y1 + y2) / 2,
     maxY: Math.max(y1, y2),
   };
+};
+
+export const getRectContext: GetShapeContextStructure<Rect> = ({ shape }) => {
+  return [
+    {
+      label: 'position',
+      contexts: [
+        {
+          name: 'positionX',
+          usage: 'position',
+          dimension: 'x',
+          label: 'x',
+          initialValue: shape.position.x,
+        },
+        {
+          name: 'positionY',
+          usage: 'position',
+          dimension: 'y',
+          label: 'y',
+          initialValue: shape.position.y,
+        },
+      ],
+    },
+    {
+      label: 'size',
+      contexts: [
+        {
+          name: 'width',
+          usage: 'size',
+          dimension: 'x',
+          initialValue: shape.size.width,
+        },
+        {
+          name: 'height',
+          usage: 'size',
+          dimension: 'y',
+          initialValue: shape.size.height,
+        },
+      ],
+    },
+    {
+      label: 'corner radius',
+      contexts: [
+        {
+          name: 'cornerRadiusX',
+          usage: 'radius',
+          dimension: 'x',
+          label: 'x',
+          initialValue: shape.cornerRadiusX || 0,
+        },
+        {
+          name: 'cornerRadiusY',
+          usage: 'size',
+          dimension: 'y',
+          label: 'y',
+          initialValue: shape.cornerRadiusY || 0,
+        },
+      ],
+    },
+  ];
 };

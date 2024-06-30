@@ -1,3 +1,4 @@
+import { GetShapeContextStructure } from '../context';
 import { Coordinate } from '../types';
 import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams } from './shape';
 
@@ -37,4 +38,49 @@ export const getLineArea: GetShapeArea<Line> = ({ shape }) => {
     centerY: (y1 + y2) / 2,
     maxY: Math.max(y1, y2),
   };
+};
+
+export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
+  return [
+    {
+      type: 'group',
+      label: 'start',
+      contexts: [
+        {
+          name: 'startX',
+          usage: 'position',
+          dimension: 'x',
+          label: 'x',
+          initialValue: shape.start.x,
+        },
+        {
+          name: 'startY',
+          usage: 'position',
+          dimension: 'y',
+          label: 'y',
+          initialValue: shape.start.y,
+        },
+      ],
+    },
+    {
+      type: 'group',
+      label: 'end',
+      contexts: [
+        {
+          name: 'endX',
+          usage: 'position',
+          dimension: 'x',
+          label: 'x',
+          initialValue: shape.end.x,
+        },
+        {
+          name: 'endY',
+          usage: 'position',
+          dimension: 'y',
+          label: 'y',
+          initialValue: shape.end.y,
+        },
+      ],
+    },
+  ];
 };

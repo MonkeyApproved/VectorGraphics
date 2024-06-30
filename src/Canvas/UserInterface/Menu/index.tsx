@@ -4,8 +4,9 @@ import { ReactSetState } from '../types';
 import { ReactNode, useState } from 'react';
 import { SubMenuItem, drawShapeMenu, mainMenu, selectMenu } from './menuStructure';
 import { MainMenuButton, SubMenuButton } from './Buttons';
-import { getCurrentUserAction, useAppSelector } from 'src/redux/selectors';
+import { getCurrentUserAction, getSelectedElementIds, useAppSelector } from 'src/redux/selectors';
 import { MainUserActionTypes } from 'src/redux/types';
+import SingleElementMenu from '../Inputs/SIngleElementMenu';
 
 interface MenuProps {
   canvasId: string;
@@ -14,8 +15,11 @@ interface MenuProps {
 }
 
 export default function Menu({ canvasId, status, setStatus }: MenuProps) {
-  // current selection
+  // current redux state
   const currentUserAction = useAppSelector(getCurrentUserAction({ canvasId }));
+  const selectedElements = useAppSelector(getSelectedElementIds({ canvasId }));
+
+  // current selection
   const [selectedMainAction, setSelectedMainAction] = useState<MainUserActionTypes>(currentUserAction.type);
   const dispatch = useAppDispatch();
 
@@ -49,6 +53,11 @@ export default function Menu({ canvasId, status, setStatus }: MenuProps) {
     });
   }
 
+  let elementMenu: ReactNode = null;
+  if (selectedElements.length === 1) {
+    elementMenu = <SingleElementMenu canvasId={canvasId} elementId={selectedElements[0]} />;
+  }
+
   return (
     <div className={styles.menuGrid}>
       <div className={styles.mainMenuWrapper}>
@@ -69,6 +78,7 @@ export default function Menu({ canvasId, status, setStatus }: MenuProps) {
       <div className={styles.statusBar}>
         <span className="noSelect">{status}</span>
       </div>
+      <div className={styles.elementMenu}>{elementMenu}</div>
     </div>
   );
 }

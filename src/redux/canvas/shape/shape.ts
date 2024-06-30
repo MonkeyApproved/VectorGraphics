@@ -12,6 +12,7 @@ export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polyg
 
 export interface BaseShape extends BaseEntity {
   type: ShapeType;
+  namespaceVersion?: number; // Variable namespace containing all equations for this shape
 }
 
 export type Shape = Line | Rect | Circle | Ellipse | Path | Polygon | Polyline;

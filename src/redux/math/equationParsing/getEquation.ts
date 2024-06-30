@@ -13,6 +13,14 @@ export default function getNewEquation({
   value?: string;
   state: MathState;
 }): void {
+  // check if the namespace already exists and add it if it is new
+  if (!state.variables[context.namespace]) {
+    state.variables[context.namespace] = {
+      type: context.type,
+      version: 0,
+      equations: {},
+    };
+  }
   // if this equation was already referenced before, it was already added to the undefined namespace
   state.variables[context.namespace].equations[context.name] = {
     version: 0,
@@ -36,7 +44,11 @@ export function getEquation({ context, state }: { context: Context; state: MathS
   /**
    * Get equation matching context.
    */
-  const equationDict = getNamespaceEquations({ state, namespace: context.namespace });
+  const namespace = state.variables[context.namespace];
+  if (!namespace) {
+    return undefined;
+  }
+  const equationDict = namespace.equations;
   return equationDict[context.name];
 }
 
