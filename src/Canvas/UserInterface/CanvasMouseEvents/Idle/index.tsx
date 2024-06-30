@@ -11,8 +11,8 @@ export interface IdleProps {
 
 export default function Idle({ canvasId, onMouseDown }: IdleProps) {
   // current redux state
-  const selectedElements = useAppSelector(getSelectedElementIds({ canvasId }));
-  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const selectedElements = useAppSelector((state) => getSelectedElementIds(state, canvasId));
+  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
   const topCanvasId = getTopCanvasId({ canvasId });
 
   return (

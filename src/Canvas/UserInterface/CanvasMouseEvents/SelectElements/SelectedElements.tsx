@@ -18,7 +18,7 @@ export default function SelectedElements({
   selectionRect,
 }: SelectedElementsProps) {
   // all elements contained in the selection rect are highlighted with a specific style
-  const highlightStyle = useAppSelector(getHighlightedElementStyle({ canvasId }));
+  const highlightStyle = useAppSelector((state) => getHighlightedElementStyle(state, canvasId));
   const highlightedElements = selectedElements.map((elementId) => (
     <Element key={`highlight-${elementId}`} elementId={elementId} canvasId={canvasId} overwriteStyle={highlightStyle} />
   ));
@@ -26,7 +26,7 @@ export default function SelectedElements({
   // shows the size of the final selection area, containing all selected elements
   const finalRect = showMinimalRect ? (
     <SelectionRect
-      rect={useAppSelector(getMinimalRectContainingElements({ elementIds: selectedElements }))}
+      rect={useAppSelector((state) => getMinimalRectContainingElements(state, selectedElements))}
       canvasId={canvasId}
     />
   ) : null;

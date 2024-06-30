@@ -14,7 +14,7 @@ export default function SelectionRect({
   if (!rect) {
     return null;
   }
-  const defaultStyle = useAppSelector(getSelectionRectStyle({ canvasId }));
+  const defaultStyle = useAppSelector((state) => getSelectionRectStyle(state, canvasId));
   const attributes = getSvgShapeParams({ shape: rect });
   const style = getSvgStyleParams({ style: defaultStyle });
   return createElement('rect', { ...attributes, style });

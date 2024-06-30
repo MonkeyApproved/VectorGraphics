@@ -19,7 +19,7 @@ export default function CanvasMouseEvents({ canvasId, canvasRef, setStatus }: Ca
   const [mouseDownTarget, setMouseDownTarget] = useState<string | undefined>();
   const [mouseActionActive, setMouseActionActive] = useState<boolean>(false);
   // current redux state
-  const currentUserAction = useAppSelector(getCurrentUserAction({ canvasId }));
+  const currentUserAction = useAppSelector((state) => getCurrentUserAction(state, canvasId));
 
   // handler for mouse down events
   const startMouseAction = (event: ReactMouseEvent) => {

@@ -28,8 +28,8 @@ export default function SelectElements({
   setStatus,
 }: DrawSimpleShapeProps) {
   // current redux state
-  const canvas = useAppSelector(getCanvas({ canvasId }));
-  const elementAreas = useAppSelector(getAllElementAreas({ canvasId }));
+  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
+  const elementAreas = useAppSelector((state) => getAllElementAreas(state, canvasId));
   const dispatch = useAppDispatch();
   // selection rect state
   const topCanvasId = getTopCanvasId({ canvasId });

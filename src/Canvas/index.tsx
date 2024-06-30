@@ -7,7 +7,7 @@ import { UserInterface } from './UserInterface';
 
 export default function Canvas({ canvasId }: { canvasId: string }) {
   // current redux state
-  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
   // main canvas attributes: this canvas displays the current state of the store
   const mainCanvasId = getMainCanvasId({ canvasId });
   const mainCanvasRef = useRef<SVGSVGElement>(null);

@@ -17,7 +17,7 @@ export default function DrawPointShape({
   setMouseActionActive,
   setStatus,
 }: DrawShapeProps) {
-  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
   const topCanvasId = getTopCanvasId({ canvasId });
   const [tempShape, setTempShape] = useState<NewShape>(getNewShape({ shapeType, start: mouseDownPosition }));
   const finishedSegments = useRef<NewShape>();

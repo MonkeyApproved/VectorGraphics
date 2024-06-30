@@ -15,7 +15,7 @@ export default function DrawSimpleShape({
   mouseDownPosition,
   setMouseActionActive,
 }: DrawShapeProps) {
-  const canvas = useAppSelector(getCanvas({ canvasId }));
+  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
   const topCanvasId = getTopCanvasId({ canvasId });
   const [tempShape, setTempShape] = useState<NewShape>(getNewShape({ shapeType, start: mouseDownPosition }));
   const dispatch = useAppDispatch();

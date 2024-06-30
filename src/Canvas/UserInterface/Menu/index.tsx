@@ -16,8 +16,8 @@ interface MenuProps {
 
 export default function Menu({ canvasId, status, setStatus }: MenuProps) {
   // current redux state
-  const currentUserAction = useAppSelector(getCurrentUserAction({ canvasId }));
-  const selectedElements = useAppSelector(getSelectedElementIds({ canvasId }));
+  const currentUserAction = useAppSelector((state) => getCurrentUserAction(state, canvasId));
+  const selectedElements = useAppSelector((state) => getSelectedElementIds(state, canvasId));
 
   // current selection
   const [selectedMainAction, setSelectedMainAction] = useState<MainUserActionTypes>(currentUserAction.type);

@@ -6,17 +6,19 @@ import { NewShapeGeneric, Rect, Shape, ShapeArea, getShapeArea } from './shape';
 import { createSelector } from '@reduxjs/toolkit';
 import { Transformation } from './transformation';
 import { Canvas } from './canvas';
+import { SvgSettings } from './settings';
 
 const getElementDict = (state: RootState): { [key: string]: Element } => state.canvas.elements;
 const getShapeDict = (state: RootState): { [key: string]: Shape } => state.canvas.shapes;
 const getStyleDict = (state: RootState): { [key: string]: Style } => state.canvas.styles;
 const getTransformationDict = (state: RootState): { [key: string]: Transformation } => state.canvas.transformations;
 const getCanvasDict = (state: RootState): { [key: string]: Canvas } => state.canvas.canvases;
+const getGlobalSettings = (state: RootState): SvgSettings => state.canvas.globalSettings;
 
-export const getCanvas =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState) =>
-    state.canvas.canvases[canvasId];
+export const getCanvas = createSelector(
+  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, canvasId): Canvas => canvasDict[canvasId],
+);
 
 export const getCanvasElementDetails = createSelector(
   [
@@ -42,48 +44,51 @@ export const getCanvasElementDetails = createSelector(
   },
 );
 
-export const getCurrentUserAction =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): UserAction =>
-    state.canvas.canvases[canvasId].currentUserAction;
+export const getCurrentUserAction = createSelector(
+  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, canvasId): UserAction => canvasDict[canvasId].currentUserAction,
+);
 
-export const getDefaultElementStyle =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): Style => {
-    const canvas = state.canvas.canvases[canvasId];
+export const getDefaultElementStyle = createSelector(
+  [getCanvasDict, getStyleDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, styleDict, globalSettings, canvasId): Style => {
+    const canvas = canvasDict[canvasId];
     const localDefaultStyle = canvas.localSettings?.defaultElementStyle;
-    const defaultStyle = localDefaultStyle || state.canvas.globalSettings.defaultElementStyle;
-    return state.canvas.styles[defaultStyle];
-  };
+    const defaultStyle = localDefaultStyle || globalSettings.defaultElementStyle;
+    return styleDict[defaultStyle];
+  },
+);
 
-export const getSelectionRectStyle =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): Style => {
-    const canvas = state.canvas.canvases[canvasId];
+export const getSelectionRectStyle = createSelector(
+  [getCanvasDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, globalSettings, canvasId): Style => {
+    const canvas = canvasDict[canvasId];
     const localStyle = canvas.localSettings?.selectionBoxStyle;
-    return localStyle || state.canvas.globalSettings.selectionBoxStyle;
-  };
+    return localStyle || globalSettings.selectionBoxStyle;
+  },
+);
 
-export const getHighlightedElementStyle =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): Style => {
-    const canvas = state.canvas.canvases[canvasId];
+export const getHighlightedElementStyle = createSelector(
+  [getCanvasDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, globalSettings, canvasId): Style => {
+    const canvas = canvasDict[canvasId];
     const localStyle = canvas.localSettings?.highlightedElementStyle;
-    return localStyle || state.canvas.globalSettings.highlightedElementStyle;
-  };
+    return localStyle || globalSettings.highlightedElementStyle;
+  },
+);
 
-export const getSelectedElementIds =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): string[] =>
-    state.canvas.canvases[canvasId].selectedElementIds;
+export const getSelectedElementIds = createSelector(
+  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, canvasId): string[] => canvasDict[canvasId].selectedElementIds,
+);
 
-export const getAllElementAreas =
-  ({ canvasId }: { canvasId: string }) =>
-  (state: RootState): ShapeArea[] => {
-    const canvas = state.canvas.canvases[canvasId];
+export const getAllElementAreas = createSelector(
+  [getCanvasDict, getElementDict, getShapeDict, (state: RootState, canvasId: string): string => canvasId],
+  (canvasDict, elementDict, shapeDict, canvasId): ShapeArea[] => {
+    const canvas = canvasDict[canvasId];
     return canvas.elementIds.map((elementId) => {
-      const shapeId = state.canvas.elements[elementId].shapeId;
-      const shape = state.canvas.shapes[shapeId];
+      const shapeId = elementDict[elementId].shapeId;
+      const shape = shapeDict[shapeId];
       const rawArea = getShapeArea({ shape });
       return {
         elementId,
@@ -91,17 +96,18 @@ export const getAllElementAreas =
         ...rawArea,
       };
     });
-  };
+  },
+);
 
-export const getMinimalRectContainingElements =
-  ({ elementIds }: { elementIds: string[] }) =>
-  (state: RootState): NewShapeGeneric<Rect> | undefined => {
+export const getMinimalRectContainingElements = createSelector(
+  [getElementDict, getShapeDict, (state: RootState, elementIds: string[]): string[] => elementIds],
+  (elementDict, shapeDict, elementIds): NewShapeGeneric<Rect> | undefined => {
     if (elementIds.length === 0) {
       return undefined;
     }
     const elementAreas = elementIds.map((elementId) => {
-      const element = state.canvas.elements[elementId];
-      const shape = state.canvas.shapes[element.shapeId];
+      const element = elementDict[elementId];
+      const shape = shapeDict[element.shapeId];
       return getShapeArea({ shape });
     });
     const minX = Math.min(...elementAreas.map((area) => area.minX));
@@ -114,4 +120,5 @@ export const getMinimalRectContainingElements =
       size: { width: maxX - minX, height: maxY - minY },
       positionAnchor: 'top-left',
     };
-  };
+  },
+);
