@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { addEquation, updateEquationValue, useAppDispatch } from 'src/redux/reducers';
 import { SvgCoordinateContext } from 'src/redux/context';
@@ -17,8 +17,12 @@ export default function SvgCoordinateInput({ context, style, className }: SvgCon
   const equation = useAppSelector(getEquationOrUndefined(context));
 
   // component state: current value is used instead of redux state to only update redux once the input looses focus
-  const initialValue = equation?.input || context.initialValue.toString();
-  const [currentValue, setCurrentValue] = useState<string>(initialValue);
+  const [currentValue, setCurrentValue] = useState<string>('');
+
+  useEffect(() => {
+    const initialValue = equation?.input || context.initialValue.toString();
+    setCurrentValue(initialValue);
+  }, [equation?.input, context.initialValue]);
 
   const submitValue = () => {
     if (equation === undefined) {

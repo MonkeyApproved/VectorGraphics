@@ -21,22 +21,24 @@
 }
 
 .result {
-	position: relative;
+  /* positioning: on top of input */
+	position: absolute;
+  top: 0;
+	left: 0;
+  height: 100%;
+  width: 100%;
 	background-color: #181818;
 	border-radius: 3px;
-	height: 100%;
 	vertical-align: middle;
 	color: #888888;
 }
 
 .input {
-	transition:0.5s all ease;
-	position: absolute;
-
-	top: 0;
-	left: 0;
-	width: 100%;
+  /* positioning: below result display*/
+  position: relative;
 	height: 100%;
+
+	transition:0.5s all ease;
 
 	outline: 0;
 	border: none;
