@@ -3,7 +3,7 @@ import { getCanvasElementDetails, useAppSelector } from 'src/redux/selectors';
 import SvgContextGroup from '../SvgContextGroup';
 
 export default function SingleElementMenu({ elementId, canvasId }: { elementId: string; canvasId: string }) {
-  const details = useAppSelector(getCanvasElementDetails({ elementId, canvasId }));
+  const details = useAppSelector((state) => getCanvasElementDetails(state, elementId, canvasId));
   const contextStructure = getShapeContext({ shape: details.shape });
 
   return (

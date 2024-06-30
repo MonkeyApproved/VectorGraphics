@@ -13,7 +13,7 @@ export default function TwoVerticalTabAreas() {
   const [dividerPos, setDividerPos] = useState<number>();
   const [dragActive, setDragActive] = useState(false);
   const { ref, height } = useRefElementSize<HTMLDivElement>();
-  const content = useAppSelector(getTabContent<VerticalTabAreaPosition>);
+  const content = useAppSelector((state) => getTabContent(state));
 
   const rowHeight = valueWithMinMax({ value: dividerPos, min: 100, max: height - 100 });
   const rows = rowHeight ? ` ${rowHeight}px ${DIVIDER_WIDTH} 1fr` : `1fr ${DIVIDER_WIDTH} 1fr`;

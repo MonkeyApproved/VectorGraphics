@@ -15,7 +15,7 @@ export default function QuadrantTabAreas() {
   const [dragXActive, setDragXActive] = useState(false);
   const [dragYActive, setDragYActive] = useState(false);
   const { width, height, ref } = useRefElementSize<HTMLDivElement>();
-  const content = useAppSelector(getTabContent<QuadrantTabAreaPosition>);
+  const content = useAppSelector((state) => getTabContent(state));
 
   const columnWidth = valueWithMinMax({ value: dividerXPos, min: 200, max: width - 200 });
   const rowHeight = valueWithMinMax({ value: dividerYPos, min: 100, max: height - 100 });

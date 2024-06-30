@@ -1,30 +1,46 @@
 import { RootState } from 'src/redux/store';
 import { UserAction } from './canvas/userAction';
-import { ElementDetails } from './element';
+import { Element, ElementDetails } from './element';
 import { Style } from './style';
-import { NewShapeGeneric, Rect, ShapeArea, getShapeArea } from './shape';
+import { NewShapeGeneric, Rect, Shape, ShapeArea, getShapeArea } from './shape';
+import { createSelector } from '@reduxjs/toolkit';
+import { Transformation } from './transformation';
+import { Canvas } from './canvas';
+
+const getElementDict = (state: RootState): { [key: string]: Element } => state.canvas.elements;
+const getShapeDict = (state: RootState): { [key: string]: Shape } => state.canvas.shapes;
+const getStyleDict = (state: RootState): { [key: string]: Style } => state.canvas.styles;
+const getTransformationDict = (state: RootState): { [key: string]: Transformation } => state.canvas.transformations;
+const getCanvasDict = (state: RootState): { [key: string]: Canvas } => state.canvas.canvases;
 
 export const getCanvas =
   ({ canvasId }: { canvasId: string }) =>
   (state: RootState) =>
     state.canvas.canvases[canvasId];
 
-export const getCanvasElementDetails =
-  ({ elementId, canvasId }: { elementId: string; canvasId: string }) =>
-  (state: RootState): ElementDetails => {
+export const getCanvasElementDetails = createSelector(
+  [
+    getElementDict,
+    getShapeDict,
+    getStyleDict,
+    getTransformationDict,
+    getCanvasDict,
+    (state: RootState, elementId: string): string => elementId,
+    (state: RootState, elementId: string, canvasId: string): string => canvasId,
+  ],
+  (elementDict, shapeDict, styleDict, transformationDict, canvasDict, elementId, canvasId): ElementDetails => {
     // element components
-    const element = state.canvas.elements[elementId];
-    const shape = state.canvas.shapes[element.shapeId];
-    const style = element.styleId ? state.canvas.styles[element.styleId] : undefined;
-    const transformation = element.transformationId
-      ? state.canvas.transformations[element.transformationId]
-      : undefined;
+    const element = elementDict[elementId];
+    const shape = shapeDict[element.shapeId];
+    const style = element.styleId ? styleDict[element.styleId] : undefined;
+    const transformation = element.transformationId ? transformationDict[element.transformationId] : undefined;
 
     // check canvas state for this element
-    const canvas = state.canvas.canvases[canvasId];
+    const canvas = canvasDict[canvasId];
     const selected = canvas.selectedElementIds.includes(elementId);
     return { id: elementId, stats: element.stats, shape, style, transformation, selected };
-  };
+  },
+);
 
 export const getCurrentUserAction =
   ({ canvasId }: { canvasId: string }) =>

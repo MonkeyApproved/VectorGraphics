@@ -1,16 +1,18 @@
 import { AllAvailableContent, Content, ContentWithLabel, getAllAvailableContent, getAvailableContent } from './content';
 import { RootState } from 'src/redux/store';
 import { TabAreaContent } from './types';
+import { createSelector } from '@reduxjs/toolkit';
 
-export const getTabAreaType = (state: RootState) => state.ui.tabs.type;
-
+export const getState = (state: RootState) => state;
 export const getTabs = (state: RootState) => state.ui.tabs;
+export const getTabAreaType = (state: RootState) => state.ui.tabs.type;
+export const getTabSelectionOrder = (state: RootState) => state.ui.tabSelectionOrder;
 
-export const getAllAvailableTabs = (state: RootState): AllAvailableContent => {
+export const getAllAvailableTabs = createSelector([getState], (state: RootState): AllAvailableContent => {
   return getAllAvailableContent({ state });
-};
+});
 
-export function getTabContent<T extends string>(state: RootState): Record<T, TabAreaContent> {
+export const getTabContent = createSelector([getState], (state: RootState): Record<string, TabAreaContent> => {
   const tabAreaContentDict: Record<string, TabAreaContent> = {};
   for (const [area, contentList] of Object.entries(state.ui.tabs.content)) {
     const areaContent: ContentWithLabel[] = [];
@@ -28,4 +30,4 @@ export function getTabContent<T extends string>(state: RootState): Record<T, Tab
     tabAreaContentDict[area] = { content: areaContent, selectedTab };
   }
   return tabAreaContentDict;
-}
+});

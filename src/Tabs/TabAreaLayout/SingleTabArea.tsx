@@ -6,7 +6,7 @@ import { getTabContent, useAppSelector } from 'src/redux/selectors';
 
 export default function SingleTabArea() {
   const [tabDragActive, setTabDragActive] = useState(false);
-  const content = useAppSelector(getTabContent<SingleTabAreaPosition>);
+  const content = useAppSelector((state) => getTabContent(state));
 
   return (
     <div className={styles.single} style={{ gridArea: 'tabAreas' }}>

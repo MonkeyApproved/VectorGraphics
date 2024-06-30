@@ -14,7 +14,7 @@ export interface ElementProps {
 export default function Element({ elementId, canvasId, overwriteStyle }: ElementProps) {
   // current redux state
   const dispatch = useAppDispatch();
-  const details = useAppSelector(getCanvasElementDetails({ elementId, canvasId }));
+  const details = useAppSelector((state) => getCanvasElementDetails(state, elementId, canvasId));
   const shapeNamespace = useAppSelector(getNamespaceOrUndefined({ namespace: details.shape.id }));
 
   useEffect(() => {

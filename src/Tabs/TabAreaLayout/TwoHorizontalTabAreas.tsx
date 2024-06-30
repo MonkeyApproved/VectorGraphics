@@ -13,7 +13,7 @@ export default function TwoHorizontalTabAreas() {
   const [dividerPos, setDividerPos] = useState<number>();
   const [dragActive, setDragActive] = useState(false);
   const { ref, width } = useRefElementSize<HTMLDivElement>();
-  const content = useAppSelector(getTabContent<HorizontalTabAreaPosition>);
+  const content = useAppSelector((state) => getTabContent(state));
 
   const columnWidth = valueWithMinMax({ value: dividerPos, min: 200, max: width - 200 });
   const columns = columnWidth ? `${columnWidth}px ${DIVIDER_WIDTH} 1fr` : `1fr ${DIVIDER_WIDTH} 1fr`;
