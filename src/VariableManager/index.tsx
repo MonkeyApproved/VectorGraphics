@@ -4,7 +4,7 @@ import VariableInput from './VariableInput';
 import NewVariableInput from './NewVariableInput';
 
 export default function VariableManager({ managerId }: { managerId: string }) {
-  const manager = useAppSelector(getVariableManager({ managerId }));
+  const manager = useAppSelector((state) => getVariableManager(state, managerId));
 
   const tableRows = manager.variables.map((variableName, index) => {
     const key = `${manager.id}-row-${variableName}`;

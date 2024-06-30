@@ -56,7 +56,7 @@ describe.each<InvalidSyntaxParams>(testEquations)(
     beforeEach(() => {
       store = makeStore({ math: initialMathStates.default });
       store.dispatch(addEquation({ context, value: input }));
-      equation = getExistingEquation(context)(store.getState());
+      equation = getExistingEquation(store.getState(), context);
       expect(equation).toBeDefined();
     });
 

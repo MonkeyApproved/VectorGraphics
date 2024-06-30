@@ -15,7 +15,7 @@ export default function Element({ elementId, canvasId, overwriteStyle }: Element
   // current redux state
   const dispatch = useAppDispatch();
   const details = useAppSelector((state) => getCanvasElementDetails(state, elementId, canvasId));
-  const shapeNamespace = useAppSelector(getNamespaceOrUndefined({ namespace: details.shape.id }));
+  const shapeNamespace = useAppSelector((state) => getNamespaceOrUndefined(state, details.shape.id));
 
   useEffect(() => {
     if (shapeNamespace && shapeNamespace.version !== details.shape.namespaceVersion) {

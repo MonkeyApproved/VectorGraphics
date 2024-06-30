@@ -2,7 +2,7 @@ import { Equation } from 'src/redux/types';
 import styles from './styles.module.css';
 import { useState } from 'react';
 import { getVariableManagerEquation, useAppSelector } from 'src/redux/selectors';
-import { updateEquationValue, useAppDispatch } from 'src/redux/reducers';
+import { renameEquation, updateEquationValue, useAppDispatch } from 'src/redux/reducers';
 
 export interface VariableInputProps {
   variableName: string;
@@ -10,13 +10,13 @@ export interface VariableInputProps {
 }
 
 export default function VariableInput({ variableName, index }: VariableInputProps) {
-  const equation: Equation = useAppSelector(getVariableManagerEquation({ variableName }));
+  const equation: Equation = useAppSelector((state) => getVariableManagerEquation(state, variableName));
   const [currentName, setCurrentName] = useState<string>(equation.context.name);
   const [currentValue, setCurrentValue] = useState<string>(equation.input || '');
   const dispatch = useAppDispatch();
 
   const onNameSubmit = () => {
-    console.warn(`Variable name changed from ${equation.context.name} to ${currentName}`);
+    dispatch(renameEquation({ oldContext: equation.context, newName: currentName }));
   };
 
   const onValueSubmit = () => {

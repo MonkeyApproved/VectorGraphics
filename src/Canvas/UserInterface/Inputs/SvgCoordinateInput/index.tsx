@@ -14,7 +14,7 @@ export interface SvgContextInputProps {
 export default function SvgCoordinateInput({ context, style, className }: SvgContextInputProps) {
   // current redux state: if equation does not exist yet, add a new one
   const dispatch = useAppDispatch();
-  const equation = useAppSelector(getEquationOrUndefined(context));
+  const equation = useAppSelector((state) => getEquationOrUndefined(state, context));
 
   // component state: current value is used instead of redux state to only update redux once the input looses focus
   const [currentValue, setCurrentValue] = useState<string>('');
