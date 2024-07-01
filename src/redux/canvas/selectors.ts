@@ -1,12 +1,13 @@
-import { RootState } from 'src/redux/store';
-import { UserAction } from './canvas/userAction';
-import { Element, ElementDetails } from './element';
-import { Style } from './style';
-import { NewShapeGeneric, Rect, Shape, ShapeArea, getShapeArea } from './shape';
 import { createSelector } from '@reduxjs/toolkit';
-import { Transformation } from './transformation';
+import { RootState } from 'src/redux/store';
 import { Canvas } from './canvas';
+import { UserAction } from './canvas/userAction';
+import { ViewBox, viewBoxString } from './canvas/viewBox';
+import { Element, ElementDetails } from './element';
 import { SvgSettings } from './settings';
+import { AnyShape, NewShapeGeneric, Rect, Shape, ShapeArea, getShapeArea } from './shape';
+import { Style } from './style';
+import { Transformation } from './transformation';
 
 const getElementDict = (state: RootState): { [key: string]: Element } => state.canvas.elements;
 const getShapeDict = (state: RootState): { [key: string]: Shape } => state.canvas.shapes;
@@ -14,10 +15,25 @@ const getStyleDict = (state: RootState): { [key: string]: Style } => state.canva
 const getTransformationDict = (state: RootState): { [key: string]: Transformation } => state.canvas.transformations;
 const getCanvasDict = (state: RootState): { [key: string]: Canvas } => state.canvas.canvases;
 const getGlobalSettings = (state: RootState): SvgSettings => state.canvas.globalSettings;
+const inputCanvasId = (state: RootState, canvasId: string): string => canvasId;
 
 export const getCanvas = createSelector(
-  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, inputCanvasId],
   (canvasDict, canvasId): Canvas => canvasDict[canvasId],
+);
+
+export const getCanvasViewBox = createSelector(
+  [getCanvasDict, inputCanvasId],
+  (canvasDict, canvasId): ViewBox => canvasDict[canvasId].viewBox,
+);
+
+export const getCanvasViewBoxString = createSelector([getCanvasDict, inputCanvasId], (canvasDict, canvasId): string =>
+  viewBoxString({ viewBox: canvasDict[canvasId].viewBox }),
+);
+
+export const getCanvasElementIds = createSelector(
+  [getCanvasDict, inputCanvasId],
+  (canvasDict, canvasId): string[] => canvasDict[canvasId].elementIds,
 );
 
 export const getCanvasElementDetails = createSelector(
@@ -45,12 +61,12 @@ export const getCanvasElementDetails = createSelector(
 );
 
 export const getCurrentUserAction = createSelector(
-  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, inputCanvasId],
   (canvasDict, canvasId): UserAction => canvasDict[canvasId].currentUserAction,
 );
 
 export const getDefaultElementStyle = createSelector(
-  [getCanvasDict, getStyleDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, getStyleDict, getGlobalSettings, inputCanvasId],
   (canvasDict, styleDict, globalSettings, canvasId): Style => {
     const canvas = canvasDict[canvasId];
     const localDefaultStyle = canvas.localSettings?.defaultElementStyle;
@@ -60,7 +76,7 @@ export const getDefaultElementStyle = createSelector(
 );
 
 export const getSelectionRectStyle = createSelector(
-  [getCanvasDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, getGlobalSettings, inputCanvasId],
   (canvasDict, globalSettings, canvasId): Style => {
     const canvas = canvasDict[canvasId];
     const localStyle = canvas.localSettings?.selectionBoxStyle;
@@ -69,7 +85,7 @@ export const getSelectionRectStyle = createSelector(
 );
 
 export const getHighlightedElementStyle = createSelector(
-  [getCanvasDict, getGlobalSettings, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, getGlobalSettings, inputCanvasId],
   (canvasDict, globalSettings, canvasId): Style => {
     const canvas = canvasDict[canvasId];
     const localStyle = canvas.localSettings?.highlightedElementStyle;
@@ -78,12 +94,12 @@ export const getHighlightedElementStyle = createSelector(
 );
 
 export const getSelectedElementIds = createSelector(
-  [getCanvasDict, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, inputCanvasId],
   (canvasDict, canvasId): string[] => canvasDict[canvasId].selectedElementIds,
 );
 
 export const getAllElementAreas = createSelector(
-  [getCanvasDict, getElementDict, getShapeDict, (state: RootState, canvasId: string): string => canvasId],
+  [getCanvasDict, getElementDict, getShapeDict, inputCanvasId],
   (canvasDict, elementDict, shapeDict, canvasId): ShapeArea[] => {
     const canvas = canvasDict[canvasId];
     return canvas.elementIds.map((elementId) => {
@@ -100,16 +116,30 @@ export const getAllElementAreas = createSelector(
 );
 
 export const getMinimalRectContainingElements = createSelector(
-  [getElementDict, getShapeDict, (state: RootState, elementIds: string[]): string[] => elementIds],
-  (elementDict, shapeDict, elementIds): NewShapeGeneric<Rect> | undefined => {
-    if (elementIds.length === 0) {
-      return undefined;
+  [
+    getElementDict,
+    getShapeDict,
+    (state: RootState, elementIds: string[]): string[] => elementIds,
+    (state: RootState, elementIds: string[], shapes?: AnyShape[]): AnyShape[] | undefined => shapes,
+  ],
+  (elementDict, shapeDict, elementIds, shapes): NewShapeGeneric<Rect> => {
+    if (elementIds.length === 0 && !shapes) {
+      throw new Error("Can't calculate minimal rect for empty element list");
     }
+
+    // collect areas of all elements
     const elementAreas = elementIds.map((elementId) => {
       const element = elementDict[elementId];
       const shape = shapeDict[element.shapeId];
       return getShapeArea({ shape });
     });
+
+    // add areas of all directly passed shapes
+    (shapes || []).forEach((shape) => {
+      elementAreas.push(getShapeArea({ shape }));
+    });
+
+    // calculate minimal rect containing all areas
     const minX = Math.min(...elementAreas.map((area) => area.minX));
     const maxX = Math.max(...elementAreas.map((area) => area.maxX));
     const minY = Math.min(...elementAreas.map((area) => area.minY));

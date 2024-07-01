@@ -1,13 +1,23 @@
 import { GetShapeContextStructure } from '../context';
 import { getAreaContainingCoordinates } from '../coordinateMath';
 import { Area, Length } from '../types';
-import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams } from './shape';
+import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams, MoveShape } from './shape';
 
 export interface Rect extends Area, BaseShape {
   type: 'rect';
   cornerRadiusX?: Length;
   cornerRadiusY?: Length;
 }
+
+export const moveRect: MoveShape<Rect> = ({ shape, offset }) => {
+  return {
+    ...shape,
+    position: {
+      x: shape.position.x + offset.x,
+      y: shape.position.y + offset.y,
+    },
+  };
+};
 
 export const getRectParams: GetSvgParams<Rect> = ({ shape }) => {
   return {

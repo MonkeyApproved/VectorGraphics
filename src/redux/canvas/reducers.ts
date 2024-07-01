@@ -1,13 +1,13 @@
-import { CanvasSliceReducer } from './slice';
-import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
-import { applyStyle, getExistingCanvasElement } from './reducers.helper';
-import { Shape, NewShape, updateShapeFromNamespace } from './shape';
-import { Style } from './style';
+import { Namespace } from 'src/redux/types';
 import { getEmptyCanvas } from './canvas';
-import { getFreshStats } from './utils';
 import { UserAction } from './canvas/userAction';
 import { Element } from './element';
-import { Namespace } from 'src/redux/types';
+import { getCanvasId, getElementId, getShapeId, getStyleId } from './id';
+import { applyStyle, getExistingCanvasElement } from './reducers.helper';
+import { NewShape, Shape, updateShapeFromNamespace } from './shape';
+import { CanvasSliceReducer } from './slice';
+import { Style } from './style';
+import { getFreshStats } from './utils';
 
 type NewStyle = Omit<Style, 'id' | 'stats'>;
 type ExistingShape = Omit<Shape, 'stats'>;
@@ -63,6 +63,9 @@ const addElementToCanvas: CanvasSliceReducer<{ canvasId: string; shape: NewShape
   // add the element to the canvas
   canvas.elementIds.push(elementId);
   element.stats.usages++;
+
+  // select the new element
+  state.canvases[payload.canvasId].selectedElementIds = [elementId];
 };
 
 const setSelectedElements: CanvasSliceReducer<{ canvasId: string; elements: string[] }> = (state, { payload }) => {
@@ -108,7 +111,7 @@ const updateShape: CanvasSliceReducer<{ shape: Partial<ExistingShape> }> = (stat
 
   // apply the changes, by merging the payload with the existing shape attributes
   shape.stats.version++;
-  state.shapes[payload.shape.id] = { ...shape, ...payload.shape } as Shape;
+  state.shapes[payload.shape.id] = { ...shape, ...payload.shape, stats: shape.stats } as Shape;
 };
 
 const updateShapeFromVariableNamespace: CanvasSliceReducer<{ shapeId: string; namespace: Namespace }> = (

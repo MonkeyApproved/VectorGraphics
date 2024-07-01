@@ -1,12 +1,26 @@
 import { GetShapeContextStructure } from '../context';
 import { Coordinate } from '../types';
-import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams, UpdateShapeFromNamespace } from './shape';
+import { BaseShape, GetNewShape, GetShapeArea, GetSvgParams, MoveShape, UpdateShapeFromNamespace } from './shape';
 
 export interface Line extends BaseShape {
   type: 'line';
   start: Coordinate;
   end: Coordinate;
 }
+
+export const moveLine: MoveShape<Line> = ({ shape, offset }) => {
+  return {
+    ...shape,
+    start: {
+      x: shape.start.x + offset.x,
+      y: shape.start.y + offset.y,
+    },
+    end: {
+      x: shape.end.x + offset.x,
+      y: shape.end.y + offset.y,
+    },
+  };
+};
 
 export const getLineParams: GetSvgParams<Line> = ({ shape }) => {
   return {
@@ -91,7 +105,6 @@ export const getLineContext: GetShapeContextStructure<Line> = ({ shape }) => {
 
 export const updateLineFromNamespace: UpdateShapeFromNamespace<Line> = ({ shape, namespace }) => {
   const equations = namespace.equations;
-  console.warn(equations);
   return {
     ...shape,
     namespaceVersion: namespace.version,

@@ -1,17 +1,18 @@
-import { createElement, useEffect } from 'react';
-import { getSvgStyleParams } from 'src/redux/utils';
-import { getSvgShapeParams } from 'src/redux/utils';
+import { CSSProperties, DOMAttributes, createElement, useEffect } from 'react';
+import { updateShapeFromVariableNamespace, useAppDispatch } from 'src/redux/reducers';
 import { getCanvasElementDetails, getNamespaceOrUndefined, useAppSelector } from 'src/redux/selectors';
 import { Shape, Style } from 'src/redux/types';
-import { updateShapeFromVariableNamespace, useAppDispatch } from 'src/redux/reducers';
+import { getSvgShapeParams, getSvgStyleParams } from 'src/redux/utils';
 
 export interface ElementProps {
   elementId: string;
   canvasId: string;
   overwriteStyle?: Style;
+  elementProps?: DOMAttributes<SVGElement>;
+  style?: CSSProperties;
 }
 
-export default function Element({ elementId, canvasId, overwriteStyle }: ElementProps) {
+export default function Element({ elementId, canvasId, overwriteStyle, elementProps = {}, style = {} }: ElementProps) {
   // current redux state
   const dispatch = useAppDispatch();
   const details = useAppSelector((state) => getCanvasElementDetails(state, elementId, canvasId));
@@ -25,10 +26,14 @@ export default function Element({ elementId, canvasId, overwriteStyle }: Element
 
   // svg properties for shape, style and transformations (TODO)
   const attributes = getSvgShapeParams({ shape: details.shape });
-  const style = getSvgStyleParams({ style: overwriteStyle || details.style });
+  const svgStyle = getSvgStyleParams({ style: overwriteStyle || details.style });
 
   // create svg element
-  return createElement(details.shape.type, { ...attributes, style });
+  return createElement(details.shape.type, {
+    ...attributes,
+    ...elementProps,
+    style: { ...svgStyle, ...style },
+  });
 }
 
 export interface ElementFromShapeProps {

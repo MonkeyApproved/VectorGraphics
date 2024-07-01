@@ -1,13 +1,13 @@
 import { DistributiveOmit } from 'react-redux';
+import { Namespace } from 'src/redux/types';
 import { BaseEntity, Coordinate } from '../types';
 import { Circle, getCircleArea, getCircleParams, getNewCircle } from './circle';
 import { Ellipse, getEllipseArea, getEllipseParams, getNewEllipse } from './ellipse';
-import { Line, getLineArea, getLineParams, getNewLine, updateLineFromNamespace } from './line';
+import { Line, getLineArea, getLineParams, getNewLine, moveLine, updateLineFromNamespace } from './line';
 import { Path, getNewPath, getPathArea, getPathParams } from './path';
 import { Polygon, getNewPolygon, getPolygonArea, getPolygonParams } from './polygon';
 import { Polyline, getNewPolyline, getPolylineArea, getPolylineParams } from './polyline';
-import { Rect, getNewRect, getRectArea, getRectParams } from './rect';
-import { Namespace } from 'src/redux/types';
+import { Rect, getNewRect, getRectArea, getRectParams, moveRect } from './rect';
 
 export type ShapeType = 'line' | 'rect' | 'circle' | 'ellipse' | 'path' | 'polygon' | 'polyline';
 
@@ -21,6 +21,14 @@ export type NewShape = DistributiveOmit<Shape, 'id' | 'stats'>;
 export type NewShapeGeneric<T extends BaseShape> = Omit<T, 'id' | 'stats'>;
 export type AnyShape = NewShape | Shape;
 export type AnyShapeGeneric<T extends BaseShape> = T | Omit<T, 'id' | 'stats'>;
+
+export type MoveShape<S extends BaseShape> = ({ shape, offset }: { shape: S; offset: Coordinate }) => S;
+
+export const moveShape: MoveShape<Shape> = ({ shape, offset }) => {
+  if (shape.type === 'line') return moveLine({ shape, offset });
+  if (shape.type === 'rect') return moveRect({ shape, offset });
+  return shape;
+};
 
 export type GetSvgParams<S extends BaseShape> = ({ shape }: { shape: AnyShapeGeneric<S> }) => {
   [attr: string]: number | string | undefined;

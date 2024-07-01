@@ -1,23 +1,26 @@
-import { getCanvas, getSelectedElementIds, useAppSelector } from 'src/redux/selectors';
-import SelectedElements from '../SelectElements/SelectedElements';
-import styles from '../styles.module.css';
+import { getCanvasViewBoxString, useAppSelector } from 'src/redux/selectors';
 import { getTopCanvasId } from 'src/redux/utils';
 import { ReactMouseEvent } from '../../types';
+import Elements from '../Elements';
+import SelectionRect from '../SelectionRect';
+import styles from '../styles.module.css';
 
 export interface IdleProps {
   canvasId: string;
-  onMouseDown: (event: ReactMouseEvent) => void;
+  selectedElements: string[];
+  onMouseDownCanvas: (event: ReactMouseEvent) => void;
+  onMouseDownElement: (event: ReactMouseEvent, elementId: string) => void;
 }
 
-export default function Idle({ canvasId, onMouseDown }: IdleProps) {
+export default function Idle({ canvasId, selectedElements, onMouseDownCanvas, onMouseDownElement }: IdleProps) {
   // current redux state
-  const selectedElements = useAppSelector((state) => getSelectedElementIds(state, canvasId));
-  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
+  const viewBox = useAppSelector((state) => getCanvasViewBoxString(state, canvasId));
   const topCanvasId = getTopCanvasId({ canvasId });
 
   return (
-    <svg className={styles.mouseListener} id={topCanvasId} viewBox={canvas.viewBox} onMouseDown={onMouseDown}>
-      {<SelectedElements canvasId={canvasId} selectedElements={selectedElements} showMinimalRect={true} />}
+    <svg className={styles.mouseListener} id={topCanvasId} viewBox={viewBox} onMouseDown={onMouseDownCanvas}>
+      {selectedElements.length > 0 ? <SelectionRect canvasId={canvasId} selectedElements={selectedElements} /> : null}
+      <Elements canvasId={canvasId} selectedElements={selectedElements} onMouseDownElement={onMouseDownElement} />
     </svg>
   );
 }

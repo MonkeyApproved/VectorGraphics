@@ -1,6 +1,7 @@
 import { RefObject, useState } from 'react';
 import CanvasMouseEvents from './CanvasMouseEvents';
-import MenuGrid from './Menu';
+import Menu from './Menu';
+import { ElementDetails } from 'src/redux/types';
 
 interface UserInterfaceProps {
   canvasId: string;
@@ -9,11 +10,17 @@ interface UserInterfaceProps {
 
 export function UserInterface({ canvasId, canvasRef }: UserInterfaceProps) {
   const [status, setStatus] = useState<string>('');
+  const [elementShownInMenu, setElementShownInMenu] = useState<ElementDetails>();
 
   return (
     <>
-      <CanvasMouseEvents canvasId={canvasId} canvasRef={canvasRef} setStatus={setStatus} />
-      <MenuGrid canvasId={canvasId} status={status} setStatus={setStatus} />
+      <CanvasMouseEvents
+        canvasId={canvasId}
+        canvasRef={canvasRef}
+        setStatus={setStatus}
+        setElementShownInMenu={setElementShownInMenu}
+      />
+      <Menu canvasId={canvasId} status={status} setStatus={setStatus} elementShownInMenu={elementShownInMenu} />
     </>
   );
 }

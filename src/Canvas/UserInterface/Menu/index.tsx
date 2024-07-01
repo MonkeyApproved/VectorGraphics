@@ -5,16 +5,17 @@ import { ReactNode, useState } from 'react';
 import { SubMenuItem, drawShapeMenu, mainMenu, selectMenu } from './menuStructure';
 import { MainMenuButton, SubMenuButton } from './Buttons';
 import { getCurrentUserAction, getSelectedElementIds, useAppSelector } from 'src/redux/selectors';
-import { MainUserActionTypes } from 'src/redux/types';
-import SingleElementMenu from '../Inputs/SIngleElementMenu';
+import { ElementDetails, MainUserActionTypes } from 'src/redux/types';
+import SingleElementMenu from './Inputs/SIngleElementMenu';
 
 interface MenuProps {
   canvasId: string;
   status: string;
   setStatus: ReactSetState<string>;
+  elementShownInMenu?: ElementDetails;
 }
 
-export default function Menu({ canvasId, status, setStatus }: MenuProps) {
+export default function Menu({ canvasId, status, setStatus, elementShownInMenu }: MenuProps) {
   // current redux state
   const currentUserAction = useAppSelector((state) => getCurrentUserAction(state, canvasId));
   const selectedElements = useAppSelector((state) => getSelectedElementIds(state, canvasId));
@@ -54,7 +55,15 @@ export default function Menu({ canvasId, status, setStatus }: MenuProps) {
   }
 
   let elementMenu: ReactNode = null;
-  if (selectedElements.length === 1) {
+  if (elementShownInMenu) {
+    elementMenu = (
+      <SingleElementMenu
+        elementId={elementShownInMenu.id}
+        canvasId={canvasId}
+        elementShownInMenu={elementShownInMenu}
+      />
+    );
+  } else if (selectedElements.length === 1) {
     elementMenu = <SingleElementMenu canvasId={canvasId} elementId={selectedElements[0]} />;
   }
 

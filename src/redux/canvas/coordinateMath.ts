@@ -15,6 +15,10 @@ export function subtractCoordinates({ leftArg, rightArg }: CoordinateMathProps):
   return { x: leftArg.x - rightArg.x, y: leftArg.y - rightArg.y };
 }
 
+export function vectorLength({ coordinate }: { coordinate: Coordinate }): number {
+  return Math.sqrt(coordinate.x ** 2 + coordinate.y ** 2);
+}
+
 export function getAreaContainingCoordinates({ coordinateList }: { coordinateList: Coordinate[] }): Area {
   if (coordinateList.length === 0) throw new Error('Cannot calculate area for empty list of elements');
   const xPositions = coordinateList.map((coordinate) => coordinate.x);

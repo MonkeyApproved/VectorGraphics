@@ -2,6 +2,7 @@ import { SvgSettings } from '../settings';
 import { BaseEntity } from '../types';
 import { getFreshStats } from '../utils';
 import { UserAction, getInitialUserAction } from './userAction';
+import { ViewBox } from './viewBox';
 
 export interface SvgCanvasIds {
   bottomId: string;
@@ -10,7 +11,7 @@ export interface SvgCanvasIds {
 }
 
 export interface Canvas<UserActionType = UserAction> extends BaseEntity {
-  viewBox: string;
+  viewBox: ViewBox;
   elementIds: string[]; // can be elements or groups
   selectedElementIds: string[];
   currentUserAction: UserActionType;
@@ -21,7 +22,7 @@ export function getEmptyCanvas({ label }: { label?: string }): Omit<Canvas, 'id'
   return {
     stats: getFreshStats(),
     label,
-    viewBox: '0 0 1000 1000',
+    viewBox: { x: 0, y: 0, width: 1000, height: 1000 },
     elementIds: [],
     selectedElementIds: [],
     currentUserAction: getInitialUserAction(),

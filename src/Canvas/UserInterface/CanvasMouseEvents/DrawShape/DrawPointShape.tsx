@@ -1,23 +1,24 @@
-import { Coordinate, NewShape } from 'src/redux/types';
-import { getMousePosition } from '../../utils';
-import { getNewShape, getTopCanvasId } from 'src/redux/utils';
-import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
 import { useEffect, useRef, useState } from 'react';
-import { ClickEvent, checkDoubleClick } from '../doubleClick';
+import { addElementToCanvas, useAppDispatch } from 'src/redux/reducers';
+import { getCanvasViewBoxString, useAppSelector } from 'src/redux/selectors';
+import { Coordinate, NewShape } from 'src/redux/types';
+import { getNewShape, getTopCanvasId } from 'src/redux/utils';
 import { DrawShapeProps } from '.';
-import TempShape from './TempShape';
+import { getMousePosition } from '../../utils';
+import Elements from '../Elements';
+import { ClickEvent, checkDoubleClick } from '../doubleClick';
 import styles from '../styles.module.css';
-import { getCanvas, useAppSelector } from 'src/redux/selectors';
+import TempShape from './TempShape';
 
 export default function DrawPointShape({
   canvasId,
   canvasRef,
   shapeType,
   mouseDownPosition,
-  setMouseActionActive,
+  setMouseState,
   setStatus,
 }: DrawShapeProps) {
-  const canvas = useAppSelector((state) => getCanvas(state, canvasId));
+  const viewBox = useAppSelector((state) => getCanvasViewBoxString(state, canvasId));
   const topCanvasId = getTopCanvasId({ canvasId });
   const [tempShape, setTempShape] = useState<NewShape>(getNewShape({ shapeType, start: mouseDownPosition }));
   const finishedSegments = useRef<NewShape>();
@@ -67,7 +68,7 @@ export default function DrawPointShape({
 
     // now we can remove the temp shape and submit the final shape to the store
     // removeElement({ selection: tempShape });
-    setMouseActionActive(false);
+    setMouseState('idle');
     dispatch(addElementToCanvas({ canvasId, shape: finalShape }));
   };
 
@@ -87,7 +88,8 @@ export default function DrawPointShape({
   };
 
   return (
-    <svg className={styles.topCanvas} id={topCanvasId} viewBox={canvas.viewBox}>
+    <svg className={styles.topCanvas} id={topCanvasId} viewBox={viewBox}>
+      <Elements canvasId={canvasId} selectedElements={[]} />
       <TempShape tempShape={tempShape} canvasId={canvasId} />
     </svg>
   );
